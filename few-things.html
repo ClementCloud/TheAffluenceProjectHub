@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Few things to know (choosing wealth): TAP | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #5A7C65;
+      --c-light: #EEF3EF;
+      --c-accent: #A8C5B0;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, var(--c), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 38px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    .progress-card {
+      position: sticky;
+      top: 56px;
+      z-index: 40;
+      margin-bottom: 20px;
+      padding: 18px 18px 16px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
+    }
+    .progress-card__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .progress-card__label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--c);
+    }
+    .progress-card__count {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .progress-card__bar {
+      height: 10px;
+      border-radius: 100px;
+      background: var(--c-light);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .progress-card__fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--c), var(--c-accent));
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .progress-card__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .progress-reset {
+      all: unset;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      text-decoration: underline;
+    }
+    .progress-card__hint {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .jump-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .jump-nav__label {
+      width: 100%;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 2px;
+    }
+    .jump-chip {
+      all: unset;
+      cursor: pointer;
+      box-sizing: border-box;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      color: #555;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .jump-chip:hover {
+      border-color: var(--c-accent);
+      color: var(--c);
+    }
+    .jump-chip.is-active {
+      background: var(--c);
+      border-color: var(--c);
+      color: #fff;
+    }
+    .jump-chip:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .carousel-wrap {
+      margin-bottom: 8px;
+    }
+    .carousel-wrap:focus { outline: none; }
+    .carousel-wrap:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 4px;
+      border-radius: 16px;
+    }
+    .carousel-chrome {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .carousel-btn {
+      all: unset;
+      box-sizing: border-box;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--c-light);
+      border: 1.5px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      line-height: 1;
+      color: var(--c);
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+    .carousel-btn:hover {
+      background: #fff;
+      border-color: var(--c-accent);
+    }
+    .carousel-btn:active {
+      transform: scale(0.96);
+    }
+    .carousel-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .carousel-dots {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      flex: 1;
+    }
+    .carousel-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: none;
+      background: #ccc;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .carousel-dot.is-active {
+      background: var(--c);
+      transform: scale(1.2);
+    }
+    .carousel-dot:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+    .carousel-counter {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .carousel-hint {
+      text-align: center;
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    .carousel-viewport {
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+      touch-action: pan-y;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .carousel-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      padding: 0;
+    }
+    .carousel-slide.section-complete .carousel-slide__shell {
+      border-color: rgba(90, 124, 101, 0.4);
+    }
+    .carousel-slide__shell {
+      padding: 20px 18px 24px;
+      border-left: 3px solid transparent;
+      min-height: 320px;
+      max-height: min(72vh, 640px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .slide-header {
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--c-light);
+    }
+    .slide-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(20px, 3.5vw, 26px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.35em;
+    }
+    .slide-emoji {
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 0.95em;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .li-ico {
+      margin-right: 0.35em;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 0.95em;
+    }
+    .slide-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--c);
+    }
+    .sum-done {
+      display: none;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--c-light);
+      color: var(--c);
+      padding: 3px 8px;
+      border-radius: 100px;
+    }
+    .carousel-slide.section-complete .sum-done { display: inline-block; }
+
+    .tagline {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    ul.content-list {
+      margin: 8px 0 0 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .content-list li {
+      margin-bottom: 10px;
+      padding-left: 4px;
+    }
+    .content-list strong { color: var(--ink); }
+
+    .action-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--c-light);
+      border: 1px solid rgba(168, 197, 176, 0.5);
+    }
+    .action-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 12px;
+    }
+    .action-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .action-list li { margin-bottom: 10px; }
+    .action-list label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #333;
+    }
+    .action-list input {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--c);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .action-list label.is-checked {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .celebrate {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(90, 124, 101, 0.12);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      line-height: 1.5;
+    }
+    .celebrate.is-on { display: block; }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      color: #999;
+      font-size: 13px;
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .site-footer .copy {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Students</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="pill"><span aria-hidden="true">🌱</span> Students · money basics</div>
+    <h1><span aria-hidden="true">✨</span> Few things to know (choosing wealth)</h1>
+    <p class="lede">
+      You are building real money habits, one slide at a time. Swipe the card or tap the arrows, use the chips to teleport to a topic, then check off wins as you go. Progress saves on this device only, so make it yours.
+    </p>
+
+    <div class="progress-card" aria-live="polite">
+      <div class="progress-card__top">
+        <span class="progress-card__label"><span aria-hidden="true">✅</span> Your action checklist</span>
+        <span class="progress-card__count" id="global-count">0 / 19</span>
+      </div>
+      <div class="progress-card__bar" aria-hidden="true"><div class="progress-card__fill" id="global-bar"></div></div>
+      <div class="progress-card__actions">
+        <button type="button" class="progress-reset" id="progress-reset" aria-label="Reset all checklist marks on this device"><span aria-hidden="true">🔄</span> Start fresh (reset all)</button>
+        <span class="progress-card__hint">Checked items stick around until you clear them.</span>
+      </div>
+      <p class="celebrate" id="all-done-msg" role="status"><span aria-hidden="true">🎉</span> You crushed every action on the list. That is a serious flex. Come back when you are ready to level up again.</p>
+    </div>
+
+    <nav class="jump-nav" aria-label="Jump to a topic">
+      <span class="jump-nav__label"><span aria-hidden="true">🎯</span> Pick a topic</span>
+      <button type="button" class="jump-chip is-active" data-slide="0"><span aria-hidden="true">🏦</span> Core setup</button>
+      <button type="button" class="jump-chip" data-slide="1"><span aria-hidden="true">💳</span> Credit</button>
+      <button type="button" class="jump-chip" data-slide="2"><span aria-hidden="true">📊</span> Net worth</button>
+      <button type="button" class="jump-chip" data-slide="3"><span aria-hidden="true">🚗</span> First car</button>
+      <button type="button" class="jump-chip" data-slide="4"><span aria-hidden="true">🏠</span> Renting</button>
+    </nav>
+
+    <section class="carousel-wrap" id="topic-carousel" aria-roledescription="carousel" aria-label="Wealth topics carousel" tabindex="0">
+      <div class="carousel-chrome">
+        <button type="button" class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous topic">‹</button>
+        <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Topic"></div>
+        <button type="button" class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Next topic">›</button>
+      </div>
+      <p class="carousel-counter" id="carousel-counter">1 of 5 · 🏦 Core setup</p>
+      <p class="carousel-hint"><span aria-hidden="true">👆</span> On your phone, swipe the card left or right. On a keyboard, focus here and use arrow keys.</p>
+      <div class="carousel-viewport" id="carousel-viewport">
+        <div class="carousel-track" id="carousel-track">
+          <article class="carousel-slide" data-section="core" data-slide-index="0">
+            <div class="carousel-slide__shell">
+              <header class="slide-header">
+                <h2 class="slide-title" id="carousel-label-0"><span class="slide-emoji" aria-hidden="true">🏦</span> Core setup</h2>
+                <div class="slide-meta">
+                  <span class="section-count" data-section-count="core">0/4</span>
+                  <span class="sum-done"><span aria-hidden="true">⭐</span> All set</span>
+                </div>
+              </header>
+              <p class="tagline"><span aria-hidden="true">🧰</span> Your foundation: bank account, Roth IRA, budget app, and a W-4 you actually understand.</p>
+              <ul class="content-list">
+                <li><span class="li-ico" aria-hidden="true">🏧</span><strong>Bank account</strong>: Get a checking account you control (no surprise fees). Add a savings bucket for emergencies, even if you start small.</li>
+                <li><span class="li-ico" aria-hidden="true">🌱</span><strong>Roth IRA</strong>: If you have earned income, learn how a Roth works (money grows tax-free for retirement). Even small, regular deposits add up.</li>
+                <li><span class="li-ico" aria-hidden="true">📱</span><strong>Budget app</strong>: Pick one method you will actually open (app or spreadsheet). Track what comes in and what must go out before fun spending.</li>
+                <li><span class="li-ico" aria-hidden="true">📋</span><strong>W-4 checklist</strong>: When you start a job, your W-4 tells the employer how much tax to withhold. Getting it wrong means a big refund or a surprise bill. Use the IRS estimator or your campus career or VITA resource when you are unsure.</li>
+              </ul>
+              <div class="action-box">
+                <h3 class="action-title"><span aria-hidden="true">🎯</span> Mini quests (check when you nail it)</h3>
+                <ul class="action-list">
+                  <li><label><input type="checkbox" id="chk-core-1" data-check="core-1" /> <span aria-hidden="true">✓</span> I have a checking account in my name with fees I understand.</label></li>
+                  <li><label><input type="checkbox" id="chk-core-2" data-check="core-2" /> <span aria-hidden="true">✓</span> I opened or started a savings bucket for emergencies.</label></li>
+                  <li><label><input type="checkbox" id="chk-core-3" data-check="core-3" /> <span aria-hidden="true">✓</span> I picked a budget app or sheet and logged income and fixed costs.</label></li>
+                  <li><label><input type="checkbox" id="chk-core-4" data-check="core-4" /> <span aria-hidden="true">✓</span> I reviewed my W-4 (or plan to) using IRS or campus help before tax surprises.</label></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide" data-section="credit" data-slide-index="1">
+            <div class="carousel-slide__shell">
+              <header class="slide-header">
+                <h2 class="slide-title" id="carousel-label-1"><span class="slide-emoji" aria-hidden="true">💳</span> Building credit from zero</h2>
+                <div class="slide-meta">
+                  <span class="section-count" data-section-count="credit">0/4</span>
+                  <span class="sum-done"><span aria-hidden="true">⭐</span> All set</span>
+                </div>
+              </header>
+              <p class="tagline"><span aria-hidden="true">🚀</span> No history yet? No drama. Here is how to start strong without falling for myths.</p>
+              <ul class="content-list">
+                <li><span class="li-ico" aria-hidden="true">🔐</span><strong>Secured card</strong>: A common first step is a secured credit card with a small limit you back with a deposit. Use it lightly and pay the full statement balance on time.</li>
+                <li><span class="li-ico" aria-hidden="true">🤝</span><strong>Authorized user</strong>: Sometimes a parent or trusted person adds you to their card. It can help your file, but their habits become yours on paper. Only do this with someone who pays on time and keeps balances low.</li>
+                <li><span class="li-ico" aria-hidden="true">⏰</span><strong>Pay on time, every time</strong>: Payment history is the biggest piece of your score. Set reminders or autopay for at least the minimum, ideally the full balance.</li>
+                <li><span class="li-ico" aria-hidden="true">💡</span><strong>Myth busted</strong>: You do not need to carry a balance to build credit. Paying in full is fine.</li>
+              </ul>
+              <div class="action-box">
+                <h3 class="action-title"><span aria-hidden="true">🎯</span> Mini quests (check when you nail it)</h3>
+                <ul class="action-list">
+                  <li><label><input type="checkbox" id="chk-credit-1" data-check="credit-1" /> <span aria-hidden="true">✓</span> I pulled my free credit report and know what is on file.</label></li>
+                  <li><label><input type="checkbox" id="chk-credit-2" data-check="credit-2" /> <span aria-hidden="true">✓</span> I chose one path (secured card or safe authorized user) and understand the rules.</label></li>
+                  <li><label><input type="checkbox" id="chk-credit-3" data-check="credit-3" /> <span aria-hidden="true">✓</span> I set calendar reminders or autopay so I never miss a due date.</label></li>
+                  <li><label><input type="checkbox" id="chk-credit-4" data-check="credit-4" /> <span aria-hidden="true">✓</span> I plan to pay the statement balance in full when I use the card.</label></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide" data-section="net" data-slide-index="2">
+            <div class="carousel-slide__shell">
+              <header class="slide-header">
+                <h2 class="slide-title" id="carousel-label-2"><span class="slide-emoji" aria-hidden="true">📊</span> Know where you are</h2>
+                <div class="slide-meta">
+                  <span class="section-count" data-section-count="net">0/3</span>
+                  <span class="sum-done"><span aria-hidden="true">⭐</span> All set</span>
+                </div>
+              </header>
+              <p class="tagline"><span aria-hidden="true">🧭</span> Net worth plus a simple budget split: the GPS for your money.</p>
+              <ul class="content-list">
+                <li><span class="li-ico" aria-hidden="true">⚖️</span><strong>Net worth</strong>: List what you own (cash, car value, investments) minus what you owe (loans, card balances). One simple spreadsheet is enough. Update it once a month or each semester.</li>
+                <li><span class="li-ico" aria-hidden="true">🧾</span><strong>Budgeting tools</strong>: Same app or sheet as core setup works here. Split spending into fixed (rent, phone, subscriptions) and flexible (food, transit, fun).</li>
+                <li><span class="li-ico" aria-hidden="true">🔭</span><strong>Why it matters</strong>: You cannot steer if you do not know the starting point. Numbers remove guesswork when you decide what to cut or what to fund next.</li>
+              </ul>
+              <div class="action-box">
+                <h3 class="action-title"><span aria-hidden="true">🎯</span> Mini quests (check when you nail it)</h3>
+                <ul class="action-list">
+                  <li><label><input type="checkbox" id="chk-net-1" data-check="net-1" /> <span aria-hidden="true">✓</span> I listed assets and debts once to get a net worth snapshot.</label></li>
+                  <li><label><input type="checkbox" id="chk-net-2" data-check="net-2" /> <span aria-hidden="true">✓</span> I tagged spending as fixed vs flexible for one full month.</label></li>
+                  <li><label><input type="checkbox" id="chk-net-3" data-check="net-3" /> <span aria-hidden="true">✓</span> I picked a date to update my numbers again (monthly or per semester).</label></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide" data-section="car" data-slide-index="3">
+            <div class="carousel-slide__shell">
+              <header class="slide-header">
+                <h2 class="slide-title" id="carousel-label-3"><span class="slide-emoji" aria-hidden="true">🚗</span> Buying your first car</h2>
+                <div class="slide-meta">
+                  <span class="section-count" data-section-count="car">0/4</span>
+                  <span class="sum-done"><span aria-hidden="true">⭐</span> All set</span>
+                </div>
+              </header>
+              <p class="tagline"><span aria-hidden="true">🔑</span> Before you fall in love at the lot, run the real numbers and keep your power at the table.</p>
+              <ul class="content-list">
+                <li><span class="li-ico" aria-hidden="true">💸</span><strong>Total cost</strong>: Monthly payment is not the whole story. Add insurance, gas, maintenance, registration, and parking.</li>
+                <li><span class="li-ico" aria-hidden="true">🏛️</span><strong>Pre-approval</strong>: If you borrow, compare rates from a credit union or bank before you fall in love with a car at the lot.</li>
+                <li><span class="li-ico" aria-hidden="true">🔍</span><strong>Inspection and history</strong>: For used cars, a prepurchase inspection and a vehicle history report are worth the fee.</li>
+                <li><span class="li-ico" aria-hidden="true">🤝</span><strong>Negotiation</strong>: Walk in with a max price and be willing to leave. Sleep on big decisions.</li>
+              </ul>
+              <div class="action-box">
+                <h3 class="action-title"><span aria-hidden="true">🎯</span> Mini quests (check when you nail it)</h3>
+                <ul class="action-list">
+                  <li><label><input type="checkbox" id="chk-car-1" data-check="car-1" /> <span aria-hidden="true">✓</span> I wrote down total monthly cost (payment, insurance, gas, maintenance, parking).</label></li>
+                  <li><label><input type="checkbox" id="chk-car-2" data-check="car-2" /> <span aria-hidden="true">✓</span> I compared loan rates outside the dealership (if financing).</label></li>
+                  <li><label><input type="checkbox" id="chk-car-3" data-check="car-3" /> <span aria-hidden="true">✓</span> I planned for inspection and history report on used options.</label></li>
+                  <li><label><input type="checkbox" id="chk-car-4" data-check="car-4" /> <span aria-hidden="true">✓</span> I set a max out-the-door price and a rule to sleep on it.</label></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="carousel-slide" data-section="rent" data-slide-index="4">
+            <div class="carousel-slide__shell">
+              <header class="slide-header">
+                <h2 class="slide-title" id="carousel-label-4"><span class="slide-emoji" aria-hidden="true">🏠</span> Renting your first apartment</h2>
+                <div class="slide-meta">
+                  <span class="section-count" data-section-count="rent">0/4</span>
+                  <span class="sum-done"><span aria-hidden="true">⭐</span> All set</span>
+                </div>
+              </header>
+              <p class="tagline"><span aria-hidden="true">📦</span> Leases, surprise costs, insurance, and roommate peace treaties. Read this before you sign.</p>
+              <ul class="content-list">
+                <li><span class="li-ico" aria-hidden="true">📜</span><strong>Read the lease</strong>: Know rent due date, late fees, who pays utilities, subletting rules, and how notice works when you move out.</li>
+                <li><span class="li-ico" aria-hidden="true">💰</span><strong>Upfront costs</strong>: Budget for security deposit, first month, sometimes last month, and broker fees if your market uses them.</li>
+                <li><span class="li-ico" aria-hidden="true">🛡️</span><strong>Renters insurance</strong>: Often cheap and sometimes required. It covers your stuff and liability if something goes wrong.</li>
+                <li><span class="li-ico" aria-hidden="true">👥</span><strong>Roommates</strong>: Put shared rules in writing (splitting bills, guests, quiet hours) before tension shows up.</li>
+              </ul>
+              <div class="action-box">
+                <h3 class="action-title"><span aria-hidden="true">🎯</span> Mini quests (check when you nail it)</h3>
+                <ul class="action-list">
+                  <li><label><input type="checkbox" id="chk-rent-1" data-check="rent-1" /> <span aria-hidden="true">✓</span> I read the full lease and noted fees, utilities, and move-out notice.</label></li>
+                  <li><label><input type="checkbox" id="chk-rent-2" data-check="rent-2" /> <span aria-hidden="true">✓</span> I budgeted deposit, first month, and any broker or move-in fees.</label></li>
+                  <li><label><input type="checkbox" id="chk-rent-3" data-check="rent-3" /> <span aria-hidden="true">✓</span> I priced renters insurance and know if the building requires it.</label></li>
+                  <li><label><input type="checkbox" id="chk-rent-4" data-check="rent-4" /> <span aria-hidden="true">✓</span> I aligned with roommates on bills and house rules in writing.</label></li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="index.html" aria-label="Return to The Affluence Project hub"><span aria-hidden="true">👋</span> Back to the TAP hub</a>
+    <p class="copy">© 2026 The Affluence Project · <span aria-hidden="true">💚</span> Keep going</p>
+  </footer>
+
+  <script>
+(function () {
+  var STORAGE_KEY = "tap-fewthings-checks-v1";
+  var SLIDE_EMOJI = ["🏦", "💳", "📊", "🚗", "🏠"];
+  var SLIDE_LABELS_PLAIN = [
+    "Core setup",
+    "Building credit from zero",
+    "Know where you are",
+    "Buying your first car",
+    "Renting your first apartment",
+  ];
+  var N = 5;
+
+  var sections = {
+    core: ["core-1", "core-2", "core-3", "core-4"],
+    credit: ["credit-1", "credit-2", "credit-3", "credit-4"],
+    net: ["net-1", "net-2", "net-3"],
+    car: ["car-1", "car-2", "car-3", "car-4"],
+    rent: ["rent-1", "rent-2", "rent-3", "rent-4"],
+  };
+
+  var track = document.getElementById("carousel-track");
+  var viewport = document.getElementById("carousel-viewport");
+  var dotsEl = document.getElementById("carousel-dots");
+  var counterEl = document.getElementById("carousel-counter");
+  var btnPrev = document.getElementById("carousel-prev");
+  var btnNext = document.getElementById("carousel-next");
+  var carousel = document.getElementById("topic-carousel");
+
+  var index = 0;
+  var dots = [];
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      var o = JSON.parse(raw);
+      return o && typeof o === "object" ? o : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  var state = loadState();
+
+  for (var d = 0; d < N; d++) {
+    (function (i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "carousel-dot" + (i === 0 ? " is-active" : "");
+      b.setAttribute("role", "tab");
+      b.setAttribute("aria-label", "Topic " + (i + 1) + ": " + SLIDE_LABELS_PLAIN[i]);
+      b.setAttribute("aria-selected", i === 0 ? "true" : "false");
+      b.addEventListener("click", function () {
+        goTo(i);
+      });
+      dotsEl.appendChild(b);
+      dots.push(b);
+    })(d);
+  }
+
+  function updateCarouselTransform() {
+    track.style.transform = "translateX(-" + index * 100 + "%)";
+    btnPrev.disabled = index <= 0;
+    btnNext.disabled = index >= N - 1;
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle("is-active", i === index);
+      dot.setAttribute("aria-selected", i === index ? "true" : "false");
+    });
+    document.querySelectorAll(".jump-chip").forEach(function (chip) {
+      var s = parseInt(chip.getAttribute("data-slide"), 10);
+      chip.classList.toggle("is-active", s === index);
+    });
+    counterEl.textContent =
+      index + 1 + " of " + N + " · " + SLIDE_EMOJI[index] + " " + SLIDE_LABELS_PLAIN[index];
+    carousel.setAttribute("aria-activedescendant", "carousel-label-" + index);
+  }
+
+  function goTo(i) {
+    if (i < 0) i = 0;
+    if (i >= N) i = N - 1;
+    index = i;
+    updateCarouselTransform();
+  }
+
+  btnPrev.addEventListener("click", function () {
+    goTo(index - 1);
+  });
+  btnNext.addEventListener("click", function () {
+    goTo(index + 1);
+  });
+
+  document.querySelectorAll(".jump-chip").forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      goTo(parseInt(chip.getAttribute("data-slide"), 10));
+    });
+  });
+
+  carousel.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      goTo(index - 1);
+    }
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      goTo(index + 1);
+    }
+  });
+
+  var touchStartX = null;
+  viewport.addEventListener(
+    "touchstart",
+    function (e) {
+      touchStartX = e.changedTouches[0].screenX;
+    },
+    { passive: true }
+  );
+  viewport.addEventListener(
+    "touchend",
+    function (e) {
+      if (touchStartX === null) return;
+      var dx = e.changedTouches[0].screenX - touchStartX;
+      touchStartX = null;
+      if (dx < -48) goTo(index + 1);
+      else if (dx > 48) goTo(index - 1);
+    },
+    { passive: true }
+  );
+
+  updateCarouselTransform();
+
+  function applyLabelStyles() {
+    document.querySelectorAll(".action-list label").forEach(function (label) {
+      var input = label.querySelector("input");
+      label.classList.toggle("is-checked", input && input.checked);
+    });
+  }
+
+  function updateSectionUI() {
+    Object.keys(sections).forEach(function (key) {
+      var ids = sections[key];
+      var done = ids.filter(function (id) {
+        return !!state[id];
+      }).length;
+      var total = ids.length;
+      var el = document.querySelector('[data-section-count="' + key + '"]');
+      if (el) el.textContent = done + "/" + total;
+      var slide = document.querySelector('.carousel-slide[data-section="' + key + '"]');
+      if (slide) slide.classList.toggle("section-complete", done === total && total > 0);
+    });
+  }
+
+  function updateGlobalUI() {
+    var inputs = document.querySelectorAll("input[data-check]");
+    var realTotal = inputs.length;
+    var done = 0;
+    inputs.forEach(function (inp) {
+      if (state[inp.getAttribute("data-check")]) done++;
+    });
+    document.getElementById("global-count").textContent = done + " / " + realTotal;
+    var pct = realTotal ? Math.round((done / realTotal) * 100) : 0;
+    document.getElementById("global-bar").style.width = pct + "%";
+    document.getElementById("all-done-msg").classList.toggle("is-on", done === realTotal && realTotal > 0);
+  }
+
+  function syncInputsFromState() {
+    document.querySelectorAll("input[data-check]").forEach(function (input) {
+      var id = input.getAttribute("data-check");
+      input.checked = !!state[id];
+    });
+    applyLabelStyles();
+    updateSectionUI();
+    updateGlobalUI();
+  }
+
+  document.querySelectorAll("input[data-check]").forEach(function (input) {
+    input.addEventListener("change", function () {
+      var id = input.getAttribute("data-check");
+      if (input.checked) state[id] = true;
+      else delete state[id];
+      saveState(state);
+      applyLabelStyles();
+      updateSectionUI();
+      updateGlobalUI();
+    });
+  });
+
+  document.getElementById("progress-reset").addEventListener("click", function () {
+    if (!confirm("Clear every checklist mark on this device?")) return;
+    state = {};
+    saveState(state);
+    syncInputsFromState();
+  });
+
+  syncInputsFromState();
+})();
+  </script>
+</body>
+</html>

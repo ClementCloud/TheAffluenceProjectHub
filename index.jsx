@@ -11,34 +11,16 @@ const SECTIONS = [
     colorAccent: "#A8C5B0",
     tiles: [
       {
-        title: "Your First Budget",
-        desc: "Map your money before it maps you.",
-        icon: "📒",
+        title: "Few things to know (if you are choosing wealth)",
+        desc: "Core setup, credit, net worth, your first car and apartment, all in one guide.",
+        icon: "💡",
+        href: "few-things.html",
       },
       {
-        title: "Credit from Scratch",
-        desc: "Build your score with zero history.",
-        icon: "📈",
-      },
-      {
-        title: "Student Loans Decoded",
-        desc: "Know what you owe and why it matters.",
-        icon: "🎓",
-      },
-      {
-        title: "Filing Taxes 101",
-        desc: "First time filing? Start here.",
-        icon: "🧾",
-      },
-      {
-        title: "Reading a Paycheck",
-        desc: "Where does your money actually go?",
-        icon: "💵",
-      },
-      {
-        title: "Banking Basics",
-        desc: "Checking, savings, and what to watch for.",
-        icon: "🏦",
+        title: "Internships That Count",
+        desc: "Find roles, stand out in applications, and turn experience into momentum.",
+        icon: "💼",
+        href: "internships.html",
       },
     ],
   },
@@ -46,7 +28,7 @@ const SECTIONS = [
     id: "young-professionals",
     label: "Young Professionals",
     emoji: "🚀",
-    tagline: "You're earning real money — now make it work.",
+    tagline: "You're earning real money, now make it work for you.",
     color: "#8B7234",
     colorLight: "#F7F3EA",
     colorAccent: "#D4BA6A",
@@ -256,7 +238,9 @@ function TileCard({ tile, section, delay, visible }) {
     <button
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => {}}
+      onClick={() => {
+        if (tile.href) window.location.href = tile.href;
+      }}
       style={{
         all: "unset",
         cursor: "pointer",

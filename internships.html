@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internships That Count: TAP | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #5A7C65;
+      --c-light: #EEF3EF;
+      --c-accent: #A8C5B0;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, var(--c), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--c);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(32px, 5vw, 42px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+      max-width: 720px;
+    }
+
+    .overview-wealth {
+      margin-bottom: 36px;
+      padding: 28px 24px;
+      border-radius: 16px;
+      background: linear-gradient(165deg, var(--c-light) 0%, #fff 55%);
+      border: 1.5px solid rgba(90, 124, 101, 0.2);
+      max-width: 720px;
+    }
+    .overview-wealth h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .overview-wealth .overview-lead {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .overview-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .overview-list li {
+      position: relative;
+      padding-left: 22px;
+      margin-bottom: 14px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #444;
+    }
+    .overview-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--c);
+    }
+
+    .nyc-section {
+      margin-bottom: 40px;
+      padding: 28px 24px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    }
+    .nyc-section > h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .nyc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(139, 114, 52, 0.1);
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 14px;
+    }
+    .nyc-intro {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-width: 720px;
+    }
+    .industry-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .industry-filters button {
+      all: unset;
+      cursor: pointer;
+      box-sizing: border-box;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 100px;
+      border: 1.5px solid var(--line);
+      background: #FDFCFA;
+      color: #555;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .industry-filters button:hover {
+      border-color: var(--c-accent);
+      color: var(--c);
+    }
+    .industry-filters button.is-active {
+      background: var(--c);
+      border-color: var(--c);
+      color: #fff;
+    }
+    .nyc-count {
+      font-size: 13px;
+      font-weight: 600;
+      color: #888;
+      margin-bottom: 14px;
+    }
+    .nyc-grid {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) {
+      .nyc-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .nyc-card {
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
+      border-radius: 14px;
+      border: 1.5px solid var(--line);
+      background: #FDFCFA;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .nyc-card:hover {
+      border-color: var(--c-accent);
+      box-shadow: 0 6px 20px rgba(90, 124, 101, 0.1);
+    }
+    .nyc-card[hidden] { display: none !important; }
+    .nyc-card__tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 8px;
+    }
+    .nyc-card__name {
+      font-family: "Playfair Display", serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+    .nyc-card__blurb {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .nyc-card__apply {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      align-self: flex-start;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--c);
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 100px;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+    .nyc-card__apply:hover {
+      background: #4a6a54;
+      transform: translateY(-1px);
+    }
+    .nyc-card__apply:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+    .nyc-disclaimer {
+      margin-top: 22px;
+      font-size: 13px;
+      color: #888;
+      line-height: 1.55;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .focus-card {
+      margin-bottom: 28px;
+      padding: 22px;
+      border-radius: 16px;
+      background: var(--c-light);
+      border: 1.5px solid rgba(168, 197, 176, 0.5);
+    }
+    .focus-card h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 10px;
+    }
+    .focus-card p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .focus-card textarea {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--line);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      resize: vertical;
+      min-height: 88px;
+      margin-bottom: 12px;
+    }
+    .tap-ask-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+      margin-bottom: 14px;
+    }
+    @media (min-width: 560px) {
+      .tap-ask-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .tap-ask-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 6px;
+    }
+    .tap-ask-field input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--line);
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--ink);
+    }
+    .tap-ask-preview {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px dashed rgba(168, 197, 176, 0.85);
+      line-height: 1.5;
+    }
+    .tap-ask-preview strong { color: var(--ink); }
+    .focus-card a.btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .focus-card a.btn-primary.is-disabled {
+      opacity: 0.45;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+    .focus-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      border: none;
+      background: var(--c);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 100px;
+    }
+    .saved-flash {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--c);
+      display: none;
+    }
+    .saved-flash.is-on { display: inline; }
+    .hint {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .acc-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .acc-toolbar h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #888;
+    }
+    .acc-toolbar-btns {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-ghost {
+      all: unset;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid rgba(168, 197, 176, 0.6);
+      background: var(--c-light);
+      color: var(--c);
+    }
+    .btn-muted {
+      all: unset;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      color: #666;
+    }
+
+    details.acc {
+      margin-bottom: 12px;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    details.acc[open] {
+      box-shadow: 0 4px 20px rgba(90, 124, 101, 0.08);
+    }
+    details.acc summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 16px 18px;
+      font-family: "Playfair Display", serif;
+      font-size: clamp(17px, 2.4vw, 22px);
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    details.acc summary::-webkit-details-marker { display: none; }
+    details.acc .chev {
+      color: var(--c);
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    details.acc[open] .chev { transform: rotate(180deg); }
+    .acc-body {
+      padding: 0 18px 22px;
+      border-top: 1px solid var(--c-light);
+      font-size: 15px;
+    }
+    .acc-body p { margin-bottom: 8px; }
+    .acc-body ul {
+      margin: 12px 0 0 0;
+      padding-left: 22px;
+    }
+    .acc-body li { margin-bottom: 10px; }
+    .acc-body strong { color: var(--ink); }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      color: #999;
+      font-size: 13px;
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .site-footer .copy {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Students</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="pill"><span>🌱</span> Students</div>
+    <h1>Internships that count</h1>
+    <p class="lede">
+      A practical path from “where do I even apply?” to a role that actually builds your resume, skills, and network without burning out on busywork.
+    </p>
+
+    <section class="overview-wealth" aria-labelledby="overview-heading">
+      <h2 id="overview-heading">Why internships matter for building wealth</h2>
+      <p class="overview-lead">
+        Wealth isn’t only what you save. It’s also what you’re able to earn, learn, and access over time. Internships are one of the fastest ways students turn potential into proof.
+      </p>
+      <ul class="overview-list">
+        <li><strong>Real-market income and options.</strong> Paid internships (and strong for-credit roles) show you can create value someone budgets for. They often include pay and benefits that beat random part-time work.</li>
+        <li><strong>Networks that compound.</strong> Managers and peers become references, mentors, and sources of inside knowledge on salaries, roles, and who’s actually hiring next season.</li>
+        <li><strong>A better first full-time offer.</strong> Many firms recruit interns first; one credible experience on your resume can shift your starting salary. Every raise after that builds on that base.</li>
+        <li><strong>Skills that transfer to higher pay.</strong> You pick up tools, communication norms, and judgment that make you productive faster so you’re not starting from zero when you negotiate.</li>
+      </ul>
+    </section>
+
+    <section class="nyc-section" id="nyc-internships" aria-labelledby="nyc-heading">
+      <div class="nyc-badge">New York City</div>
+      <h2 id="nyc-heading">Internship entry points by industry</h2>
+      <p class="nyc-intro">
+        Tap an industry to see where to apply. Each card links to an official student, internship, or job hub. Many list NYC and hybrid roles. Postings change by season; always confirm location and deadlines on the employer’s site.
+      </p>
+      <div class="industry-filters" id="industry-filters" role="group" aria-label="Filter by industry"></div>
+      <p class="nyc-count" id="nyc-count" aria-live="polite"></p>
+      <div class="nyc-grid" id="nyc-grid"></div>
+      <p class="nyc-disclaimer">
+        TAP curates these links as starting points, not job guarantees. We don’t operate the employers’ application systems. Bookmark the pages you care about and check back as new cohorts open.
+      </p>
+    </section>
+
+    <!-- Set data-tap-email on this section to your team inbox (default below is a placeholder). -->
+    <section class="focus-card" aria-labelledby="tap-ask-heading" data-tap-email="info@theaffluenceproject.org">
+      <h2 id="tap-ask-heading">Ask The Affluence Project about a role</h2>
+      <p>Wondering if TAP knows about an opening that fits you? Add your <strong>ideal role</strong> and <strong>city</strong> below (format: <strong>Ideal role - City</strong>). Then open the email draft to send it to our team.</p>
+      <div class="tap-ask-grid">
+        <div class="tap-ask-field">
+          <label for="ideal-role">Ideal role</label>
+          <input type="text" id="ideal-role" name="ideal-role" autocomplete="off" placeholder="e.g. Summer finance intern, UX intern" />
+        </div>
+        <div class="tap-ask-field">
+          <label for="ideal-city">City</label>
+          <input type="text" id="ideal-city" name="ideal-city" autocomplete="address-level2" placeholder="e.g. New York, Chicago" />
+        </div>
+      </div>
+      <p class="tap-ask-preview" aria-live="polite"><strong>Your request:</strong> <span id="role-city-preview">(Add ideal role and city above.)</span></p>
+      <div class="focus-actions">
+        <a class="btn-primary is-disabled" id="tap-ask-mailto" href="#">Email The Affluence Project</a>
+        <span class="hint">Opens your email app with a pre-filled subject and message. Replace the placeholder address on this page with your real TAP inbox if needed.</span>
+      </div>
+    </section>
+
+    <div class="acc-toolbar">
+      <h2>Guide sections</h2>
+      <div class="acc-toolbar-btns">
+        <button type="button" class="btn-ghost" id="acc-expand">Expand all</button>
+        <button type="button" class="btn-muted" id="acc-collapse">Collapse all</button>
+      </div>
+    </div>
+
+    <details class="acc" open data-acc>
+      <summary>Start with a target, not a spray <span class="chev" aria-hidden="true">▼</span></summary>
+      <div class="acc-body">
+        <p style="margin:0">Mass-applying to hundreds of listings feels productive; it rarely is. Pick 2 to 3 directions you can explain out loud (role type, industry, or skill you want to prove). That focus lets you tailor faster and sound credible in emails and interviews.</p>
+      </div>
+    </details>
+
+    <details class="acc" data-acc>
+      <summary>Where strong leads come from <span class="chev" aria-hidden="true">▼</span></summary>
+      <div class="acc-body">
+        <p>Use more than one channel. The best internships often never hit the big job boards.</p>
+        <ul>
+          <li><strong>Career center &amp; campus tools</strong>: Handshake, workshops, and resume reviews exist to shorten your learning curve.</li>
+          <li><strong>Company career sites</strong>: filter for “intern” or “university” programs; read the posting twice before you write.</li>
+          <li><strong>Warm intros</strong>: professors, alumni, student orgs, family friends who work in the field. Ask for advice first; a referral is a bonus, not the opening line.</li>
+          <li><strong>LinkedIn (used deliberately)</strong>: follow companies you care about, engage thoughtfully, and DM only after you’ve done real research on their work.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc" data-acc>
+      <summary>Your application kit <span class="chev" aria-hidden="true">▼</span></summary>
+      <div class="acc-body">
+        <p>Hiring managers skim. Make every line earn its place.</p>
+        <ul>
+          <li><strong>Resume</strong>: one page unless you truly need two; lead with impact (“increased,” “built,” “led”) and numbers where honest.</li>
+          <li><strong>Cover note or email</strong>: short: why them, why you, one proof point. No generic “I am a hard worker” paragraphs.</li>
+          <li><strong>Portfolio or GitHub</strong>: if your field cares, link 2 to 3 strong pieces, not everything you’ve ever made.</li>
+          <li><strong>Tracking</strong>: a simple spreadsheet: company, date applied, contact, follow-up date. Follow up once, politely, after a reasonable window.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc" data-acc>
+      <summary>Interviews: show you did the homework <span class="chev" aria-hidden="true">▼</span></summary>
+      <div class="acc-body">
+        <p>They’re evaluating how you think and communicate, not just your GPA.</p>
+        <ul>
+          <li>Know what the team does and one recent project or product detail you can reference.</li>
+          <li>Prepare 4 to 6 STAR stories (Situation, Task, Action, Result) from class, work, or clubs. Even small wins count.</li>
+          <li>Bring 2 to 3 smart questions (“What does success look like at week 6?” beats “What’s the culture like?” alone).</li>
+          <li>Send a brief thank-you within 24 hours: one specific moment from the conversation + appreciation for their time.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc" data-acc>
+      <summary>On the job: turn 10 weeks into a story <span class="chev" aria-hidden="true">▼</span></summary>
+      <div class="acc-body">
+        <ul style="margin-top:0">
+          <li>Ask your manager how success is measured; align your weekly work to that bar.</li>
+          <li>Document wins as you go (screenshots, metrics, feedback emails) so your resume update takes 20 minutes, not two days.</li>
+          <li>Meet people outside your pod: coffee chats build references and clarity on full-time paths.</li>
+          <li>Before you leave, ask for a LinkedIn recommendation or reference while your impact is fresh.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc" data-acc>
+      <summary>Pay, credit, and clarity <span class="chev" aria-hidden="true">▼</span></summary>
+      <div class="acc-body">
+        <p style="margin:0">Understand whether the role is paid, stipend, or for-credit, and how that fits your financial aid or visa situation if applicable. If something feels off (no real training, full-time work for no pay), pause and run it by your career center or a trusted mentor. The goal is experience that respects your time and builds real skill.</p>
+      </div>
+    </details>
+
+  </main>
+
+  <footer class="site-footer">
+    <a href="index.html">← Return to TAP hub</a>
+    <p class="copy">© 2026 The Affluence Project</p>
+  </footer>
+
+  <script>
+(function () {
+  var ROLE_KEY = "tap-intern-ideal-role";
+  var CITY_KEY = "tap-intern-ideal-city";
+
+  (function initTapAsk() {
+    var roleIn = document.getElementById("ideal-role");
+    var cityIn = document.getElementById("ideal-city");
+    var previewEl = document.getElementById("role-city-preview");
+    var mailEl = document.getElementById("tap-ask-mailto");
+    var wrap = document.querySelector("[data-tap-email]");
+    if (!roleIn || !cityIn || !previewEl || !mailEl) return;
+
+    var email = (wrap && wrap.getAttribute("data-tap-email")) || "info@theaffluenceproject.org";
+
+    function persist() {
+      try {
+        localStorage.setItem(ROLE_KEY, roleIn.value);
+        localStorage.setItem(CITY_KEY, cityIn.value);
+      } catch (e) {}
+    }
+
+    function updateAsk() {
+      var r = roleIn.value.trim();
+      var c = cityIn.value.trim();
+      if (!r || !c) {
+        previewEl.textContent = "(Add ideal role and city above.)";
+        mailEl.classList.add("is-disabled");
+        mailEl.setAttribute("href", "#");
+        mailEl.setAttribute("aria-disabled", "true");
+        return;
+      }
+      previewEl.textContent = r + " - " + c;
+      mailEl.classList.remove("is-disabled");
+      mailEl.removeAttribute("aria-disabled");
+      var subj =
+        "Internship question: " + r + " - " + c;
+      var body =
+        "Hi The Affluence Project team,\r\n\r\n" +
+        "I'm reaching out to ask whether you have (or know of) an opportunity that matches what I'm looking for.\r\n\r\n" +
+        "Ideal role: " + r + "\r\n" +
+        "City: " + c + "\r\n\r\n" +
+        "Please let me know if something might be a fit, or who I should connect with.\r\n\r\n" +
+        "Thank you,\r\n";
+      mailEl.href =
+        "mailto:" + email + "?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(body);
+    }
+
+    try {
+      var sr = localStorage.getItem(ROLE_KEY);
+      var sc = localStorage.getItem(CITY_KEY);
+      if (sr) roleIn.value = sr;
+      if (sc) cityIn.value = sc;
+    } catch (e) {}
+
+    roleIn.addEventListener("input", function () {
+      persist();
+      updateAsk();
+    });
+    cityIn.addEventListener("input", function () {
+      persist();
+      updateAsk();
+    });
+    updateAsk();
+  })();
+
+  document.getElementById("acc-expand").addEventListener("click", function () {
+    document.querySelectorAll("details.acc").forEach(function (d) {
+      d.open = true;
+    });
+  });
+  document.getElementById("acc-collapse").addEventListener("click", function () {
+    document.querySelectorAll("details.acc").forEach(function (d) {
+      d.open = false;
+    });
+  });
+
+  /* NYC internship board: curated official portals + live search links */
+  var INDUSTRY_LABELS = {
+    tech: "Tech & software",
+    finance: "Finance & banking",
+    media: "Media & entertainment",
+    healthcare: "Healthcare & life sciences",
+    consulting: "Consulting",
+    public: "Public & nonprofit",
+    fashion: "Fashion & retail",
+    realestate: "Real estate",
+  };
+
+  var NYC_INTERNS = [
+    { industry: "tech", name: "Google: students", blurb: "University programs; use the job search to narrow to New York or remote-friendly teams.", url: "https://careers.google.com/students/" },
+    { industry: "tech", name: "Microsoft: university recruiting", blurb: "Internships and early-in-career roles; filter locations for NYC metro when available.", url: "https://careers.microsoft.com/students/us/en" },
+    { industry: "tech", name: "Amazon: student programs", blurb: "Large internship pipeline; check postings for NY-area offices and hybrid options.", url: "https://www.amazon.jobs/en/teams/internships-for-students" },
+    { industry: "tech", name: "Spotify: students", blurb: "NYC HQ hires interns and early talent; cohorts vary by year.", url: "https://www.lifeatspotify.com/students" },
+    { industry: "tech", name: "LinkedIn: live tech internships (NYC)", blurb: "Always-updated postings; refine by “software,” “data,” or “product.”", url: "https://www.linkedin.com/jobs/search/?keywords=software%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "finance", name: "Goldman Sachs: students", blurb: "Summer analyst and campus programs; heavy NYC presence.", url: "https://www.goldmansachs.com/careers/students" },
+    { industry: "finance", name: "JPMorgan Chase: programs for students", blurb: "Corporate & investment bank, asset management, and more. Check NYC listings.", url: "https://careers.jpmorgan.com/us/en/students/programs" },
+    { industry: "finance", name: "Morgan Stanley: students & grads", blurb: "Campus recruiting hub for internships and analyst roles.", url: "https://www.morganstanley.com/people-opportunities/students-graduates" },
+    { industry: "finance", name: "Bank of America: campus careers", blurb: "Global banking and markets; filter for New York opportunities.", url: "https://campus.bankofamerica.com/en-us" },
+    { industry: "finance", name: "Citi: campus", blurb: "Internships and early-career programs; NYC is a major hub.", url: "https://jobs.citi.com/Campus" },
+    { industry: "finance", name: "LinkedIn: finance internships (NYC)", blurb: "Live postings for banks, fintech, and asset managers.", url: "https://www.linkedin.com/jobs/search/?keywords=finance%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "media", name: "NBCUniversal: internships", blurb: "Networks and streaming; many roles based in New York.", url: "https://www.nbcunicareers.com/internships" },
+    { industry: "media", name: "The New York Times: students & grads", blurb: "Newsroom, product, and business internships when cohorts open.", url: "https://www.nytco.com/careers/students-and-graduates/" },
+    { industry: "media", name: "Warner Bros. Discovery: students", blurb: "Sports, news, and entertainment brands with NYC operations.", url: "https://careers.wbd.com/global/en/students-graduates" },
+    { industry: "media", name: "Paramount: campus", blurb: "Campus programs across brands; confirm NYC vs. other hubs per posting.", url: "https://careers.paramount.com/global/en/campus" },
+    { industry: "media", name: "LinkedIn: media internships (NYC)", blurb: "Marketing, content, and production roles updated continuously.", url: "https://www.linkedin.com/jobs/search/?keywords=media%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "healthcare", name: "Memorial Sloan Kettering: careers", blurb: "Research, clinical support, and operations; search intern or student keywords.", url: "https://careers.mskcc.org/" },
+    { industry: "healthcare", name: "Pfizer: students & graduates", blurb: "Pharma R&D and business internships; some NYC-area and regional roles.", url: "https://www.pfizer.com/about/careers/students-and-graduates" },
+    { industry: "healthcare", name: "Mount Sinai Health System: careers", blurb: "Hospitals and labs; filter for early-career and pipeline programs.", url: "https://www.mountsinai.org/careers" },
+    { industry: "healthcare", name: "NYC Health + Hospitals: careers", blurb: "Public health system serving NYC; check student and fellowship pathways.", url: "https://www.nychealthandhospitals.org/jobs/" },
+    { industry: "healthcare", name: "LinkedIn: healthcare internships (NYC)", blurb: "Hospitals, biotech, and health tech in the metro area.", url: "https://www.linkedin.com/jobs/search/?keywords=healthcare%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "consulting", name: "McKinsey: students", blurb: "Summer internships and fellowships; NYC is a major office.", url: "https://www.mckinsey.com/careers/students" },
+    { industry: "consulting", name: "Deloitte: campus recruiting", blurb: "Audit, tax, consulting, and risk; filter for New York.", url: "https://www.deloitte.com/us/en/pages/careers/topics/students.html" },
+    { industry: "consulting", name: "PwC: campus", blurb: "Internships and start programs; large NYC footprint.", url: "https://www.pwc.com/us/en/careers/university-relations.html" },
+    { industry: "consulting", name: "EY: student programs", blurb: "Assurance, tax, consulting, and strategy tracks.", url: "https://careers.ey.com/students" },
+    { industry: "consulting", name: "LinkedIn: consulting internships (NYC)", blurb: "MBB, Big Four, and boutiques hiring now.", url: "https://www.linkedin.com/jobs/search/?keywords=consulting%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "public", name: "NYC Parks: internships", blurb: "Public service experience in the five boroughs.", url: "https://www.nycgovparks.org/opportunities/internships" },
+    { industry: "public", name: "Federal Reserve Bank of New York", blurb: "Research, markets, and operations internships when programs run.", url: "https://www.newyorkfed.org/careers" },
+    { industry: "public", name: "United Nations: internships (NY HQ)", blurb: "Highly competitive; follow official vacancy announcements.", url: "https://careers.un.org/lbw/Home.aspx" },
+    { industry: "public", name: "USAJobs: federal internships (NY)", blurb: "Pathways and agency postings; search location New York.", url: "https://www.usajobs.gov/Search/Results?l=New%20York%2C%20New%20York" },
+    { industry: "public", name: "LinkedIn: nonprofit internships (NYC)", blurb: "Community orgs, advocacy, and foundations.", url: "https://www.linkedin.com/jobs/search/?keywords=nonprofit%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "fashion", name: "Macy’s: students & graduates", blurb: "Retail, merchandising, and corporate functions; NYC flagship ecosystem.", url: "https://jobs.macys.com/us/en/students-and-graduates" },
+    { industry: "fashion", name: "Nike: internships", blurb: "Brand, digital, and retail programs; confirm NYC vs. other sites per role.", url: "https://jobs.nike.com/internships" },
+    { industry: "fashion", name: "L’Oréal USA: students", blurb: "Beauty, marketing, and supply chain; Hudson County / NYC metro roles.", url: "https://careers.loreal.com/en_US/students" },
+    { industry: "fashion", name: "LinkedIn: fashion & retail internships (NYC)", blurb: "Apparel, luxury, and e-commerce openings.", url: "https://www.linkedin.com/jobs/search/?keywords=fashion%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+
+    { industry: "realestate", name: "CBRE: students & grads", blurb: "Commercial real estate; brokerage, capital markets, and operations.", url: "https://careers.cbre.com/us/en/students-and-university-graduates" },
+    { industry: "realestate", name: "JLL: early careers", blurb: "Leasing, property management, and corporate roles; NYC market.", url: "https://www.jll.com/en/careers/students-and-graduates" },
+    { industry: "realestate", name: "Related Companies: careers", blurb: "Development and property management; check for student pipelines.", url: "https://www.related.com/careers" },
+    { industry: "realestate", name: "LinkedIn: real estate internships (NYC)", blurb: "Development, REITs, and prop-tech in the metro area.", url: "https://www.linkedin.com/jobs/search/?keywords=real%20estate%20intern&location=New%20York%2C%20New%20York%2C%20United%20States" },
+  ];
+
+  function initNycBoard() {
+    var grid = document.getElementById("nyc-grid");
+    var filtersEl = document.getElementById("industry-filters");
+    var countEl = document.getElementById("nyc-count");
+    if (!grid || !filtersEl || !countEl) return;
+
+    var activeFilter = "all";
+    var cards = [];
+
+    function makeEl(tag, className, text) {
+      var node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined && text !== null) node.textContent = text;
+      return node;
+    }
+
+    NYC_INTERNS.forEach(function (item) {
+      var card = makeEl("article", "nyc-card");
+      card.setAttribute("data-industry", item.industry);
+      card.appendChild(makeEl("div", "nyc-card__tag", INDUSTRY_LABELS[item.industry] || item.industry));
+      card.appendChild(makeEl("div", "nyc-card__name", item.name));
+      var blurb = makeEl("p", "nyc-card__blurb", item.blurb);
+      card.appendChild(blurb);
+      var link = document.createElement("a");
+      link.className = "nyc-card__apply";
+      link.href = item.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "View & apply →";
+      card.appendChild(link);
+      grid.appendChild(card);
+      cards.push(card);
+    });
+
+    var filterOrder = ["all", "tech", "finance", "media", "healthcare", "consulting", "public", "fashion", "realestate"];
+    filterOrder.forEach(function (key) {
+      if (key !== "all" && !INDUSTRY_LABELS[key]) return;
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("data-filter", key);
+      btn.textContent = key === "all" ? "All industries" : INDUSTRY_LABELS[key];
+      if (key === "all") btn.classList.add("is-active");
+      btn.addEventListener("click", function () {
+        activeFilter = key;
+        filtersEl.querySelectorAll("button").forEach(function (b) {
+          b.classList.toggle("is-active", b.getAttribute("data-filter") === key);
+        });
+        applyFilter();
+      });
+      filtersEl.appendChild(btn);
+    });
+
+    function applyFilter() {
+      var n = 0;
+      cards.forEach(function (card) {
+        var ind = card.getAttribute("data-industry");
+        var show = activeFilter === "all" || ind === activeFilter;
+        card.hidden = !show;
+        if (show) n++;
+      });
+      countEl.textContent = n + " " + (n === 1 ? "link" : "links") + " shown" + (activeFilter === "all" ? ": pick an industry to narrow down." : ".");
+    }
+
+    applyFilter();
+  }
+
+  initNycBoard();
+
+  window.scrollTo(0, 0);
+})();
+  </script>
+</body>
+</html>
