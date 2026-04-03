@@ -692,6 +692,20 @@ const SECTIONS = [
         href: "tool-lifestyle-creep.html",
         cta: "Check my creep",
       },
+      {
+        title: "Budget Allocator",
+        desc: "Slide to allocate your income across categories, drag to set priorities, and get smart rebalance suggestions.",
+        tileIcon: "bar-chart",
+        href: "tool-budget-allocator.html",
+        cta: "Build my budget",
+      },
+      {
+        title: "Vehicle Affordability",
+        desc: "Can you really afford that car? Enter the numbers and see if it fits your budget or stretches you thin.",
+        tileIcon: "car",
+        href: "tool-vehicle-affordability.html",
+        cta: "Check affordability",
+      },
     ],
   },
   {

@@ -247,6 +247,8 @@
           { title: "Rent vs. Buy", desc: "Compare the true cost of renting versus buying over 5, 10, and 20 years.", tileIcon: "home", href: "tool-rent-vs-buy.html", cta: "Open calculator" },
           { title: "Debt vs. Investing", desc: "Should your next dollar pay down debt or go into the market?", tileIcon: "scale", href: "tool-debt-vs-investing.html", cta: "Open calculator" },
           { title: "Lifestyle Creep Check", desc: "Your income went up. Did your savings? Find out where the money went.", tileIcon: "coffee", href: "tool-lifestyle-creep.html", cta: "Check my creep" },
+          { title: "Budget Allocator", desc: "Slide to allocate your income across categories, drag to set priorities, and get smart rebalance suggestions.", tileIcon: "bar-chart", href: "tool-budget-allocator.html", cta: "Build my budget" },
+          { title: "Vehicle Affordability", desc: "Can you really afford that car? Enter the numbers and see if it fits your budget or stretches you thin.", tileIcon: "car", href: "tool-vehicle-affordability.html", cta: "Check affordability" },
         ],
       },
       {
@@ -636,29 +638,9 @@
               height: 60,
             }}
           >
-            <div
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: 18,
-                fontWeight: 700,
-                color: "#1A1A1A",
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #5A7C65, #8B7234)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                TAP
-              </span>
-              <span style={{ color: "#999", fontWeight: 400, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>
-                Interactive Wealth Tools
-              </span>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, fontWeight: 700, color: "#1A1A1A", display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ background: "linear-gradient(135deg, #5A7C65, #8B7234)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>TAP</span>
+              <span style={{ color: "#999", fontWeight: 400, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>Interactive Guides</span>
             </div>
             <nav style={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "flex-end" }}>
               {sections.map((s) => (
@@ -780,17 +762,7 @@
               fontSize: 14,
             }}
           >
-            <div
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: 20,
-                fontWeight: 700,
-                color: "#fff",
-                marginBottom: 8,
-              }}
-            >
-              The Affluence Project
-            </div>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 8 }}>The Affluence Project</div>
             <p style={{ margin: "0 0 4px 0" }}>
               Creating generational wealth through mentorship, networking & advocacy.
             </p>

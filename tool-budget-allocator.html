@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Allocator — TAP Tools | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button, input { font-family: inherit; }
+    button { cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      color: #999;
+      font-size: 13px;
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .site-footer a:hover { text-decoration: underline; }
+    .site-footer .copy {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Tools</span>
+      </div>
+    </div>
+  </header>
+
+  <div id="app-root"></div>
+
+  <footer class="site-footer">
+    <a href="index.html">← Back to the TAP hub</a>
+    <p class="copy">© 2026 The Affluence Project</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useCallback, useMemo, useRef, useEffect } = React;
+
+    const COLORS = {
+      green: "#2D6A4F",
+      red: "#c0392b",
+      line: "#E8E4DE",
+      cLight: "#F7F3EA",
+      ink: "#1A1A1A",
+      muted: "#666",
+      gold: "#8B7234",
+      accent: "#D4BA6A",
+    };
+
+    const CATEGORY_DETAILS = {
+      housing: {
+        label: "Housing", pct: 28, priority: 1, color: "#5A7C65",
+        tooltip: "Rent or mortgage payment, property taxes, HOA fees, homeowners/renters insurance, home repairs & maintenance, furnishings"
+      },
+      savings: {
+        label: "Savings & Investing", pct: 15, priority: 2, color: "#8B7234",
+        tooltip: "Emergency fund contributions, 401(k)/IRA retirement savings, brokerage investments, sinking funds (vacation, big purchases), college savings (529)"
+      },
+      debt: {
+        label: "Debt Payments", pct: 8, priority: 3, color: "#c0392b",
+        tooltip: "Student loan payments, credit card minimums & extra payoff, personal loans, auto loans (if separate from transport), medical debt, buy-now-pay-later balances"
+      },
+      transport: {
+        label: "Transport", pct: 12, priority: 4, color: "#2980b9",
+        tooltip: "Car payment or lease, gas & fuel, auto insurance, vehicle maintenance & repairs, public transit passes, rideshares (Uber/Lyft), parking fees, tolls, registration"
+      },
+      food: {
+        label: "Food", pct: 10, priority: 5, color: "#27ae60",
+        tooltip: "Groceries & household staples, dining out & takeout, coffee shops, meal kits & delivery services, work lunches, snacks & beverages"
+      },
+      healthcare: {
+        label: "Healthcare", pct: 5, priority: 6, color: "#6B5B8A",
+        tooltip: "Health insurance premiums (your share), copays & deductibles, prescriptions & medications, dental & vision care, therapy & mental health, gym & fitness memberships, supplements"
+      },
+      utilities: {
+        label: "Utilities & Subs", pct: 7, priority: 7, color: "#5A6C8A",
+        tooltip: "Electric, gas, water & sewer, internet & WiFi, cell phone plan, streaming services (Netflix, Spotify, etc.), cloud storage, software subscriptions, trash & recycling"
+      },
+      personal: {
+        label: "Personal & Lifestyle", pct: 10, priority: 8, color: "#D4BA6A",
+        tooltip: "Clothing & shoes, haircuts & personal care, entertainment & events, hobbies & recreation, gifts & charitable donations, pet care, education & books, travel & vacations, miscellaneous spending"
+      },
+    };
+
+    const CATEGORIES_INIT = Object.entries(CATEGORY_DETAILS).map(([id, data]) => ({ id, ...data }));
+
+    function formatMoney(n) {
+      return "$" + Math.round(n).toLocaleString();
+    }
+
+    function Tooltip({ text, visible, anchorRect, containerRef }) {
+      const tipRef = useRef(null);
+      const [pos, setPos] = useState({ top: 0, left: 0, arrowLeft: 0 });
+
+      useEffect(() => {
+        if (!visible || !anchorRect || !tipRef.current || !containerRef?.current) return;
+        const tip = tipRef.current.getBoundingClientRect();
+        const container = containerRef.current.getBoundingClientRect();
+        let left = anchorRect.left + anchorRect.width / 2 - tip.width / 2 - container.left;
+        const arrowIdeal = tip.width / 2;
+        let arrowLeft = arrowIdeal;
+        const pad = 8;
+        if (left < pad) { arrowLeft = arrowIdeal + left - pad; left = pad; }
+        const maxLeft = container.width - tip.width - pad;
+        if (left > maxLeft) { arrowLeft = arrowIdeal + (left - maxLeft); left = maxLeft; }
+        const top = anchorRect.top - container.top - tip.height - 10;
+        setPos({ top, left, arrowLeft });
+      }, [visible, anchorRect, containerRef]);
+
+      if (!visible) return null;
+
+      return (
+        <div ref={tipRef} style={{
+          position: "absolute", top: pos.top, left: pos.left,
+          zIndex: 1000, pointerEvents: "none",
+          maxWidth: 300, width: "max-content",
+          padding: "12px 16px", borderRadius: 10,
+          background: "#fff",
+          border: `1px solid ${COLORS.line}`,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+          fontSize: 12, lineHeight: 1.55,
+          color: "#444", fontWeight: 400,
+          animation: "tipIn 0.18s ease"
+        }}>
+          <style>{`@keyframes tipIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }`}</style>
+          {text}
+          <div style={{
+            position: "absolute", bottom: -6, left: pos.arrowLeft,
+            transform: "translateX(-50%) rotate(45deg)",
+            width: 10, height: 10,
+            background: "#fff",
+            borderRight: `1px solid ${COLORS.line}`,
+            borderBottom: `1px solid ${COLORS.line}`
+          }} />
+        </div>
+      );
+    }
+
+    function InfoIcon({ tooltip, color, containerRef }) {
+      const [show, setShow] = useState(false);
+      const [rect, setRect] = useState(null);
+      const iconRef = useRef(null);
+
+      const handleEnter = () => {
+        if (iconRef.current) setRect(iconRef.current.getBoundingClientRect());
+        setShow(true);
+      };
+
+      return (
+        <>
+          <span ref={iconRef}
+            onMouseEnter={handleEnter} onMouseLeave={() => setShow(false)}
+            onTouchStart={handleEnter} onTouchEnd={() => setTimeout(() => setShow(false), 2500)}
+            style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              width: 16, height: 16, borderRadius: "50%",
+              background: `${color}18`, color: color,
+              fontSize: 9, fontWeight: 700, cursor: "help",
+              border: `1px solid ${color}33`,
+              lineHeight: 1, flexShrink: 0, transition: "background 0.2s"
+            }}
+          >i</span>
+          <Tooltip text={tooltip} visible={show} anchorRect={rect} containerRef={containerRef} />
+        </>
+      );
+    }
+
+    function Slider({ value, min, max, step, onChange, accentColor, label }) {
+      const pct = ((value - min) / (max - min)) * 100;
+      return (
+        <div style={{ position: "relative", width: "100%", height: 6, borderRadius: 3 }}>
+          <div style={{ position: "absolute", inset: 0, borderRadius: 3, background: COLORS.line }} />
+          <div style={{
+            position: "absolute", top: 0, left: 0, bottom: 0, width: `${pct}%`,
+            borderRadius: 3, background: accentColor || COLORS.gold,
+            transition: "width 0.15s ease"
+          }} />
+          <input type="range" min={min} max={max} step={step} value={value}
+            onChange={(e) => onChange(Number(e.target.value))} aria-label={label}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0, cursor: "pointer", margin: 0 }}
+          />
+          <div style={{
+            position: "absolute", top: "50%", left: `${pct}%`, transform: "translate(-50%, -50%)",
+            width: 18, height: 18, borderRadius: "50%",
+            background: accentColor || COLORS.gold,
+            boxShadow: `0 1px 6px ${accentColor || COLORS.gold}44`,
+            border: "2px solid #fff",
+            pointerEvents: "none", transition: "left 0.15s ease"
+          }} />
+        </div>
+      );
+    }
+
+    const pctInputStyle = {
+      width: 68, height: 32,
+      border: `1.5px solid ${COLORS.line}`,
+      borderRadius: 8,
+      textAlign: "right",
+      fontSize: 14, fontWeight: 600,
+      fontFamily: "'DM Sans', sans-serif",
+      color: COLORS.ink,
+      padding: "0 24px 0 8px",
+      background: "#fff",
+      outline: "none",
+      transition: "border-color 0.2s, box-shadow 0.2s",
+    };
+
+    const incomeInputStyle = {
+      width: 120, height: 36,
+      border: `1.5px solid ${COLORS.line}`,
+      borderRadius: 8,
+      textAlign: "right",
+      fontSize: 16, fontWeight: 700,
+      fontFamily: "'DM Sans', sans-serif",
+      color: COLORS.ink,
+      padding: "0 10px",
+      background: "#fff",
+      outline: "none",
+      transition: "border-color 0.2s, box-shadow 0.2s",
+    };
+
+    function PriorityDragger({ categories, onReorder }) {
+      const [dragIdx, setDragIdx] = useState(null);
+      const sorted = [...categories].sort((a, b) => a.priority - b.priority);
+      const handleDrop = (targetIdx) => {
+        if (dragIdx === null || dragIdx === targetIdx) { setDragIdx(null); return; }
+        const newOrder = [...sorted];
+        const [moved] = newOrder.splice(dragIdx, 1);
+        newOrder.splice(targetIdx, 0, moved);
+        onReorder(newOrder.map((c, i) => ({ ...c, priority: i + 1 })));
+        setDragIdx(null);
+      };
+
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          {sorted.map((cat, idx) => (
+            <div key={cat.id} draggable
+              onDragStart={() => setDragIdx(idx)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => handleDrop(idx)}
+              style={{
+                display: "flex", alignItems: "center", gap: 8,
+                padding: "7px 10px", borderRadius: 8,
+                background: dragIdx === idx ? "#f0eee8" : "#f9f8f6",
+                border: `1px solid ${COLORS.line}`,
+                cursor: "grab", userSelect: "none",
+                fontSize: 12, color: COLORS.muted, transition: "background 0.2s"
+              }}
+            >
+              <span style={{ color: "#bbb", fontSize: 10, fontFamily: "monospace", width: 16 }}>{idx + 1}.</span>
+              <span style={{ width: 8, height: 8, borderRadius: 2, background: cat.color, flexShrink: 0 }} />
+              <span style={{ flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{cat.label}</span>
+              <span style={{ color: "#ccc", fontSize: 10 }}>⠿</span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function BudgetAllocator() {
+      const containerRef = useRef(null);
+      const [income, setIncome] = useState(5000);
+      const [incomeInput, setIncomeInput] = useState("5,000");
+      const [categories, setCategories] = useState(CATEGORIES_INIT);
+
+      const totalPct = useMemo(() => categories.reduce((s, c) => s + c.pct, 0), [categories]);
+      const overBudget = totalPct > 100;
+      const overAmount = overBudget ? ((totalPct - 100) / 100) * income : 0;
+      const remaining = ((100 - totalPct) / 100) * income;
+
+      const handleIncomeSlider = useCallback((v) => {
+        setIncome(v);
+        setIncomeInput(v.toLocaleString());
+      }, []);
+
+      const handleIncomeInput = useCallback((e) => {
+        const raw = e.target.value;
+        setIncomeInput(raw);
+        const parsed = parseFloat(raw.replace(/[^0-9.]/g, ""));
+        if (!isNaN(parsed) && parsed >= 0) setIncome(parsed);
+      }, []);
+
+      const handleIncomeBlur = useCallback(() => {
+        setIncomeInput(income.toLocaleString());
+      }, [income]);
+
+      const updatePct = useCallback((id, pct) => {
+        setCategories((prev) => prev.map((c) => (c.id === id ? { ...c, pct } : c)));
+      }, []);
+
+      const handleReorder = useCallback((updated) => setCategories(updated), []);
+
+      const recommendation = useMemo(() => {
+        if (!overBudget) return null;
+        const excess = totalPct - 100;
+        const sorted = [...categories].sort((a, b) => b.priority - a.priority);
+        let left = excess;
+        const cuts = [];
+        for (const cat of sorted) {
+          if (left <= 0) break;
+          const maxCut = Math.min(cat.pct, left);
+          if (maxCut > 0) {
+            cuts.push({ label: cat.label, cut: maxCut, color: cat.color, from: cat.pct, to: cat.pct - maxCut });
+            left -= maxCut;
+          }
+        }
+        return cuts;
+      }, [overBudget, totalPct, categories]);
+
+      const applyRecommendation = () => {
+        if (!recommendation) return;
+        const cutMap = {};
+        recommendation.forEach((r) => { cutMap[r.label] = r.to; });
+        setCategories((prev) => prev.map((c) => (cutMap[c.label] !== undefined ? { ...c, pct: cutMap[c.label] } : c)));
+      };
+
+      const barData = useMemo(() => {
+        const sorted = [...categories].sort((a, b) => a.priority - b.priority);
+        let cumPct = 0;
+        return sorted.map((c) => {
+          const start = cumPct; cumPct += c.pct;
+          return { ...c, start, end: cumPct, isOver: start >= 100, crossesBoundary: start < 100 && cumPct > 100 };
+        });
+      }, [categories]);
+
+      const mainStyle = {
+        maxWidth: 960, margin: "0 auto",
+        padding: "40px 24px 64px",
+        fontFamily: "'DM Sans', sans-serif",
+        color: "#444", position: "relative"
+      };
+
+      return (
+        <div ref={containerRef} style={mainStyle}>
+          {/* Hero */}
+          <div style={{ marginBottom: 32 }}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              background: COLORS.gold, color: "#fff",
+              padding: "6px 16px", borderRadius: 100,
+              fontSize: 12, fontWeight: 600, letterSpacing: "0.06em",
+              textTransform: "uppercase", marginBottom: 16
+            }}>
+              <svg style={{ width: 16, height: 16, color: "inherit" }} aria-hidden="true" focusable="false">
+                <use href="icons.svg#tap-i-bar-chart"/>
+              </svg>
+              TAP Tool
+            </div>
+            <h1 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "clamp(28px, 4.5vw, 38px)",
+              fontWeight: 700, color: COLORS.ink,
+              lineHeight: 1.15, marginBottom: 12
+            }}>Budget Allocator</h1>
+            <p style={{ fontSize: 17, color: COLORS.muted, lineHeight: 1.6, maxWidth: "56ch" }}>
+              Drag priorities, slide or type to allocate, and see exactly where your money goes.
+            </p>
+          </div>
+
+          {/* Top Stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 32 }}>
+            <div style={{
+              background: "#fff", borderRadius: 14, padding: "20px 22px",
+              border: `1.5px solid ${COLORS.line}`, boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
+            }}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: COLORS.muted, marginBottom: 6, fontWeight: 600 }}>Monthly Income</div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: COLORS.ink }}>{formatMoney(income)}</div>
+            </div>
+            <div style={{
+              background: "#fff", borderRadius: 14, padding: "20px 22px",
+              border: `1.5px solid ${COLORS.line}`, boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
+            }}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: COLORS.muted, marginBottom: 6, fontWeight: 600 }}>Allocated</div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: overBudget ? COLORS.red : COLORS.green }}>{totalPct}%</div>
+            </div>
+            <div style={{
+              background: overBudget ? "#fef5f5" : "#f0faf3",
+              borderRadius: 14, padding: "20px 22px",
+              border: `1.5px solid ${overBudget ? "#e8c4c4" : "#c8e6d0"}`,
+              boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
+            }}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: COLORS.muted, marginBottom: 6, fontWeight: 600 }}>
+                {overBudget ? "Over Budget" : "Remaining"}
+              </div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: overBudget ? COLORS.red : COLORS.green }}>
+                {overBudget ? "-" + formatMoney(overAmount) : formatMoney(remaining)}
+              </div>
+            </div>
+          </div>
+
+          {/* Allocation Bar */}
+          <div style={{ marginBottom: 32 }}>
+            <div style={{
+              width: "100%", height: 36, borderRadius: 10,
+              background: COLORS.cLight, display: "flex", overflow: "hidden",
+              position: "relative"
+            }}>
+              {barData.map((seg) => (
+                <div key={seg.id} title={`${seg.label}: ${seg.pct}% — ${formatMoney((seg.pct / 100) * income)}`}
+                  style={{
+                    width: `${Math.min(seg.pct, 100)}%`, height: "100%",
+                    background: seg.isOver
+                      ? `repeating-linear-gradient(45deg, ${seg.color}55, ${seg.color}55 4px, ${seg.color}33 4px, ${seg.color}33 8px)`
+                      : seg.crossesBoundary ? `linear-gradient(to right, ${seg.color}CC, ${seg.color}66)` : `${seg.color}CC`,
+                    transition: "width 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 10, fontWeight: 600, color: "#fff", overflow: "hidden", whiteSpace: "nowrap"
+                  }}
+                >{seg.pct >= 7 && seg.label}</div>
+              ))}
+              {totalPct > 100 && (
+                <div style={{
+                  position: "absolute", left: `${(100 / totalPct) * 100}%`,
+                  top: -4, bottom: -4, width: 2, background: COLORS.red, zIndex: 10
+                }}>
+                  <div style={{
+                    position: "absolute", top: -18, left: "50%", transform: "translateX(-50%)",
+                    fontSize: 9, color: COLORS.red, fontWeight: 700, whiteSpace: "nowrap"
+                  }}>100%</div>
+                </div>
+              )}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 14px", marginTop: 10 }}>
+              {[...categories].sort((a, b) => a.priority - b.priority).map((c) => (
+                <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: COLORS.muted }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 2, background: c.color }} />
+                  {c.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Income Slider + Input Card */}
+          <div style={{
+            background: "#fff", borderRadius: 14, padding: "20px 24px", marginBottom: 16,
+            border: `1.5px solid ${COLORS.line}`, boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+              <span style={{ fontSize: 14, fontWeight: 600, color: COLORS.ink }}>Monthly Income</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                <span style={{ fontSize: 15, fontWeight: 600, color: COLORS.muted }}>$</span>
+                <input type="text" value={incomeInput}
+                  onChange={handleIncomeInput} onBlur={handleIncomeBlur}
+                  onFocus={(e) => e.target.select()}
+                  style={incomeInputStyle}
+                  onFocusCapture={(e) => { e.target.style.borderColor = COLORS.gold; e.target.style.boxShadow = `0 0 0 3px ${COLORS.cLight}`; }}
+                  onBlurCapture={(e) => { e.target.style.borderColor = COLORS.line; e.target.style.boxShadow = "none"; }}
+                />
+              </div>
+            </div>
+            <Slider value={income} min={1000} max={25000} step={100} onChange={handleIncomeSlider} accentColor={COLORS.ink} label="Monthly Income" />
+          </div>
+
+          {/* Main Grid: Allocation + Priority */}
+          <style>{`
+            .ba-grid { display: grid; grid-template-columns: 1fr 220px; gap: 16px; margin-bottom: 24px; }
+            @media (max-width: 768px) {
+              .ba-grid { grid-template-columns: 1fr; }
+              .ba-stats-grid { grid-template-columns: 1fr !important; }
+              .ba-bottom-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important; }
+            }
+          `}</style>
+
+          <div className="ba-grid">
+            {/* Allocation Panel */}
+            <div style={{
+              background: "#fff", borderRadius: 14, padding: "20px 24px",
+              border: `1.5px solid ${COLORS.line}`, boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
+            }}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: COLORS.muted, marginBottom: 16, fontWeight: 600 }}>Allocation</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                {[...categories].sort((a, b) => a.priority - b.priority).map((cat) => (
+                  <CategoryRow key={cat.id} cat={cat} income={income} updatePct={updatePct} containerRef={containerRef} />
+                ))}
+              </div>
+            </div>
+
+            {/* Priority Panel */}
+            <div style={{
+              background: "#fff", borderRadius: 14, padding: "18px 14px",
+              border: `1.5px solid ${COLORS.line}`, alignSelf: "start",
+              boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
+            }}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.5, color: COLORS.muted, marginBottom: 4, fontWeight: 600 }}>Priority</div>
+              <div style={{ fontSize: 10, color: "#aaa", marginBottom: 12 }}>Drag to reorder · #1 = most protected</div>
+              <PriorityDragger categories={categories} onReorder={handleReorder} />
+            </div>
+          </div>
+
+          {/* Over Budget Warning */}
+          {overBudget && recommendation && (
+            <div style={{
+              background: "#fef5f5", border: `1.5px solid #e8c4c4`,
+              borderRadius: 14, padding: "24px 28px", marginBottom: 24, animation: "fadeIn 0.3s ease"
+            }}>
+              <style>{`@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }`}</style>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8, background: "rgba(192,57,43,0.1)",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16
+                }}>⚠</div>
+                <div>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: COLORS.red }}>Over budget by {formatMoney(overAmount)}</div>
+                  <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 2 }}>Cutting from lowest-priority categories first:</div>
+                </div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 18 }}>
+                {recommendation.map((r) => (
+                  <div key={r.label} style={{
+                    display: "flex", alignItems: "center", gap: 12,
+                    padding: "10px 14px", borderRadius: 8,
+                    background: "#fff", border: `1px solid ${COLORS.line}`
+                  }}>
+                    <span style={{ width: 10, height: 10, borderRadius: 2, background: r.color, flexShrink: 0 }} />
+                    <span style={{ flex: 1, fontSize: 13, fontWeight: 500, color: COLORS.ink }}>{r.label}</span>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: COLORS.muted }}>{r.from}%</span>
+                    <span style={{ fontSize: 12, color: "#bbb" }}>→</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: COLORS.green }}>{r.to}%</span>
+                    <span style={{
+                      fontSize: 11, color: COLORS.red,
+                      background: "rgba(192,57,43,0.08)", padding: "2px 8px", borderRadius: 4, fontWeight: 600
+                    }}>-{r.cut}%</span>
+                  </div>
+                ))}
+              </div>
+              <button onClick={applyRecommendation} style={{
+                width: "100%", padding: "12px 0",
+                background: `linear-gradient(135deg, ${COLORS.gold}, #6d5a2a)`,
+                color: "#fff", border: "none", borderRadius: 10,
+                fontSize: 14, fontWeight: 600,
+                fontFamily: "'DM Sans', sans-serif",
+                transition: "transform 0.15s, box-shadow 0.15s",
+                boxShadow: "0 4px 14px rgba(139,114,52,0.3)"
+              }}
+                onMouseEnter={(e) => { e.target.style.transform = "translateY(-1px)"; e.target.style.boxShadow = "0 6px 20px rgba(139,114,52,0.4)"; }}
+                onMouseLeave={(e) => { e.target.style.transform = "translateY(0)"; e.target.style.boxShadow = "0 4px 14px rgba(139,114,52,0.3)"; }}
+              >Apply Recommendation</button>
+            </div>
+          )}
+
+          {/* Budget Balanced */}
+          {!overBudget && totalPct > 0 && (
+            <div style={{
+              background: "#f0faf3", border: `1.5px solid #c8e6d0`,
+              borderRadius: 14, padding: "20px 28px",
+              display: "flex", alignItems: "center", gap: 12, marginBottom: 24
+            }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: 8, background: "rgba(45,106,79,0.1)",
+                display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, color: COLORS.green
+              }}>✓</div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: COLORS.green }}>Budget balanced</div>
+                <div style={{ fontSize: 12, color: COLORS.muted, marginTop: 2 }}>
+                  {totalPct === 100 ? "Fully allocated — every dollar has a job." : `${100 - totalPct}% unallocated (${formatMoney(remaining)} available)`}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Bottom Breakdown Cards */}
+          <div className="ba-bottom-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10 }}>
+            {[...categories].sort((a, b) => a.priority - b.priority).map((c) => (
+              <div key={c.id} style={{
+                background: "#fff", borderRadius: 10,
+                padding: "14px 14px", borderLeft: `3px solid ${c.color}`,
+                border: `1.5px solid ${COLORS.line}`, borderLeftWidth: 3, borderLeftColor: c.color,
+                boxShadow: "0 2px 10px rgba(0,0,0,0.03)"
+              }}>
+                <div style={{ fontSize: 11, color: COLORS.muted, marginBottom: 4, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: 500 }}>{c.label}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: c.color }}>{formatMoney((c.pct / 100) * income)}</div>
+                <div style={{ fontSize: 10, color: "#aaa", fontWeight: 500 }}>{c.pct}% of income</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function CategoryRow({ cat, income, updatePct, containerRef }) {
+      const [localVal, setLocalVal] = useState(String(cat.pct));
+
+      useEffect(() => {
+        setLocalVal(String(cat.pct));
+      }, [cat.pct]);
+
+      const handleInputChange = (e) => {
+        const raw = e.target.value;
+        setLocalVal(raw);
+        const parsed = parseInt(raw, 10);
+        if (!isNaN(parsed)) {
+          const clamped = Math.max(0, Math.min(100, parsed));
+          updatePct(cat.id, clamped);
+        }
+      };
+
+      const handleBlur = () => {
+        setLocalVal(String(cat.pct));
+      };
+
+      return (
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ width: 10, height: 10, borderRadius: 3, background: cat.color }} />
+              <span style={{ fontSize: 14, fontWeight: 500, color: COLORS.ink }}>{cat.label}</span>
+              <InfoIcon tooltip={cat.tooltip} color={cat.color} containerRef={containerRef} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ fontSize: 13, color: COLORS.muted, fontWeight: 500 }}>
+                {formatMoney((cat.pct / 100) * income)}
+              </span>
+              <div style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+                <input type="text" value={localVal}
+                  onChange={handleInputChange} onBlur={handleBlur}
+                  onFocus={(e) => e.target.select()}
+                  style={{
+                    ...pctInputStyle,
+                    color: cat.color,
+                  }}
+                  onFocusCapture={(e) => { e.target.style.borderColor = cat.color; e.target.style.boxShadow = `0 0 0 3px ${cat.color}15`; }}
+                  onBlurCapture={(e) => { e.target.style.borderColor = COLORS.line; e.target.style.boxShadow = "none"; }}
+                />
+                <span style={{ position: "absolute", right: 10, fontSize: 12, color: "#bbb", pointerEvents: "none", fontWeight: 600 }}>%</span>
+              </div>
+            </div>
+          </div>
+          <Slider value={cat.pct} min={0} max={60} step={1} onChange={(v) => updatePct(cat.id, v)} accentColor={cat.color} label={cat.label} />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("app-root")).render(<BudgetAllocator />);
+  </script>
+</body>
+</html>

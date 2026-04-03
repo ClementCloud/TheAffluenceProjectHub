@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vehicle Affordability — TAP Tools | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 880px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-link:hover { color: var(--ink); }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      border-top: 1px solid var(--line);
+      color: #999;
+      font-size: 13px;
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .site-footer a:hover { color: #fff; }
+    .site-footer .copy {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .va-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .va-footer-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+    }
+    @media (min-width: 720px) {
+      .va-stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .va-footer-cards { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Tools</span>
+      </div>
+    </div>
+  </header>
+
+  <div id="app-root"></div>
+
+  <footer class="site-footer">
+    <a href="index.html">← Back to the TAP hub</a>
+    <p class="copy">© 2026 The Affluence Project</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useMemo, useCallback, useRef, useEffect } = React;
+
+    function Tooltip({ text, visible, anchorRect, containerRef }) {
+      const tipRef = useRef(null);
+      const [pos, setPos] = useState({ top: 0, left: 0, arrowLeft: 0 });
+
+      useEffect(() => {
+        if (!visible || !anchorRect || !tipRef.current || !containerRef?.current) return;
+        const tip = tipRef.current.getBoundingClientRect();
+        const container = containerRef.current.getBoundingClientRect();
+        let left = anchorRect.left + anchorRect.width / 2 - tip.width / 2 - container.left;
+        const arrowIdeal = tip.width / 2;
+        let arrowLeft = arrowIdeal;
+        const pad = 8;
+        if (left < pad) { arrowLeft = arrowIdeal + left - pad; left = pad; }
+        const maxLeft = container.width - tip.width - pad;
+        if (left > maxLeft) { arrowLeft = arrowIdeal + (left - maxLeft); left = maxLeft; }
+        const top = anchorRect.top - container.top - tip.height - 10;
+        setPos({ top, left, arrowLeft });
+      }, [visible, anchorRect, containerRef]);
+
+      if (!visible) return null;
+
+      return (
+        <div ref={tipRef} style={{
+          position: "absolute", top: pos.top, left: pos.left,
+          zIndex: 1000, pointerEvents: "none",
+          maxWidth: 300, width: "max-content",
+          padding: "12px 16px", borderRadius: 10,
+          background: "#fff",
+          border: "1px solid #E8E4DE",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+          fontSize: 12, lineHeight: 1.55,
+          color: "#444", fontWeight: 400,
+          animation: "tipIn 0.18s ease"
+        }}>
+          <style>{`@keyframes tipIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }`}</style>
+          {text}
+          <div style={{
+            position: "absolute", bottom: -6, left: pos.arrowLeft,
+            transform: "translateX(-50%) rotate(45deg)",
+            width: 10, height: 10,
+            background: "#fff",
+            borderRight: "1px solid #E8E4DE",
+            borderBottom: "1px solid #E8E4DE"
+          }} />
+        </div>
+      );
+    }
+
+    function InfoIcon({ tooltip, color, containerRef }) {
+      const [show, setShow] = useState(false);
+      const [rect, setRect] = useState(null);
+      const iconRef = useRef(null);
+
+      const handleEnter = () => {
+        if (iconRef.current) setRect(iconRef.current.getBoundingClientRect());
+        setShow(true);
+      };
+
+      return (
+        <>
+          <span ref={iconRef}
+            onMouseEnter={handleEnter} onMouseLeave={() => setShow(false)}
+            onTouchStart={handleEnter} onTouchEnd={() => setTimeout(() => setShow(false), 2500)}
+            style={{
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              width: 16, height: 16, borderRadius: "50%",
+              background: `${color}18`, color: color,
+              fontSize: 9, fontWeight: 700, cursor: "help",
+              border: `1px solid ${color}33`,
+              lineHeight: 1, flexShrink: 0, transition: "background 0.2s"
+            }}
+          >i</span>
+          <Tooltip text={tooltip} visible={show} anchorRect={rect} containerRef={containerRef} />
+        </>
+      );
+    }
+
+    const SLIDER_TOOLTIPS = {
+      takeHome: "Your monthly paycheck after taxes, health insurance, and retirement contributions are deducted.",
+      vehiclePrice: "The full sticker or negotiated price of the vehicle before any down payment or trade-in.",
+      downPayment: "Cash you pay upfront plus any trade-in value. A larger down payment lowers your monthly cost.",
+      apr: "Annual Percentage Rate on the auto loan. Rates depend on credit score, lender, and whether the car is new or used.",
+      termMonths: "Length of the loan in months. Shorter terms mean higher payments but less total interest paid.",
+      insurance: "Estimated monthly auto insurance premium. Varies by coverage level, driving record, age, and vehicle type.",
+      gas: "Estimated monthly fuel or EV charging cost based on your typical driving distance and fuel prices.",
+      maintenance: "Routine upkeep: oil changes, tires, brakes, inspections, car washes, and unexpected repairs.",
+    };
+
+    function formatMoney(n) {
+      return "$" + Math.round(n).toLocaleString();
+    }
+    function formatPct(n) {
+      return (Math.round(n * 10) / 10).toLocaleString(undefined, {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      }) + "%";
+    }
+    function formatCommas(n) {
+      return Math.round(n).toLocaleString();
+    }
+
+    function Slider({ value, min, max, step, onChange, accentColor, label }) {
+      const pct = ((value - min) / (max - min)) * 100;
+      return (
+        <div style={{ position: "relative", width: "100%", height: 8, borderRadius: 4, marginTop: 8 }}>
+          <div style={{ position: "absolute", inset: 0, borderRadius: 4, background: "#E8E4DE" }} />
+          <div style={{
+            position: "absolute", top: 0, left: 0, bottom: 0, width: `${pct}%`,
+            borderRadius: 4, background: accentColor || "#8B7234",
+            transition: "width 0.12s ease",
+          }} />
+          <input
+            type="range" min={min} max={max} step={step} value={value}
+            onChange={(e) => onChange(Number(e.target.value))}
+            aria-label={label}
+            style={{
+              position: "absolute", inset: 0, width: "100%", height: "100%",
+              opacity: 0, cursor: "pointer", margin: 0,
+            }}
+          />
+          <div style={{
+            position: "absolute", top: "50%", left: `${pct}%`,
+            transform: "translate(-50%, -50%)",
+            width: 22, height: 22, borderRadius: "50%",
+            background: "#fff",
+            border: `3px solid ${accentColor || "#8B7234"}`,
+            boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
+            pointerEvents: "none",
+            transition: "left 0.12s ease",
+          }} />
+        </div>
+      );
+    }
+
+    function SliderRow({ label, value, min, max, step, onChange, accentColor, prefix, suffix, inputWidth, displayFn, tooltip, containerRef }) {
+      const [localText, setLocalText] = useState(null);
+      const isEditing = localText !== null;
+
+      const shownValue = displayFn ? displayFn(value) : (prefix === "$" ? formatCommas(value) : value);
+
+      const handleFocus = () => {
+        if (suffix === "%") {
+          setLocalText(String(value));
+        } else {
+          setLocalText(String(Math.round(value)));
+        }
+      };
+
+      const handleBlur = () => {
+        const raw = localText.replace(/[$,%\s]/g, "");
+        let num = parseFloat(raw);
+        if (isNaN(num)) {
+          setLocalText(null);
+          return;
+        }
+        num = Math.round(num / step) * step;
+        num = Math.max(min, Math.min(max, num));
+        if (suffix === "%") num = Math.round(num * 10) / 10;
+        onChange(num);
+        setLocalText(null);
+      };
+
+      const handleKeyDown = (e) => {
+        if (e.key === "Enter") e.target.blur();
+      };
+
+      return (
+        <div style={{ marginBottom: 4 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 14, fontWeight: 500, color: "#444" }}>
+              {label}
+              {tooltip && containerRef && <InfoIcon tooltip={tooltip} color={accentColor} containerRef={containerRef} />}
+            </span>
+            <div style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+              {prefix && !isEditing && (
+                <span style={{ fontSize: 15, fontWeight: 600, color: "#888", marginRight: 2 }}>{prefix}</span>
+              )}
+              <input
+                type="text"
+                value={isEditing ? localText : shownValue}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                onChange={(e) => setLocalText(e.target.value)}
+                onKeyDown={handleKeyDown}
+                style={{
+                  width: inputWidth || 100,
+                  border: `1.5px solid #E8E4DE`,
+                  borderRadius: 8,
+                  padding: "6px 10px",
+                  textAlign: "right",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  color: "#1A1A1A",
+                  background: "#fff",
+                  fontFamily: "'DM Sans', sans-serif",
+                  outline: "none",
+                  transition: "border-color 0.2s",
+                }}
+                onMouseOver={(e) => e.target.style.borderColor = accentColor}
+                onMouseOut={(e) => { if (document.activeElement !== e.target) e.target.style.borderColor = "#E8E4DE"; }}
+              />
+              {suffix && !isEditing && (
+                <span style={{ fontSize: 15, fontWeight: 600, color: "#888", marginLeft: 2 }}>{suffix}</span>
+              )}
+            </div>
+          </div>
+          <Slider value={value} min={min} max={max} step={step} onChange={onChange} accentColor={accentColor} label={label} />
+        </div>
+      );
+    }
+
+    function VehicleAffordability() {
+      const containerRef = useRef(null);
+      const [takeHome, setTakeHome] = useState(5000);
+      const [vehiclePrice, setVehiclePrice] = useState(32000);
+      const [downPayment, setDownPayment] = useState(5000);
+      const [apr, setApr] = useState(6.5);
+      const [termMonths, setTermMonths] = useState(60);
+      const [insurance, setInsurance] = useState(180);
+      const [gas, setGas] = useState(150);
+      const [maintenance, setMaintenance] = useState(80);
+
+      const calc = useMemo(() => {
+        const gross = takeHome / 0.72;
+        const loanAmount = Math.max(0, vehiclePrice - downPayment);
+        const n = termMonths;
+        const r = apr / 12 / 100;
+        let monthlyPayment = 0;
+        if (loanAmount <= 0) {
+          monthlyPayment = 0;
+        } else if (r === 0 || apr === 0) {
+          monthlyPayment = loanAmount / n;
+        } else {
+          const pow = Math.pow(1 + r, n);
+          monthlyPayment = (loanAmount * r * pow) / (pow - 1);
+        }
+        const totalMonthly = monthlyPayment + insurance + gas + maintenance;
+        const pctGross = gross > 0 ? (totalMonthly / gross) * 100 : 0;
+        const totalPaidLoan = monthlyPayment * n;
+        const totalInterest = Math.max(0, totalPaidLoan - loanAmount);
+        const years = n / 12;
+        const estValue = years <= 1
+          ? vehiclePrice * 0.85
+          : vehiclePrice * 0.85 * Math.pow(0.9, years - 1);
+        const tenPctGross = 0.1 * gross;
+        const showThresholdMarker = totalMonthly > tenPctGross && totalMonthly > 0;
+        const thresholdPositionPct = showThresholdMarker
+          ? Math.min(100, (tenPctGross / totalMonthly) * 100) : 0;
+        return {
+          loanAmount, monthlyPayment, totalMonthly, pctGross,
+          totalInterest, totalPaidLoan, estValue,
+          showThresholdMarker, thresholdPositionPct,
+        };
+      }, [takeHome, vehiclePrice, downPayment, apr, termMonths, insurance, gas, maintenance]);
+
+      const { monthlyPayment, totalMonthly, pctGross, loanAmount,
+              totalInterest, totalPaidLoan, estValue,
+              showThresholdMarker, thresholdPositionPct } = calc;
+
+      const tierColor = pctGross < 10 ? "#2D6A4F" : pctGross <= 15 ? "#8B7234" : "#c0392b";
+
+      const barSegments = useMemo(() => {
+        const t = totalMonthly;
+        if (t <= 0) return [
+          { key: "loan", label: "Payment", value: 0, color: "#5A7C65", pct: 0 },
+          { key: "ins", label: "Insurance", value: 0, color: "#8B7234", pct: 0 },
+          { key: "gas", label: "Gas / Charging", value: 0, color: "#2980b9", pct: 0 },
+          { key: "maint", label: "Maintenance", value: 0, color: "#6B5B8A", pct: 0 },
+        ];
+        return [
+          { key: "loan", label: "Payment", value: monthlyPayment, color: "#5A7C65", pct: (monthlyPayment / t) * 100 },
+          { key: "ins", label: "Insurance", value: insurance, color: "#8B7234", pct: (insurance / t) * 100 },
+          { key: "gas", label: "Gas / Charging", value: gas, color: "#2980b9", pct: (gas / t) * 100 },
+          { key: "maint", label: "Maintenance", value: maintenance, color: "#6B5B8A", pct: (maintenance / t) * 100 },
+        ];
+      }, [monthlyPayment, insurance, gas, maintenance, totalMonthly]);
+
+      const termYears = termMonths / 12;
+      const termDisplay = `${termMonths} mo (${termYears % 1 === 0 ? termYears : termYears.toFixed(1)} yr)`;
+
+      let verdict;
+      if (pctGross < 10) {
+        verdict = {
+          bg: "#f0faf3", border: "#c8e6d0", icon: "✓",
+          title: "This vehicle fits your budget",
+          subtitle: `Total transportation cost is ${formatPct(pctGross)} of your estimated gross income.`,
+          titleColor: "#2D6A4F",
+        };
+      } else if (pctGross <= 15) {
+        verdict = {
+          bg: "#F7F3EA", border: "#D4BA6A", icon: "⚖",
+          title: "Tight but manageable",
+          subtitle: `You're at ${formatPct(pctGross)} of gross. The sweet spot is under 10%.`,
+          titleColor: "#8B7234",
+        };
+      } else {
+        verdict = {
+          bg: "#fef5f5", border: "#e8c4c4", icon: "⚠",
+          title: "This vehicle is stretching your budget",
+          subtitle: `At ${formatPct(pctGross)} of gross income, this car will limit your ability to save and invest.`,
+          titleColor: "#c0392b",
+        };
+      }
+
+      const statCard = {
+        background: "#fff",
+        border: "1.5px solid #E8E4DE",
+        borderRadius: 14,
+        padding: "20px 22px",
+      };
+
+      return (
+        <main ref={containerRef} style={{ maxWidth: 880, margin: "0 auto", padding: "40px 24px 60px", position: "relative" }}>
+          {/* Hero */}
+          <div style={{ marginBottom: 36 }}>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 10,
+              background: "#8B7234", color: "#fff",
+              padding: "6px 16px", borderRadius: 100,
+              fontSize: 12, fontWeight: 600, letterSpacing: "0.06em",
+              textTransform: "uppercase", marginBottom: 16,
+            }}>
+              <svg width="16" height="16" style={{ flexShrink: 0, color: "inherit" }}>
+                <use href="icons.svg#tap-i-car" />
+              </svg>
+              TAP Tool
+            </div>
+            <h1 style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 32, fontWeight: 700, color: "#1A1A1A",
+              margin: 0, lineHeight: 1.2,
+            }}>Vehicle Affordability</h1>
+            <p style={{ fontSize: 15, color: "#666", marginTop: 8, maxWidth: 520 }}>
+              Slide or type to adjust. See if the car fits your budget in real time.
+            </p>
+          </div>
+
+          {/* Top Stats */}
+          <div className="va-stats-grid">
+            <div style={statCard}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.2, color: "#999", marginBottom: 6, fontWeight: 600 }}>Monthly Payment</div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: tierColor }}>
+                {formatMoney(monthlyPayment)}
+              </div>
+            </div>
+            <div style={statCard}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.2, color: "#999", marginBottom: 6, fontWeight: 600 }}>Total Monthly Cost</div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: "#1A1A1A" }}>
+                {formatMoney(totalMonthly)}
+              </div>
+            </div>
+            <div style={statCard}>
+              <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: 1.2, color: "#999", marginBottom: 6, fontWeight: 600 }}>% of Gross Income</div>
+              <div style={{ fontSize: 30, fontWeight: 700, color: tierColor }}>
+                {formatPct(pctGross)}
+              </div>
+            </div>
+          </div>
+
+          {/* Allocation Bar */}
+          <div style={{ marginBottom: 36 }}>
+            <div style={{
+              width: "100%", height: 36, borderRadius: 10,
+              background: "#F7F3EA", display: "flex", overflow: "hidden",
+              position: "relative",
+            }}>
+              {totalMonthly > 0 ? barSegments.map((seg) => (
+                <div key={seg.key} title={`${seg.label}: ${formatMoney(seg.value)}`}
+                  style={{
+                    width: `${seg.pct}%`, height: "100%",
+                    background: seg.color,
+                    transition: "width 0.3s ease",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 10, fontWeight: 600, color: "#fff",
+                    overflow: "hidden", whiteSpace: "nowrap",
+                    minWidth: seg.pct > 0 ? 2 : 0,
+                    opacity: 0.88,
+                  }}
+                >{seg.pct >= 12 ? seg.label : ""}</div>
+              )) : (
+                <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, color: "#aaa" }}>
+                  Adjust sliders to see breakdown
+                </div>
+              )}
+              {showThresholdMarker && (
+                <div style={{
+                  position: "absolute", left: `${thresholdPositionPct}%`,
+                  top: -4, bottom: -4, width: 2.5, background: "#c0392b", zIndex: 10,
+                  transform: "translateX(-1px)", borderRadius: 2,
+                }}>
+                  <div style={{
+                    position: "absolute", top: -20, left: "50%", transform: "translateX(-50%)",
+                    fontSize: 9, color: "#c0392b", fontWeight: 700, whiteSpace: "nowrap",
+                  }}>10% gross</div>
+                </div>
+              )}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", marginTop: 10 }}>
+              {barSegments.map((seg) => (
+                <div key={seg.key} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#888" }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: seg.color, display: "inline-block" }} />
+                  {seg.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Sliders + Inputs */}
+          <div style={{
+            background: "#fff", borderRadius: 14,
+            padding: "28px 28px 20px", marginBottom: 28,
+            border: "1.5px solid #E8E4DE",
+          }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+              <SliderRow
+                label="Monthly Take-Home Pay" value={takeHome}
+                min={2000} max={20000} step={100}
+                onChange={setTakeHome} accentColor="#5A7C65"
+                prefix="$" inputWidth={110}
+                tooltip={SLIDER_TOOLTIPS.takeHome} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Vehicle Price" value={vehiclePrice}
+                min={5000} max={80000} step={500}
+                onChange={setVehiclePrice} accentColor="#8B7234"
+                prefix="$" inputWidth={110}
+                tooltip={SLIDER_TOOLTIPS.vehiclePrice} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Down Payment" value={downPayment}
+                min={0} max={40000} step={500}
+                onChange={setDownPayment} accentColor="#D4BA6A"
+                prefix="$" inputWidth={110}
+                tooltip={SLIDER_TOOLTIPS.downPayment} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Interest Rate (APR)" value={apr}
+                min={0} max={29.99} step={0.1}
+                onChange={(v) => setApr(Math.round(v * 10) / 10)}
+                accentColor="#c0392b" suffix="%"
+                inputWidth={75}
+                displayFn={(v) => v.toFixed(1)}
+                tooltip={SLIDER_TOOLTIPS.apr} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Loan Term" value={termMonths}
+                min={24} max={84} step={12}
+                onChange={setTermMonths} accentColor="#2980b9"
+                inputWidth={130}
+                displayFn={() => termDisplay}
+                tooltip={SLIDER_TOOLTIPS.termMonths} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Monthly Insurance" value={insurance}
+                min={50} max={500} step={10}
+                onChange={setInsurance} accentColor="#8B7234"
+                prefix="$" inputWidth={100}
+                tooltip={SLIDER_TOOLTIPS.insurance} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Monthly Gas / Charging" value={gas}
+                min={30} max={400} step={10}
+                onChange={setGas} accentColor="#2980b9"
+                prefix="$" inputWidth={100}
+                tooltip={SLIDER_TOOLTIPS.gas} containerRef={containerRef}
+              />
+              <SliderRow
+                label="Monthly Maintenance" value={maintenance}
+                min={20} max={300} step={10}
+                onChange={setMaintenance} accentColor="#6B5B8A"
+                prefix="$" inputWidth={100}
+                tooltip={SLIDER_TOOLTIPS.maintenance} containerRef={containerRef}
+              />
+            </div>
+          </div>
+
+          {/* Verdict */}
+          <div style={{
+            background: verdict.bg, border: `1.5px solid ${verdict.border}`,
+            borderRadius: 14, padding: "22px 26px", marginBottom: 28,
+            display: "flex", alignItems: "center", gap: 14,
+          }}>
+            <div style={{
+              width: 38, height: 38, borderRadius: 10,
+              background: verdict.border + "44",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 18, color: verdict.titleColor, flexShrink: 0,
+            }}>{verdict.icon}</div>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: verdict.titleColor }}>{verdict.title}</div>
+              <div style={{ fontSize: 13, color: "#666", marginTop: 4, lineHeight: 1.55 }}>{verdict.subtitle}</div>
+            </div>
+          </div>
+
+          {/* Bottom Breakdown Cards */}
+          <div className="va-footer-cards">
+            <div style={{
+              background: "#fff", borderRadius: 10,
+              padding: "16px", borderLeft: "3.5px solid #5A7C65",
+              border: "1px solid #E8E4DE", borderLeftColor: "#5A7C65", borderLeftWidth: 3.5,
+            }}>
+              <div style={{ fontSize: 11, color: "#999", marginBottom: 6, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.8 }}>Loan Amount</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#5A7C65" }}>{formatMoney(loanAmount)}</div>
+              <div style={{ fontSize: 11, color: "#999", marginTop: 6, lineHeight: 1.45 }}>Vehicle price minus your down payment — the amount you're financing through the lender.</div>
+            </div>
+            <div style={{
+              background: "#fff", borderRadius: 10,
+              padding: "16px", borderLeft: "3.5px solid #c0392b",
+              border: "1px solid #E8E4DE", borderLeftColor: "#c0392b", borderLeftWidth: 3.5,
+            }}>
+              <div style={{ fontSize: 11, color: "#999", marginBottom: 6, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.8 }}>Total Interest</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#c0392b" }}>{formatMoney(totalInterest)}</div>
+              <div style={{ fontSize: 11, color: "#999", marginTop: 6, lineHeight: 1.45 }}>The extra cost of borrowing over the life of the loan. A higher rate or longer term increases this significantly.</div>
+            </div>
+            <div style={{
+              background: "#fff", borderRadius: 10,
+              padding: "16px", borderLeft: "3.5px solid #2980b9",
+              border: "1px solid #E8E4DE", borderLeftColor: "#2980b9", borderLeftWidth: 3.5,
+            }}>
+              <div style={{ fontSize: 11, color: "#999", marginBottom: 6, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.8 }}>Total Paid</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#2980b9" }}>{formatMoney(totalPaidLoan)}</div>
+              <div style={{ fontSize: 11, color: "#999", marginTop: 6, lineHeight: 1.45 }}>Every dollar that goes toward the loan — principal plus interest combined over the full term.</div>
+            </div>
+            <div style={{
+              background: "#fff", borderRadius: 10,
+              padding: "16px", borderLeft: "3.5px solid #27ae60",
+              border: "1px solid #E8E4DE", borderLeftColor: "#27ae60", borderLeftWidth: 3.5,
+            }}>
+              <div style={{ fontSize: 11, color: "#999", marginBottom: 6, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.8 }}>Est. Value at Payoff</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#27ae60" }}>{formatMoney(estValue)}</div>
+              <div style={{ fontSize: 11, color: "#999", marginTop: 6, lineHeight: 1.45 }}>Approximate resale value when the loan ends, based on ~15% first-year and ~10% annual depreciation.</div>
+            </div>
+          </div>
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("app-root")).render(<VehicleAffordability />);
+  </script>
+</body>
+</html>
