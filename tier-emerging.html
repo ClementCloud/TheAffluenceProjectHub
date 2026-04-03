@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Few things to know (choosing wealth): TAP | The Affluence Project</title>
+  <title>Emerging tier — TAP Young Professionals | The Affluence Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --c: #5A7C65;
-      --c-light: #EEF3EF;
-      --c-accent: #A8C5B0;
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
       --gold: #8B7234;
       --ink: #1A1A1A;
       --muted: #666;
@@ -63,7 +63,7 @@
       color: var(--ink);
     }
     .brand-tap {
-      background: linear-gradient(135deg, var(--c), var(--gold));
+      background: linear-gradient(135deg, var(--c), var(--c-accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -113,6 +113,23 @@
       color: var(--muted);
       line-height: 1.6;
       margin-bottom: 22px;
+    }
+
+    .quote-block {
+      margin-bottom: 28px;
+      padding: 18px 20px 18px 22px;
+      border-radius: 12px;
+      background: var(--c-light);
+      border-left: 4px solid var(--c-accent);
+      box-shadow: 0 2px 12px rgba(139, 114, 52, 0.08);
+    }
+    .quote-block p {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(17px, 2.8vw, 20px);
+      font-weight: 600;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.45;
     }
 
     .progress-card {
@@ -324,7 +341,7 @@
       padding: 0;
     }
     .carousel-slide.section-complete .carousel-slide__shell {
-      border-color: rgba(90, 124, 101, 0.4);
+      border-color: rgba(139, 114, 52, 0.45);
     }
     .carousel-slide__shell {
       padding: 20px 18px 24px;
@@ -487,7 +504,7 @@
       padding: 16px;
       border-radius: 12px;
       background: var(--c-light);
-      border: 1px solid rgba(168, 197, 176, 0.5);
+      border: 1px solid rgba(212, 186, 106, 0.55);
     }
     .action-title {
       font-size: 12px;
@@ -534,7 +551,7 @@
       margin-top: 14px;
       padding: 12px 14px;
       border-radius: 10px;
-      background: rgba(90, 124, 101, 0.12);
+      background: rgba(139, 114, 52, 0.12);
       font-size: 14px;
       font-weight: 600;
       color: var(--c);
@@ -568,183 +585,141 @@
     <div class="site-header__inner">
       <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
       <div class="brand">
-        <span class="brand-tap">TAP</span><span class="brand-sub">Students</span>
+        <span class="brand-tap">TAP</span><span class="brand-sub">Young Professionals</span>
       </div>
     </div>
   </header>
 
   <main>
-    <div class="pill"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-sprout"/></svg> Students · money basics</div>
-    <h1><svg class="tap-icon tap-icon--md tap-icon--gold" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-sparkle"/></svg> Few things to know (choosing wealth)</h1>
+    <div class="pill"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-sprout"/></svg> Emerging · Negative to $0</div>
+    <h1><svg class="tap-icon tap-icon--md tap-icon--gold" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-sprout"/></svg> Emerging</h1>
     <p class="lede">
-      You are building real money habits, one slide at a time. Swipe the card or tap the arrows, use the chips to teleport to a topic, then check off wins as you go. Progress saves on this device only, so make it yours.
+      This tier is for net worth from negative up to about zero. You are learning how money flows, trimming the biggest expenses, and stacking small wins that compound. The slides below cover housing, transportation, and lifestyle or food—the three levers that move the needle fastest while you build stability.
     </p>
+
+    <aside class="quote-block" aria-label="Encouragement">
+      <p>Being in Emerging does not mean you are behind. You are building.</p>
+    </aside>
 
     <div class="progress-card" aria-live="polite">
       <div class="progress-card__top">
         <span class="progress-card__label"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-clipboard-check"/></svg> Your action checklist</span>
-        <span class="progress-card__count" id="global-count">0 / 19</span>
+        <span class="progress-card__count" id="global-count">0 / 15</span>
       </div>
       <div class="progress-card__bar" aria-hidden="true"><div class="progress-card__fill" id="global-bar"></div></div>
       <div class="progress-card__actions">
         <button type="button" class="progress-reset" id="progress-reset" aria-label="Reset all checklist marks on this device"><svg class="tap-icon tap-icon--sm tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-refresh"/></svg> Start fresh (reset all)</button>
         <span class="progress-card__hint">Checked items stick around until you clear them.</span>
       </div>
-      <p class="celebrate" id="all-done-msg" role="status"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-party"/></svg> You crushed every action on the list. That is a serious flex. Come back when you are ready to level up again.</p>
+      <p class="celebrate" id="all-done-msg" role="status"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-star"/></svg> Fifteen for fifteen. That is real momentum—keep stacking habits that match where you are headed.</p>
     </div>
 
-    <nav class="jump-nav" aria-label="Jump to a topic">
-      <span class="jump-nav__label"><svg class="tap-icon tap-icon--xs tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Pick a topic</span>
-      <button type="button" class="jump-chip is-active" data-slide="0"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-landmark"/></svg> Core setup</button>
-      <button type="button" class="jump-chip" data-slide="1"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-credit-card"/></svg> Credit</button>
-      <button type="button" class="jump-chip" data-slide="2"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-bar-chart"/></svg> Net worth</button>
-      <button type="button" class="jump-chip" data-slide="3"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-car"/></svg> First car</button>
-      <button type="button" class="jump-chip" data-slide="4"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-home"/></svg> Renting</button>
+    <nav class="jump-nav" aria-label="Jump to a section">
+      <span class="jump-nav__label"><svg class="tap-icon tap-icon--xs tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Jump to a section</span>
+      <button type="button" class="jump-chip is-active" data-slide="0"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-home"/></svg> Housing</button>
+      <button type="button" class="jump-chip" data-slide="1"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-car"/></svg> Transportation</button>
+      <button type="button" class="jump-chip" data-slide="2"><svg class="tap-icon tap-icon--chip" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-utensils"/></svg> Lifestyle &amp; Food</button>
     </nav>
 
-    <section class="carousel-wrap" id="topic-carousel" aria-roledescription="carousel" aria-label="Wealth topics carousel" tabindex="0">
+    <section class="carousel-wrap" id="topic-carousel" aria-roledescription="carousel" aria-label="Emerging tier topics" tabindex="0">
       <div class="carousel-chrome">
-        <button type="button" class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous topic">‹</button>
-        <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Topic"></div>
-        <button type="button" class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Next topic">›</button>
+        <button type="button" class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous section">‹</button>
+        <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Section"></div>
+        <button type="button" class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Next section">›</button>
       </div>
-      <p class="carousel-counter" id="carousel-counter"><span id="carousel-counter-before">1 of 5 · </span><svg class="tap-icon tap-icon--counter" aria-hidden="true" focusable="false" id="carousel-counter-icon"><use href="icons.svg#tap-i-landmark" id="carousel-counter-use"/></svg><span id="carousel-counter-after"> Core setup</span></p>
+      <p class="carousel-counter" id="carousel-counter">
+        <span id="carousel-counter-before">1 of 3 · </span>
+        <svg class="tap-icon tap-icon--counter" aria-hidden="true" focusable="false" id="carousel-counter-icon"><use href="icons.svg#tap-i-home" id="carousel-counter-use"/></svg>
+        <span id="carousel-counter-after"> Housing</span>
+      </p>
       <p class="carousel-hint"><svg class="tap-icon tap-icon--xs tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-hand"/></svg> On your phone, swipe the card left or right. On a keyboard, focus here and use arrow keys.</p>
       <div class="carousel-viewport" id="carousel-viewport">
         <div class="carousel-track" id="carousel-track">
-          <article class="carousel-slide" data-section="core" data-slide-index="0">
+          <article class="carousel-slide" data-section="housing" data-slide-index="0">
             <div class="carousel-slide__shell">
               <header class="slide-header">
-                <h2 class="slide-title" id="carousel-label-0"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-landmark"/></svg></span> Core setup</h2>
+                <h2 class="slide-title" id="carousel-label-0"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-home"/></svg></span> Housing</h2>
                 <div class="slide-meta">
-                  <span class="section-count" data-section-count="core">0/4</span>
+                  <span class="section-count" data-section-count="housing">0/5</span>
                   <span class="sum-done"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-star"/></svg> All set</span>
                 </div>
               </header>
-              <p class="tagline"><svg class="tap-icon tap-icon--sm tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-package"/></svg> Your foundation: bank account, Roth IRA, budget app, and a W-4 you actually understand.</p>
+              <p class="tagline">Keep your housing costs as low as possible while you build stability.</p>
               <ul class="content-list">
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-landmark"/></svg></span><strong>Bank account</strong>: Get a checking account you control (no surprise fees). Add a savings bucket for emergencies, even if you start small.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-sprout"/></svg></span><strong>Roth IRA</strong>: If you have earned income, learn how a Roth works (money grows tax-free for retirement). Even small, regular deposits add up.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-smartphone"/></svg></span><strong>Budget app</strong>: Pick one method you will actually open (app or spreadsheet). Track what comes in and what must go out before fun spending.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-list"/></svg></span><strong>W-4 checklist</strong>: When you start a job, your W-4 tells the employer how much tax to withhold. Getting it wrong means a big refund or a surprise bill. Use the IRS estimator or your campus career or VITA resource when you are unsure.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-building"/></svg></span><strong>Living with family</strong>: If you can stay with family, this is your biggest financial advantage right now. Contribute what you can and save the difference intentionally.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-users"/></svg></span><strong>Roommates</strong>: Splitting rent 2 to 4 ways drops your housing cost dramatically. Look for people with similar habits around noise, cleanliness, and guests.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-search"/></svg></span><strong>Finding affordable rentals</strong>: Check local housing authority listings, Facebook Marketplace, and community boards. Avoid broker fees when possible; some cities have no-fee apartment sites.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-piggy-bank"/></svg></span><strong>The 30% guideline</strong>: Try to keep total housing costs (rent, utilities, renter's insurance) under 30% of your take-home pay. If that is not possible yet, know the gap and plan to close it.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-shield"/></svg></span><strong>Renter's insurance</strong>: Usually $10 to $20 a month. It protects your belongings and covers liability. Many landlords require it anyway.</li>
               </ul>
               <div class="action-box">
-                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Mini quests (check when you nail it)</h3>
+                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-clipboard-check"/></svg> Action checklist</h3>
                 <ul class="action-list">
-                  <li><label><input type="checkbox" id="chk-core-1" data-check="core-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have a checking account in my name with fees I understand.</label></li>
-                  <li><label><input type="checkbox" id="chk-core-2" data-check="core-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I opened or started a savings bucket for emergencies.</label></li>
-                  <li><label><input type="checkbox" id="chk-core-3" data-check="core-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I picked a budget app or sheet and logged income and fixed costs.</label></li>
-                  <li><label><input type="checkbox" id="chk-core-4" data-check="core-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I reviewed my W-4 (or plan to) using IRS or campus help before tax surprises.</label></li>
+                  <li><label><input type="checkbox" id="chk-housing-1" data-check="housing-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I know my monthly take-home pay and what 30% of it looks like.</label></li>
+                  <li><label><input type="checkbox" id="chk-housing-2" data-check="housing-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have explored roommate options or family arrangements to lower costs.</label></li>
+                  <li><label><input type="checkbox" id="chk-housing-3" data-check="housing-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have checked local housing authority or no-fee rental listings.</label></li>
+                  <li><label><input type="checkbox" id="chk-housing-4" data-check="housing-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have renter's insurance or have priced it out.</label></li>
+                  <li><label><input type="checkbox" id="chk-housing-5" data-check="housing-5" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I am saving at least a small amount each month, even if housing is tight.</label></li>
                 </ul>
               </div>
             </div>
           </article>
 
-          <article class="carousel-slide" data-section="credit" data-slide-index="1">
+          <article class="carousel-slide" data-section="transport" data-slide-index="1">
             <div class="carousel-slide__shell">
               <header class="slide-header">
-                <h2 class="slide-title" id="carousel-label-1"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-credit-card"/></svg></span> Building credit from zero</h2>
+                <h2 class="slide-title" id="carousel-label-1"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-car"/></svg></span> Transportation</h2>
                 <div class="slide-meta">
-                  <span class="section-count" data-section-count="credit">0/4</span>
+                  <span class="section-count" data-section-count="transport">0/5</span>
                   <span class="sum-done"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-star"/></svg> All set</span>
                 </div>
               </header>
-              <p class="tagline"><svg class="tap-icon tap-icon--sm tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-rocket"/></svg> No history yet? No drama. Here is how to start strong without falling for myths.</p>
+              <p class="tagline">Move around affordably while you are building your foundation.</p>
               <ul class="content-list">
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-lock"/></svg></span><strong>Secured card</strong>: A common first step is a secured credit card with a small limit you back with a deposit. Use it lightly and pay the full statement balance on time.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-users"/></svg></span><strong>Authorized user</strong>: Sometimes a parent or trusted person adds you to their card. It can help your file, but their habits become yours on paper. Only do this with someone who pays on time and keeps balances low.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-clock"/></svg></span><strong>Pay on time, every time</strong>: Payment history is the biggest piece of your score. Set reminders or autopay for at least the minimum, ideally the full balance.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-lightbulb"/></svg></span><strong>Myth busted</strong>: You do not need to carry a balance to build credit. Paying in full is fine.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-bus"/></svg></span><strong>Public transit first</strong>: If you live in a city with decent transit, a monthly pass is almost always cheaper than owning a car. Factor in gas, insurance, maintenance, and parking before you compare.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-bike"/></svg></span><strong>Walking and biking</strong>: Free and healthy. If your commute is under 5 miles, a used bike plus basic gear can replace a car payment entirely.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-car"/></svg></span><strong>If you need a car</strong>: Buy used, pay cash if possible, and aim for reliability over style. A $4,000 to $8,000 Honda or Toyota with under 120K miles is the sweet spot. Get a prepurchase inspection.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-wrench"/></svg></span><strong>Maintenance basics</strong>: Learn to check tire pressure, oil level, and coolant yourself. Keeping up with small maintenance prevents expensive breakdowns.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-circle-dollar"/></svg></span><strong>Insurance shopping</strong>: Get at least 3 quotes. Raise your deductible if you have even a small emergency fund. Ask about bundling discounts.</li>
               </ul>
               <div class="action-box">
-                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Mini quests (check when you nail it)</h3>
+                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-clipboard-check"/></svg> Action checklist</h3>
                 <ul class="action-list">
-                  <li><label><input type="checkbox" id="chk-credit-1" data-check="credit-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I pulled my free credit report and know what is on file.</label></li>
-                  <li><label><input type="checkbox" id="chk-credit-2" data-check="credit-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I chose one path (secured card or safe authorized user) and understand the rules.</label></li>
-                  <li><label><input type="checkbox" id="chk-credit-3" data-check="credit-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I set calendar reminders or autopay so I never miss a due date.</label></li>
-                  <li><label><input type="checkbox" id="chk-credit-4" data-check="credit-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I plan to pay the statement balance in full when I use the card.</label></li>
+                  <li><label><input type="checkbox" id="chk-transport-1" data-check="transport-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I compared the real monthly cost of owning a car vs using transit for my commute.</label></li>
+                  <li><label><input type="checkbox" id="chk-transport-2" data-check="transport-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have a plan for getting to work that I can afford right now.</label></li>
+                  <li><label><input type="checkbox" id="chk-transport-3" data-check="transport-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> If I have a car, I have checked insurance quotes from at least 3 providers.</label></li>
+                  <li><label><input type="checkbox" id="chk-transport-4" data-check="transport-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I know when my next oil change or basic maintenance is due.</label></li>
+                  <li><label><input type="checkbox" id="chk-transport-5" data-check="transport-5" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have set aside even a small buffer for unexpected transportation costs.</label></li>
                 </ul>
               </div>
             </div>
           </article>
 
-          <article class="carousel-slide" data-section="net" data-slide-index="2">
+          <article class="carousel-slide" data-section="lifestyle" data-slide-index="2">
             <div class="carousel-slide__shell">
               <header class="slide-header">
-                <h2 class="slide-title" id="carousel-label-2"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-bar-chart"/></svg></span> Know where you are</h2>
+                <h2 class="slide-title" id="carousel-label-2"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-utensils"/></svg></span> Lifestyle &amp; Food</h2>
                 <div class="slide-meta">
-                  <span class="section-count" data-section-count="net">0/3</span>
+                  <span class="section-count" data-section-count="lifestyle">0/5</span>
                   <span class="sum-done"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-star"/></svg> All set</span>
                 </div>
               </header>
-              <p class="tagline"><svg class="tap-icon tap-icon--sm tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-compass"/></svg> Net worth plus a simple budget split: the GPS for your money.</p>
+              <p class="tagline">Spend less without feeling deprived; build habits that compound.</p>
               <ul class="content-list">
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-scale"/></svg></span><strong>Net worth</strong>: List what you own (cash, car value, investments) minus what you owe (loans, card balances). One simple spreadsheet is enough. Update it once a month or each semester.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-receipt"/></svg></span><strong>Budgeting tools</strong>: Same app or sheet as core setup works here. Split spending into fixed (rent, phone, subscriptions) and flexible (food, transit, fun).</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-trending"/></svg></span><strong>Why it matters</strong>: You cannot steer if you do not know the starting point. Numbers remove guesswork when you decide what to cut or what to fund next.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-shopping-bag"/></svg></span><strong>Track before you cut</strong>: Use an app or spreadsheet to see where money actually goes for one full month. Most people find at least one surprise category.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-coffee"/></svg></span><strong>The small-stuff audit</strong>: Subscriptions, daily coffee runs, impulse delivery orders. None of these are evil, but they add up. Cancel what you do not use and keep what genuinely improves your day.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-utensils"/></svg></span><strong>Meal planning</strong>: Cooking at home is the single biggest lever for food spending. Plan 4 to 5 meals per week, batch-cook on Sundays, and use a grocery list. Budget roughly $50 to $75 per person per week.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-heart"/></svg></span><strong>Free and cheap fun</strong>: Libraries, parks, free museum days, community events, potlucks with friends. Building a social life does not require a credit card.</li>
+                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-lightbulb"/></svg></span><strong>The one-in-one-out rule</strong>: Before buying something new, ask if something you already have can do the job. This slows impulse spending and keeps clutter down.</li>
               </ul>
               <div class="action-box">
-                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Mini quests (check when you nail it)</h3>
+                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-clipboard-check"/></svg> Action checklist</h3>
                 <ul class="action-list">
-                  <li><label><input type="checkbox" id="chk-net-1" data-check="net-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I listed assets and debts once to get a net worth snapshot.</label></li>
-                  <li><label><input type="checkbox" id="chk-net-2" data-check="net-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I tagged spending as fixed vs flexible for one full month.</label></li>
-                  <li><label><input type="checkbox" id="chk-net-3" data-check="net-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I picked a date to update my numbers again (monthly or per semester).</label></li>
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <article class="carousel-slide" data-section="car" data-slide-index="3">
-            <div class="carousel-slide__shell">
-              <header class="slide-header">
-                <h2 class="slide-title" id="carousel-label-3"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-car"/></svg></span> Buying your first car</h2>
-                <div class="slide-meta">
-                  <span class="section-count" data-section-count="car">0/4</span>
-                  <span class="sum-done"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-star"/></svg> All set</span>
-                </div>
-              </header>
-              <p class="tagline"><svg class="tap-icon tap-icon--sm tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-key"/></svg> Before you fall in love at the lot, run the real numbers and keep your power at the table.</p>
-              <ul class="content-list">
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-circle-dollar"/></svg></span><strong>Total cost</strong>: Monthly payment is not the whole story. Add insurance, gas, maintenance, registration, and parking.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-landmark"/></svg></span><strong>Pre-approval</strong>: If you borrow, compare rates from a credit union or bank before you fall in love with a car at the lot.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-search"/></svg></span><strong>Inspection and history</strong>: For used cars, a prepurchase inspection and a vehicle history report are worth the fee.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-handshake"/></svg></span><strong>Negotiation</strong>: Walk in with a max price and be willing to leave. Sleep on big decisions.</li>
-              </ul>
-              <div class="action-box">
-                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Mini quests (check when you nail it)</h3>
-                <ul class="action-list">
-                  <li><label><input type="checkbox" id="chk-car-1" data-check="car-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I wrote down total monthly cost (payment, insurance, gas, maintenance, parking).</label></li>
-                  <li><label><input type="checkbox" id="chk-car-2" data-check="car-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I compared loan rates outside the dealership (if financing).</label></li>
-                  <li><label><input type="checkbox" id="chk-car-3" data-check="car-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I planned for inspection and history report on used options.</label></li>
-                  <li><label><input type="checkbox" id="chk-car-4" data-check="car-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I set a max out-the-door price and a rule to sleep on it.</label></li>
-                </ul>
-              </div>
-            </div>
-          </article>
-
-          <article class="carousel-slide" data-section="rent" data-slide-index="4">
-            <div class="carousel-slide__shell">
-              <header class="slide-header">
-                <h2 class="slide-title" id="carousel-label-4"><span class="slide-ico" aria-hidden="true"><svg class="tap-icon tap-icon--lg" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-home"/></svg></span> Renting your first apartment</h2>
-                <div class="slide-meta">
-                  <span class="section-count" data-section-count="rent">0/4</span>
-                  <span class="sum-done"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-star"/></svg> All set</span>
-                </div>
-              </header>
-              <p class="tagline"><svg class="tap-icon tap-icon--sm tap-icon--muted" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-package"/></svg> Leases, surprise costs, insurance, and roommate peace treaties. Read this before you sign.</p>
-              <ul class="content-list">
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-scroll-text"/></svg></span><strong>Read the lease</strong>: Know rent due date, late fees, who pays utilities, subletting rules, and how notice works when you move out.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-wallet"/></svg></span><strong>Upfront costs</strong>: Budget for security deposit, first month, sometimes last month, and broker fees if your market uses them.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-shield"/></svg></span><strong>Renters insurance</strong>: Often cheap and sometimes required. It covers your stuff and liability if something goes wrong.</li>
-                <li><span class="li-ico" aria-hidden="true"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-users"/></svg></span><strong>Roommates</strong>: Put shared rules in writing (splitting bills, guests, quiet hours) before tension shows up.</li>
-              </ul>
-              <div class="action-box">
-                <h3 class="action-title"><svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-crosshair"/></svg> Mini quests (check when you nail it)</h3>
-                <ul class="action-list">
-                  <li><label><input type="checkbox" id="chk-rent-1" data-check="rent-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I read the full lease and noted fees, utilities, and move-out notice.</label></li>
-                  <li><label><input type="checkbox" id="chk-rent-2" data-check="rent-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I budgeted deposit, first month, and any broker or move-in fees.</label></li>
-                  <li><label><input type="checkbox" id="chk-rent-3" data-check="rent-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I priced renters insurance and know if the building requires it.</label></li>
-                  <li><label><input type="checkbox" id="chk-rent-4" data-check="rent-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I aligned with roommates on bills and house rules in writing.</label></li>
+                  <li><label><input type="checkbox" id="chk-lifestyle-1" data-check="lifestyle-1" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I tracked my spending for at least one full month.</label></li>
+                  <li><label><input type="checkbox" id="chk-lifestyle-2" data-check="lifestyle-2" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I audited subscriptions and cancelled anything I do not use.</label></li>
+                  <li><label><input type="checkbox" id="chk-lifestyle-3" data-check="lifestyle-3" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I meal-planned and grocery-shopped with a list for at least two weeks.</label></li>
+                  <li><label><input type="checkbox" id="chk-lifestyle-4" data-check="lifestyle-4" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I found at least two free or low-cost activities I enjoy.</label></li>
+                  <li><label><input type="checkbox" id="chk-lifestyle-5" data-check="lifestyle-5" /> <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-check-circle"/></svg> I have a simple rule (like one-in-one-out) to slow impulse purchases.</label></li>
                 </ul>
               </div>
             </div>
@@ -761,29 +736,15 @@
 
   <script>
 (function () {
-  var STORAGE_KEY = "tap-fewthings-checks-v1";
-  var SLIDE_ICON_IDS = [
-    "tap-i-landmark",
-    "tap-i-credit-card",
-    "tap-i-bar-chart",
-    "tap-i-car",
-    "tap-i-home",
-  ];
-  var SLIDE_LABELS_PLAIN = [
-    "Core setup",
-    "Building credit from zero",
-    "Know where you are",
-    "Buying your first car",
-    "Renting your first apartment",
-  ];
-  var N = 5;
+  var STORAGE_KEY = "tap-tier-emerging-v1";
+  var SLIDE_ICON_IDS = ["tap-i-home", "tap-i-car", "tap-i-utensils"];
+  var SLIDE_LABELS_PLAIN = ["Housing", "Transportation", "Lifestyle & Food"];
+  var N = 3;
 
   var sections = {
-    core: ["core-1", "core-2", "core-3", "core-4"],
-    credit: ["credit-1", "credit-2", "credit-3", "credit-4"],
-    net: ["net-1", "net-2", "net-3"],
-    car: ["car-1", "car-2", "car-3", "car-4"],
-    rent: ["rent-1", "rent-2", "rent-3", "rent-4"],
+    housing: ["housing-1", "housing-2", "housing-3", "housing-4", "housing-5"],
+    transport: ["transport-1", "transport-2", "transport-3", "transport-4", "transport-5"],
+    lifestyle: ["lifestyle-1", "lifestyle-2", "lifestyle-3", "lifestyle-4", "lifestyle-5"],
   };
 
   var track = document.getElementById("carousel-track");
@@ -821,7 +782,7 @@
       b.type = "button";
       b.className = "carousel-dot" + (i === 0 ? " is-active" : "");
       b.setAttribute("role", "tab");
-      b.setAttribute("aria-label", "Topic " + (i + 1) + ": " + SLIDE_LABELS_PLAIN[i]);
+      b.setAttribute("aria-label", "Section " + (i + 1) + ": " + SLIDE_LABELS_PLAIN[i]);
       b.setAttribute("aria-selected", i === 0 ? "true" : "false");
       b.addEventListener("click", function () {
         goTo(i);

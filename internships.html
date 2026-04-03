@@ -85,7 +85,7 @@
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: var(--c);
       color: #fff;
       padding: 6px 16px;
@@ -95,6 +95,12 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-bottom: 16px;
+    }
+    .pill .tap-icon {
+      width: 16px;
+      height: 16px;
+      color: #fff;
+      flex-shrink: 0;
     }
     h1 {
       font-family: "Playfair Display", serif;
@@ -535,7 +541,7 @@
   </header>
 
   <main>
-    <div class="pill"><span>🌱</span> Students</div>
+    <div class="pill"><svg class="tap-icon" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-sprout"/></svg> Students</div>
     <h1>Internships that count</h1>
     <p class="lede">
       A practical path from “where do I even apply?” to a role that actually builds your resume, skills, and network without burning out on busywork.

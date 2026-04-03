@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rent vs. Buy calculator — TAP Tools | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --xs: 14px;
+      --sm: 16px;
+      --md: 20px;
+      --lg: 26px;
+      --win: #2d6a4f;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, var(--c), var(--c-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--c);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .pill .tap-icon { color: inherit; }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 40px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+      max-width: 52ch;
+    }
+
+    .tap-icon {
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+      color: var(--c);
+    }
+    .tap-icon--xs { width: var(--xs); height: var(--xs); }
+    .tap-icon--sm { width: var(--sm); height: var(--sm); }
+    .tap-icon--md { width: var(--md); height: var(--md); }
+    .tap-icon--lg { width: var(--lg); height: var(--lg); }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+    @media (min-width: 769px) {
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+    }
+
+    .form-col {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 20px 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+    .form-col__title {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--c-light);
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+    .field:last-child { margin-bottom: 0; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap--prefix .field-input { padding-left: 28px; }
+    .input-wrap--suffix .field-input { padding-right: 36px; }
+    .input-affix {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .input-wrap--prefix .input-affix { left: 14px; }
+    .input-wrap--suffix .input-affix { right: 14px; }
+
+    .field-input,
+    .field-select {
+      width: 100%;
+      font-size: 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 16px;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field-input:focus,
+    .field-select:focus {
+      border-color: var(--c);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--c-light);
+    }
+    .field-select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+
+    .calc-actions {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .btn-calc {
+      width: 100%;
+      max-width: 420px;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--c), #6d5a2a);
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(139, 114, 52, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    }
+    .btn-calc:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(139, 114, 52, 0.42);
+      filter: brightness(1.05);
+    }
+    .btn-calc:active {
+      transform: translateY(0);
+    }
+
+    .results {
+      margin-top: 40px;
+      opacity: 0;
+      transform: translateY(12px);
+      max-height: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: opacity 0.45s ease, transform 0.45s ease, max-height 0.6s ease;
+    }
+    .results.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      max-height: 10000px;
+      pointer-events: auto;
+    }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    @media (min-width: 700px) {
+      .summary-cards {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .summary-card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 18px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+    }
+    .summary-card__period {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 12px;
+    }
+    .summary-card__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .summary-card__row span:first-child { color: var(--muted); }
+    .summary-card__row strong { font-variant-numeric: tabular-nums; color: var(--ink); }
+    .summary-card__verdict {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--c-light);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--win);
+    }
+    .summary-card__verdict--tie {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .breakdown-section {
+      margin-bottom: 32px;
+    }
+    .breakdown-section:last-of-type { margin-bottom: 0; }
+    .breakdown-title {
+      font-family: "Playfair Display", serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+
+    .breakdown-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+    .breakdown-table th,
+    .breakdown-table td {
+      padding: 12px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    .breakdown-table th {
+      background: var(--c-light);
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .breakdown-table tr:last-child td { border-bottom: none; }
+    .breakdown-table td:first-child {
+      color: var(--muted);
+      font-weight: 600;
+      width: 42%;
+    }
+    .breakdown-table td.num {
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .breakdown-table td.sub { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+    .insight-box {
+      margin-top: 36px;
+      padding: 20px 22px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--c-light), #fff);
+      border: 1.5px solid rgba(212, 186, 106, 0.55);
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .insight-box .tap-icon { flex-shrink: 0; margin-top: 2px; }
+    .insight-box p {
+      font-size: 15px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      color: #999;
+      font-size: 13px;
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .site-footer a:hover { text-decoration: underline; }
+    .site-footer .copy {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #666;
+    }
+    .site-footer a .tap-icon {
+      margin-right: 6px;
+      vertical-align: -0.2em;
+      color: var(--c-accent);
+    }
+    .site-footer .copy .tap-icon {
+      vertical-align: -0.15em;
+      margin: 0 4px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Tools</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="pill">
+      <svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-home"/></svg>
+      TAP Tool
+    </div>
+    <h1>Rent vs. Buy</h1>
+    <p class="lede">
+      Should you keep renting or buy a home? Enter your numbers and see the real math side-by-side over 5, 10, and 20 years.
+    </p>
+
+    <form id="calc-form" novalidate>
+      <div class="form-grid">
+        <div class="form-col">
+          <h2 class="form-col__title">Renting</h2>
+          <div class="field">
+            <label for="rent-monthly">Monthly rent</label>
+            <div class="input-wrap input-wrap--prefix">
+              <span class="input-affix" aria-hidden="true">$</span>
+              <input class="field-input" type="number" id="rent-monthly" name="rentMonthly" min="0" step="1" value="1800" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="rent-increase">Annual rent increase</label>
+            <div class="input-wrap input-wrap--suffix">
+              <input class="field-input" type="number" id="rent-increase" name="rentIncrease" min="0" max="30" step="0.1" value="3" required />
+              <span class="input-affix" aria-hidden="true">%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="renter-insurance">Renter&rsquo;s insurance</label>
+            <div class="input-wrap input-wrap--prefix">
+              <span class="input-affix" aria-hidden="true">$</span>
+              <input class="field-input" type="number" id="renter-insurance" name="renterInsurance" min="0" step="1" value="15" required />
+            </div>
+            <span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">per month</span>
+          </div>
+          <div class="field">
+            <label for="monthly-invest">Monthly investment</label>
+            <div class="input-wrap input-wrap--prefix">
+              <span class="input-affix" aria-hidden="true">$</span>
+              <input class="field-input" type="number" id="monthly-invest" name="monthlyInvest" min="0" step="1" value="500" required />
+            </div>
+            <span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">What you&rsquo;d invest on top of putting the down payment in the market</span>
+          </div>
+        </div>
+
+        <div class="form-col">
+          <h2 class="form-col__title">Buying</h2>
+          <div class="field">
+            <label for="home-price">Home price</label>
+            <div class="input-wrap input-wrap--prefix">
+              <span class="input-affix" aria-hidden="true">$</span>
+              <input class="field-input" type="number" id="home-price" name="homePrice" min="0" step="1" value="350000" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="down-pct">Down payment</label>
+            <div class="input-wrap input-wrap--suffix">
+              <input class="field-input" type="number" id="down-pct" name="downPct" min="0" max="100" step="0.1" value="20" required />
+              <span class="input-affix" aria-hidden="true">%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="mortgage-rate">Mortgage rate</label>
+            <div class="input-wrap input-wrap--suffix">
+              <input class="field-input" type="number" id="mortgage-rate" name="mortgageRate" min="0" max="25" step="0.01" value="6.5" required />
+              <span class="input-affix" aria-hidden="true">%</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="loan-term">Loan term</label>
+            <select class="field-select" id="loan-term" name="loanTerm">
+              <option value="15">15 years</option>
+              <option value="30" selected>30 years</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="prop-tax">Property tax rate</label>
+            <div class="input-wrap input-wrap--suffix">
+              <input class="field-input" type="number" id="prop-tax" name="propTax" min="0" max="10" step="0.1" value="1.2" required />
+              <span class="input-affix" aria-hidden="true">%</span>
+            </div>
+            <span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">of home value per year</span>
+          </div>
+          <div class="field">
+            <label for="hoi">Homeowner&rsquo;s insurance</label>
+            <div class="input-wrap input-wrap--prefix">
+              <span class="input-affix" aria-hidden="true">$</span>
+              <input class="field-input" type="number" id="hoi" name="hoi" min="0" step="1" value="150" required />
+            </div>
+            <span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">per month</span>
+          </div>
+          <div class="field">
+            <label for="hoa">HOA fees</label>
+            <div class="input-wrap input-wrap--prefix">
+              <span class="input-affix" aria-hidden="true">$</span>
+              <input class="field-input" type="number" id="hoa" name="hoa" min="0" step="1" value="0" required />
+            </div>
+            <span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">per month</span>
+          </div>
+          <div class="field">
+            <label for="maint-pct">Maintenance</label>
+            <div class="input-wrap input-wrap--suffix">
+              <input class="field-input" type="number" id="maint-pct" name="maintPct" min="0" max="20" step="0.1" value="1" required />
+              <span class="input-affix" aria-hidden="true">%</span>
+            </div>
+            <span style="font-size:12px;color:var(--muted);display:block;margin-top:4px;">of home value per year</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button type="submit" class="btn-calc">Calculate</button>
+      </div>
+    </form>
+
+    <section class="results" id="results" aria-live="polite" hidden>
+      <div class="summary-cards" id="summary-cards"></div>
+      <div id="breakdown-blocks"></div>
+
+      <aside class="insight-box">
+        <svg class="tap-icon tap-icon--md" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-lightbulb"/></svg>
+        <p>
+          This calculator compares total costs and wealth building. Buying builds equity but locks up capital. Renting keeps you flexible but depends on disciplined investing. The right answer depends on how long you plan to stay, your local market, and whether you will actually invest the difference.
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a href="index.html" aria-label="Return to The Affluence Project hub"><svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-hand"/></svg> Back to the TAP hub</a>
+    <p class="copy">© 2026 The Affluence Project · <svg class="tap-icon tap-icon--xs" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-heart"/></svg> Keep going</p>
+  </footer>
+
+  <script>
+(function () {
+  var APPRECIATION = 0.03;
+  var INVEST_ANNUAL = 0.08;
+  var HORIZONS = [5, 10, 20];
+
+  function fmtMoney(n) {
+    var x = Math.round(n);
+    var s = Math.abs(x).toString();
+    var parts = [];
+    while (s.length > 3) {
+      parts.unshift(s.slice(-3));
+      s = s.slice(0, -3);
+    }
+    if (s) parts.unshift(s);
+    return (x < 0 ? "-$" : "$") + parts.join(",");
+  }
+
+  function monthlyMortgagePayment(principal, annualPct, nMonths) {
+    var r = annualPct / 100 / 12;
+    if (nMonths <= 0) return 0;
+    if (r === 0) return principal / nMonths;
+    var pow = Math.pow(1 + r, nMonths);
+    return principal * (r * pow) / (pow - 1);
+  }
+
+  function remainingLoanBalance(principal, annualPct, nMonths, paymentsMade) {
+    var r = annualPct / 100 / 12;
+    if (paymentsMade >= nMonths) return 0;
+    if (nMonths <= 0) return 0;
+    if (r === 0) return Math.max(0, principal - (principal / nMonths) * paymentsMade);
+    var powN = Math.pow(1 + r, nMonths);
+    var powK = Math.pow(1 + r, paymentsMade);
+    return principal * (powN - powK) / (powN - 1);
+  }
+
+  /** Future value: lump at 0 + monthly contributions at end of each month */
+  function investmentFV(lumpSum, monthlyContrib, annualRate, totalMonths) {
+    var i = annualRate / 12;
+    var months = Math.floor(totalMonths);
+    if (months <= 0) return lumpSum;
+    if (i === 0) return lumpSum + monthlyContrib * months;
+    var fact = Math.pow(1 + i, months);
+    return lumpSum * fact + monthlyContrib * ((fact - 1) / i);
+  }
+
+  function computeScenario(inputs) {
+    var homePrice = inputs.homePrice;
+    var downPct = inputs.downPct / 100;
+    var downPayment = homePrice * downPct;
+    var loanPrincipal = Math.max(0, homePrice - downPayment);
+    var loanMonths = inputs.loanTermYears * 12;
+    var M = monthlyMortgagePayment(loanPrincipal, inputs.mortgageRate, loanMonths);
+
+    var rent0 = inputs.rentMonthly;
+    var g = inputs.rentIncrease / 100;
+    var renterIns = inputs.renterInsurance;
+    var monthlyInvest = inputs.monthlyInvest;
+
+    var taxRate = inputs.propTax / 100;
+    var maintRate = inputs.maintPct / 100;
+    var hoi = inputs.hoi;
+    var hoa = inputs.hoa;
+
+    function forHorizon(years) {
+      var T = years;
+      var totalMonths = T * 12;
+
+      var rentPaidOnly = 0;
+      var m;
+      for (m = 0; m < totalMonths; m++) {
+        var yr = Math.floor(m / 12);
+        rentPaidOnly += rent0 * Math.pow(1 + g, yr);
+      }
+      var renterInsuranceTotal = renterIns * totalMonths;
+      var rentTotal = rentPaidOnly + renterInsuranceTotal;
+
+      /* —— Buy: per-year taxes & maintenance on appreciated value —— */
+      var buyExtraAnnual = 0;
+      var totalMortgagePaid = 0;
+      var y;
+      for (y = 0; y < T; y++) {
+        var valStart = homePrice * Math.pow(1 + APPRECIATION, y);
+        buyExtraAnnual += valStart * taxRate + valStart * maintRate + hoi * 12 + hoa * 12;
+      }
+
+      var monthsPaid = Math.min(totalMonths, loanMonths);
+      totalMortgagePaid = M * monthsPaid;
+      var buyTotal = totalMortgagePaid + buyExtraAnnual;
+
+      var homeValue = homePrice * Math.pow(1 + APPRECIATION, T);
+      var balance = remainingLoanBalance(loanPrincipal, inputs.mortgageRate, loanMonths, monthsPaid);
+      var equity = Math.max(0, homeValue - balance);
+
+      var portfolio = investmentFV(downPayment, monthlyInvest, INVEST_ANNUAL, totalMonths);
+
+      return {
+        years: T,
+        rentTotal: rentTotal,
+        rentPaidOnly: rentPaidOnly,
+        renterInsuranceTotal: renterInsuranceTotal,
+        buyTotal: buyTotal,
+        totalMortgagePaid: totalMortgagePaid,
+        remainingBalance: balance,
+        homeValue: homeValue,
+        equity: equity,
+        portfolio: portfolio,
+        netRent: portfolio,
+        netBuy: equity
+      };
+    }
+
+    return HORIZONS.map(forHorizon);
+  }
+
+  function renderSummary(rows) {
+    var html = "";
+    rows.forEach(function (r) {
+      var diff = Math.abs(r.rentTotal - r.buyTotal);
+      var verdict;
+      var verdictClass = "summary-card__verdict";
+      if (diff < 1) {
+        verdict = "Same total cost (within $1)";
+        verdictClass += " summary-card__verdict--tie";
+      } else if (r.rentTotal < r.buyTotal) {
+        verdict = "Renting saves " + fmtMoney(diff);
+      } else {
+        verdict = "Buying saves " + fmtMoney(diff);
+      }
+
+      html += '<article class="summary-card">';
+      html += '<div class="summary-card__period">' + r.years + '-Year Total Cost</div>';
+      html += '<div class="summary-card__row"><span>Rent</span><strong>' + fmtMoney(r.rentTotal) + "</strong></div>";
+      html += '<div class="summary-card__row"><span>Buy</span><strong>' + fmtMoney(r.buyTotal) + "</strong></div>";
+      html += '<p class="' + verdictClass + '">' + verdict + "</p>";
+      html += "</article>";
+    });
+    return html;
+  }
+
+  function readInputs() {
+    function num(id) {
+      var v = parseFloat(document.getElementById(id).value);
+      return isFinite(v) ? v : 0;
+    }
+    return {
+      rentMonthly: num("rent-monthly"),
+      rentIncrease: num("rent-increase"),
+      renterInsurance: num("renter-insurance"),
+      monthlyInvest: num("monthly-invest"),
+      homePrice: num("home-price"),
+      downPct: num("down-pct"),
+      mortgageRate: num("mortgage-rate"),
+      loanTermYears: parseInt(document.getElementById("loan-term").value, 10) || 30,
+      propTax: num("prop-tax"),
+      hoi: num("hoi"),
+      hoa: num("hoa"),
+      maintPct: num("maint-pct")
+    };
+  }
+
+  var form = document.getElementById("calc-form");
+  var resultsEl = document.getElementById("results");
+  var summaryEl = document.getElementById("summary-cards");
+  var breakdownEl = document.getElementById("breakdown-blocks");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var inputs = readInputs();
+    var rows = computeScenario(inputs);
+    summaryEl.innerHTML = renderSummary(rows);
+
+    /* breakdown with correct rent-only and insurance from computed data */
+    breakdownEl.innerHTML = "";
+    rows.forEach(function (r) {
+      var block = document.createElement("div");
+      block.className = "breakdown-section";
+      block.innerHTML =
+        "<h3 class=\"breakdown-title\">" + r.years + "-year detail</h3>" +
+        '<table class="breakdown-table">' +
+        "<thead><tr><th>Line item</th><th>Renting</th><th>Buying</th></tr></thead><tbody>" +
+        "<tr><td>Total rent paid</td><td class=\"num\">" + fmtMoney(r.rentPaidOnly) + "</td><td class=\"sub\">—</td></tr>" +
+        "<tr><td>Renter&rsquo;s insurance (total)</td><td class=\"num\">" + fmtMoney(r.renterInsuranceTotal) + "</td><td class=\"sub\">—</td></tr>" +
+        "<tr><td>Total mortgage payments</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.totalMortgagePaid) + "</td></tr>" +
+        "<tr><td>Remaining loan balance</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.remainingBalance) + "</td></tr>" +
+        "<tr><td>Estimated home value (3% / yr)</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.homeValue) + "</td></tr>" +
+        "<tr><td>Home equity</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.equity) + "</td></tr>" +
+        "<tr><td>Investment portfolio (8% / yr, monthly)</td><td class=\"num\">" + fmtMoney(r.portfolio) + "</td><td class=\"sub\">—</td></tr>" +
+        "<tr><td>Net wealth position</td><td class=\"num\">" + fmtMoney(r.netRent) + "</td><td class=\"num\">" + fmtMoney(r.netBuy) + "</td></tr>" +
+        "</tbody></table>";
+      breakdownEl.appendChild(block);
+    });
+
+    resultsEl.hidden = false;
+    requestAnimationFrame(function () {
+      resultsEl.classList.add("is-visible");
+      resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+})();
+  </script>
+</body>
+</html>

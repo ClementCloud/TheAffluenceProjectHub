@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debt vs. Investing | TAP Tools | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --tap-icon-size: 20px;
+    }
+    .tap-icon {
+      display: inline-block;
+      width: var(--tap-icon-size);
+      height: var(--tap-icon-size);
+      vertical-align: middle;
+      flex-shrink: 0;
+      color: currentColor;
+    }
+    .tap-icon--xs { --tap-icon-size: 14px; }
+    .tap-icon--sm { --tap-icon-size: 16px; }
+    .tap-icon--md { --tap-icon-size: 20px; }
+    .tap-icon--lg { --tap-icon-size: 26px; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s ease;
+    }
+    .back-link:hover { opacity: 0.85; }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, var(--c), #5c4a22);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--c);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 40px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 32px;
+      max-width: 640px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 22px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.15rem;
+      color: var(--ink);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 12px;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 14px 18px;
+      margin-bottom: 8px;
+    }
+    @media (min-width: 560px) {
+      .field-grid--extra { grid-template-columns: 1fr 1fr; }
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .field .hint { font-size: 12px; font-weight: 400; color: #888; }
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 15px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--ink);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--c);
+      box-shadow: 0 0 0 3px rgba(139, 114, 52, 0.15);
+    }
+    input::placeholder { color: #aaa; }
+
+    .debt-row {
+      position: relative;
+      padding: 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      background: var(--c-light);
+      margin-bottom: 12px;
+      transition: border-color 0.2s ease;
+    }
+    .debt-row:hover { border-color: #dcd6c8; }
+    .debt-row__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .debt-row__title { font-size: 12px; font-weight: 700; color: var(--c); text-transform: uppercase; letter-spacing: 0.06em; }
+    .btn-icon {
+      all: unset;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      font-size: 18px;
+      line-height: 1;
+      color: #888;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-icon:hover { background: rgba(0,0,0,0.06); color: var(--ink); }
+    .debt-row .field-grid {
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 640px) {
+      .debt-row .field-grid {
+        grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      }
+    }
+
+    .btn-ghost {
+      all: unset;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      padding: 8px 4px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-ghost:hover { opacity: 0.8; }
+
+    .strategy-cards {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    @media (min-width: 600px) {
+      .strategy-cards { grid-template-columns: 1fr 1fr; }
+    }
+    .strategy-card {
+      display: block;
+      padding: 16px 18px;
+      border-radius: 12px;
+      border: 2px solid var(--c);
+      background: var(--c-light);
+      box-shadow: 0 4px 18px rgba(139, 114, 52, 0.1);
+      text-align: left;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .strategy-card:hover {
+      border-color: var(--c-accent);
+      box-shadow: 0 6px 22px rgba(139, 114, 52, 0.14);
+    }
+    .strategy-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .strategy-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .btn-compare {
+      all: unset;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--gold), #6d5a2a);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-compare:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(139, 114, 52, 0.35);
+    }
+    .btn-compare:active { transform: translateY(0); }
+
+    .results {
+      margin-top: 28px;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.45s ease, max-height 0.55s ease, margin 0.45s ease;
+    }
+    .results.is-visible {
+      opacity: 1;
+      max-height: 8000px;
+      margin-top: 28px;
+    }
+    .results-grid {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 700px) {
+      .results-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .result-card {
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      background: #fff;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .result-card.is-winner {
+      border-color: var(--gold);
+      box-shadow: 0 8px 28px rgba(139, 114, 52, 0.18);
+    }
+    .result-card h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .stat:last-child { border-bottom: none; }
+    .stat dt { color: var(--muted); font-weight: 500; }
+    .stat dd {
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+    .stat dd.highlight { color: var(--c); font-size: 15px; }
+
+    .winner-banner {
+      padding: 16px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--c-light), #fff);
+      border: 1.5px solid var(--c-accent);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 24px;
+      animation: banner-in 0.5s ease both;
+    }
+    @keyframes banner-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .timeline {
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 20px;
+    }
+    .timeline h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+    .timeline-track {
+      position: relative;
+      height: 8px;
+      border-radius: 100px;
+      background: var(--c-light);
+      margin-bottom: 8px;
+      overflow: visible;
+    }
+    .timeline-markers {
+      position: relative;
+      height: 14px;
+      margin-bottom: 4px;
+    }
+    .timeline-marker {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 14px;
+      margin-left: -1px;
+      border-radius: 1px;
+      background: var(--c);
+      opacity: 0.85;
+      transform: translateX(-50%);
+    }
+    .timeline-marker--start {
+      left: 0;
+      transform: none;
+      margin-left: 0;
+    }
+    .timeline-marker--end {
+      left: 100%;
+      transform: translateX(-100%);
+      margin-left: 0;
+    }
+    .timeline-bar {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--c), var(--c-accent));
+      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .timeline-row {
+      margin-bottom: 22px;
+    }
+    .timeline-row:last-child { margin-bottom: 0; }
+    .timeline-caption {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c);
+      margin-bottom: 8px;
+    }
+    .timeline-legend {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-top: 10px;
+    }
+    .timeline-legend li { margin-bottom: 4px; margin-left: 1.1em; }
+
+    .insight {
+      display: flex;
+      gap: 14px;
+      padding: 18px 20px;
+      border-radius: 12px;
+      background: var(--c-light);
+      border: 1px solid #e5dcc8;
+      font-size: 14px;
+      color: #444;
+      line-height: 1.65;
+    }
+    .insight .tap-icon { color: var(--c); flex-shrink: 0; margin-top: 2px; }
+
+    .warn-cap {
+      font-size: 13px;
+      color: #8a5a2a;
+      background: #fff8f0;
+      border: 1px solid #e8d4bc;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tax-note {
+      font-size: 12px;
+      color: #888;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    footer {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 24px 40px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+    }
+    footer a { color: var(--c); font-weight: 600; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html">← Back to hub</a>
+      <div class="brand"><span class="brand-tap">TAP</span><span class="brand-sub">Tools</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="pill">
+      <svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-scale"/></svg>
+      TAP Tool
+    </div>
+    <h1>Debt vs. Investing</h1>
+    <p class="lede">Got extra cash each month? See whether paying down debt faster or investing that money comes out ahead over time.</p>
+
+    <div class="card">
+      <div class="section-label">Your extra monthly cash</div>
+      <div class="field-grid field-grid--extra">
+        <div class="field">
+          <label for="extra-monthly">Extra monthly amount</label>
+          <input type="number" id="extra-monthly" min="0" step="1" value="500" />
+          <span class="hint">Available on top of minimum debt payments — put toward debt or investments.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Debts</h2>
+      <div id="debt-rows"></div>
+      <button type="button" class="btn-ghost" id="add-debt">
+        <svg class="tap-icon tap-icon--sm" aria-hidden="true"><use href="icons.svg#tap-i-circle-dollar"/></svg>
+        Add another debt
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Investment assumptions</div>
+      <div class="field-grid field-grid--extra">
+        <div class="field">
+          <label for="inv-return">Expected annual return</label>
+          <input type="number" id="inv-return" min="0" max="30" step="0.1" value="8" />
+          <span class="hint">Compound monthly (APR ÷ 12).</span>
+        </div>
+        <div class="field">
+          <label for="tax-rate">Tax rate on investment gains</label>
+          <input type="number" id="tax-rate" min="0" max="50" step="0.5" value="15" />
+          <span class="hint">For context only — not included in the comparison math below.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Strategies we compare</div>
+      <div class="strategy-cards" role="group" aria-label="Strategy descriptions">
+        <div class="strategy-card" id="card-debt">
+          <h3>Pay debt first</h3>
+          <p>Avalanche: put your extra toward the highest-rate debt, then roll freed minimums into the next. After debt is gone, invest everything you were paying toward loans.</p>
+        </div>
+        <div class="strategy-card" id="card-invest">
+          <h3>Invest while paying minimums</h3>
+          <p>Pay only minimums on debt and invest your extra from month one. Debts take longer; your portfolio starts growing immediately.</p>
+        </div>
+      </div>
+      <p class="tax-note">After the last debt is paid under either plan, we assume you invest the full amount you had been putting toward debt (all former minimums plus your extra) each month until the comparison date.</p>
+      <p id="form-error" class="warn-cap" hidden style="margin-top:14px;margin-bottom:0"></p>
+      <button type="button" class="btn-compare" id="btn-compare">Compare</button>
+    </div>
+
+    <div class="results" id="results" aria-live="polite">
+      <div id="warn-cap" class="warn-cap" hidden></div>
+      <div class="winner-banner" id="winner-banner"></div>
+      <div class="results-grid">
+        <article class="result-card" id="result-debt">
+          <h3>Debt first</h3>
+          <dl>
+            <div class="stat"><dt>Months until debt-free</dt><dd id="r-d-months">—</dd></div>
+            <div class="stat"><dt>Total interest paid</dt><dd id="r-d-interest">—</dd></div>
+            <div class="stat"><dt>Months investing (after debt)</dt><dd id="r-d-invest-mos">—</dd></div>
+            <div class="stat"><dt>Portfolio at end</dt><dd id="r-d-port">—</dd></div>
+            <div class="stat"><dt>Net worth impact</dt><dd class="highlight" id="r-d-net">—</dd></div>
+          </dl>
+        </article>
+        <article class="result-card" id="result-invest">
+          <h3>Invest first</h3>
+          <dl>
+            <div class="stat"><dt>Months until debt-free</dt><dd id="r-i-months">—</dd></div>
+            <div class="stat"><dt>Total interest paid</dt><dd id="r-i-interest">—</dd></div>
+            <div class="stat"><dt>Portfolio at end</dt><dd id="r-i-port">—</dd></div>
+            <div class="stat"><dt>Net worth impact</dt><dd class="highlight" id="r-i-net">—</dd></div>
+          </dl>
+        </article>
+      </div>
+
+      <div class="timeline">
+        <h3>Timeline</h3>
+        <div class="timeline-row">
+          <div class="timeline-caption">Debt first — debt payoffs &amp; investing</div>
+          <div class="timeline-markers" id="markers-debt" aria-hidden="true"></div>
+          <div class="timeline-track" aria-hidden="true">
+            <div class="timeline-bar" id="bar-debt" style="width:0%"></div>
+          </div>
+          <ul class="timeline-legend" id="legend-debt"></ul>
+        </div>
+        <div class="timeline-row">
+          <div class="timeline-caption">Invest first — investing &amp; debt payoffs</div>
+          <div class="timeline-markers" id="markers-invest" aria-hidden="true"></div>
+          <div class="timeline-track" aria-hidden="true">
+            <div class="timeline-bar" id="bar-invest" style="width:0%"></div>
+          </div>
+          <ul class="timeline-legend" id="legend-invest"></ul>
+        </div>
+      </div>
+
+      <div class="insight">
+        <svg class="tap-icon tap-icon--md" aria-hidden="true"><use href="icons.svg#tap-i-lightbulb"/></svg>
+        <div>
+          <p>High-interest debt (above 7 to 8%) almost always wins when paid first. But if your debt rate is low (under 5%) and you have the discipline to invest consistently, investing while paying minimums can come out ahead. The math matters, but so does your behavior.</p>
+          <p class="tax-note" id="insight-tax" style="margin-top:12px;margin-bottom:0"></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="index.html">← Back to hub</a></p>
+    <p style="margin-top:8px">© The Affluence Project</p>
+  </footer>
+
+  <script>
+    (function () {
+      const MAX_MONTHS = 360;
+      const EPS = 0.02;
+
+      function formatMoney(n) {
+        const v = Math.round(n);
+        return "$" + v.toLocaleString("en-US");
+      }
+
+      function cloneDebts(rows) {
+        return rows.map((r) => ({
+          name: r.name,
+          balance: r.balance,
+          apr: r.apr,
+          min: r.min,
+        }));
+      }
+
+      function sumMins(rows) {
+        return rows.reduce((s, r) => s + r.min, 0);
+      }
+
+      /** Accrue monthly interest, pay mins + optional extra avalanche to highest APR */
+      function debtMonth(debts, extraSnowball, payoffLog, month, strategyKey) {
+        let monthInterest = 0;
+        for (const d of debts) {
+          if (d.balance <= EPS) continue;
+          const intr = d.balance * (d.apr / 12);
+          d.balance += intr;
+          monthInterest += intr;
+        }
+
+        for (const d of debts) {
+          if (d.balance <= EPS) continue;
+          const payMin = Math.min(d.min, d.balance);
+          d.balance -= payMin;
+          if (d.balance <= EPS) {
+            payoffLog.push({ month, name: d.name, strategy: strategyKey });
+          }
+        }
+
+        let extra = extraSnowball;
+        const ordered = debts.filter((d) => d.balance > EPS).sort((a, b) => b.apr - a.apr);
+        while (extra > EPS && ordered.length) {
+          const t = ordered[0];
+          const pay = Math.min(extra, t.balance);
+          t.balance -= pay;
+          extra -= pay;
+          if (t.balance <= EPS) {
+            payoffLog.push({ month, name: t.name, strategy: strategyKey });
+            ordered.shift();
+          }
+        }
+
+        return monthInterest;
+      }
+
+      function simulateFull(params) {
+        const {
+          template,
+          extraMonthly,
+          investDuringDebt,
+          avalancheExtra,
+          annualReturn,
+          horizonMonths,
+        } = params;
+        const debts = cloneDebts(template);
+        const totalInterest = { v: 0 };
+        const payoffLog = [];
+        let portfolio = 0;
+        const r = annualReturn / 100 / 12;
+        const baseMins = sumMins(template);
+
+        for (let month = 1; month <= horizonMonths; month++) {
+          const anyDebt = debts.some((d) => d.balance > EPS);
+
+          if (anyDebt) {
+            const intr = debtMonth(debts, avalancheExtra ? extraMonthly : 0, payoffLog, month, params.key);
+            totalInterest.v += intr;
+            const contrib = investDuringDebt ? extraMonthly : 0;
+            portfolio = portfolio * (1 + r) + contrib;
+          } else {
+            const investAmt = baseMins + extraMonthly;
+            portfolio = portfolio * (1 + r) + investAmt;
+          }
+        }
+
+        const debtFreeMonth = (() => {
+          const d = cloneDebts(template);
+          for (let m = 1; m <= MAX_MONTHS; m++) {
+            debtMonth(d, avalancheExtra ? extraMonthly : 0, [], m, params.key);
+            if (!d.some((x) => x.balance > EPS)) return m;
+          }
+          return MAX_MONTHS;
+        })();
+
+        return {
+          totalInterest: totalInterest.v,
+          portfolio,
+          payoffLog,
+          debtFreeMonth,
+          netWorth: portfolio - totalInterest.v,
+        };
+      }
+
+      let debtRowId = 0;
+      const debtRowsEl = document.getElementById("debt-rows");
+
+      function rowHtml(id, data) {
+        const { name, balance, apr, min } = data;
+        return (
+          '<div class="debt-row" data-row-id="' +
+          id +
+          '">' +
+          '<div class="debt-row__head">' +
+          '<span class="debt-row__title">Debt</span>' +
+          '<button type="button" class="btn-icon remove-debt" aria-label="Remove debt">×</button>' +
+          "</div>" +
+          '<div class="field-grid">' +
+          '<div class="field"><label>Debt name</label><input type="text" class="d-name" value="' +
+          escapeAttr(name) +
+          '" placeholder="e.g. Credit Card" /></div>' +
+          '<div class="field"><label>Balance</label><input type="number" class="d-bal" min="0" step="1" value="' +
+          balance +
+          '" /></div>' +
+          '<div class="field"><label>Interest rate (APR %)</label><input type="number" class="d-apr" min="0" max="40" step="0.01" value="' +
+          apr +
+          '" /></div>' +
+          '<div class="field"><label>Minimum payment</label><input type="number" class="d-min" min="0" step="1" value="' +
+          min +
+          '" /></div>' +
+          "</div></div>"
+        );
+      }
+
+      function escapeAttr(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;");
+      }
+
+      function readDebtsFromDom() {
+        const rows = debtRowsEl.querySelectorAll(".debt-row");
+        const out = [];
+        rows.forEach((row) => {
+          const name = row.querySelector(".d-name").value.trim() || "Debt";
+          const balance = Math.max(0, parseFloat(row.querySelector(".d-bal").value) || 0);
+          const apr = Math.max(0, parseFloat(row.querySelector(".d-apr").value) || 0) / 100;
+          const min = Math.max(0, parseFloat(row.querySelector(".d-min").value) || 0);
+          if (balance > 0 || min > 0) out.push({ name, balance, apr, min });
+        });
+        return out;
+      }
+
+      function addDebtRow(data) {
+        const id = ++debtRowId;
+        debtRowsEl.insertAdjacentHTML("beforeend", rowHtml(id, data));
+        const row = debtRowsEl.lastElementChild;
+        row.querySelector(".remove-debt").addEventListener("click", () => {
+          if (debtRowsEl.querySelectorAll(".debt-row").length <= 1) return;
+          row.remove();
+        });
+      }
+
+      addDebtRow({ name: "Credit Card", balance: 5000, apr: 22, min: 150 });
+      addDebtRow({ name: "Student Loan", balance: 25000, apr: 5.5, min: 280 });
+
+      document.getElementById("add-debt").addEventListener("click", () => {
+        addDebtRow({ name: "Debt", balance: 0, apr: 6, min: 50 });
+      });
+
+      function monthsUntilDebtFree(template, avalancheExtra, extraMonthly) {
+        const d = cloneDebts(template);
+        for (let m = 1; m <= MAX_MONTHS; m++) {
+          debtMonth(d, avalancheExtra ? extraMonthly : 0, [], m, "");
+          if (!d.some((x) => x.balance > EPS)) return m;
+        }
+        return MAX_MONTHS;
+      }
+
+      document.getElementById("btn-compare").addEventListener("click", runCompare);
+
+      function runCompare() {
+        const extraMonthly = Math.max(0, parseFloat(document.getElementById("extra-monthly").value) || 0);
+        const annualReturn = Math.max(0, parseFloat(document.getElementById("inv-return").value) || 0);
+        const taxPct = Math.max(0, parseFloat(document.getElementById("tax-rate").value) || 0);
+        const template = readDebtsFromDom().map((r) => ({
+          name: r.name,
+          balance: r.balance,
+          apr: r.apr,
+          min: r.min,
+        }));
+
+        const warnEl = document.getElementById("warn-cap");
+        const formErr = document.getElementById("form-error");
+        formErr.hidden = true;
+        if (template.length === 0) {
+          formErr.hidden = false;
+          formErr.textContent = "Add at least one debt with a balance or minimum payment.";
+          return;
+        }
+
+        const dDebt = monthsUntilDebtFree(template, true, extraMonthly);
+        const dInvest = monthsUntilDebtFree(template, false, extraMonthly);
+        const capped = dDebt >= MAX_MONTHS || dInvest >= MAX_MONTHS;
+        const T = Math.min(Math.max(dDebt, dInvest), MAX_MONTHS);
+
+        const sDebt = simulateFull({
+          template,
+          extraMonthly,
+          investDuringDebt: false,
+          avalancheExtra: true,
+          annualReturn,
+          horizonMonths: T,
+          key: "debt",
+        });
+        const sInv = simulateFull({
+          template,
+          extraMonthly,
+          investDuringDebt: true,
+          avalancheExtra: false,
+          annualReturn,
+          horizonMonths: T,
+          key: "invest",
+        });
+
+        warnEl.hidden = !capped;
+        if (capped) {
+          warnEl.textContent =
+            "Simulation capped at 30 years. If minimums do not cover interest, balances may never pay off — raise payments or check rates.";
+        }
+
+        const investAfterDebt = Math.max(0, T - sDebt.debtFreeMonth);
+        document.getElementById("r-d-months").textContent =
+          sDebt.debtFreeMonth >= MAX_MONTHS ? "30+ years (capped)" : String(sDebt.debtFreeMonth);
+        document.getElementById("r-d-interest").textContent = formatMoney(sDebt.totalInterest);
+        document.getElementById("r-d-invest-mos").textContent =
+          sDebt.debtFreeMonth >= MAX_MONTHS ? "—" : String(investAfterDebt);
+        document.getElementById("r-d-port").textContent = formatMoney(sDebt.portfolio);
+        document.getElementById("r-d-net").textContent = formatMoney(sDebt.netWorth);
+
+        document.getElementById("r-i-months").textContent =
+          sInv.debtFreeMonth >= MAX_MONTHS ? "30+ years (capped)" : String(sInv.debtFreeMonth);
+        document.getElementById("r-i-interest").textContent = formatMoney(sInv.totalInterest);
+        document.getElementById("r-i-port").textContent = formatMoney(sInv.portfolio);
+        document.getElementById("r-i-net").textContent = formatMoney(sInv.netWorth);
+
+        const diff = sDebt.netWorth - sInv.netWorth;
+        const banner = document.getElementById("winner-banner");
+        const cardD = document.getElementById("result-debt");
+        const cardI = document.getElementById("result-invest");
+        cardD.classList.remove("is-winner");
+        cardI.classList.remove("is-winner");
+
+        if (Math.abs(diff) < 1) {
+          banner.textContent = "Roughly a tie on net worth impact — pick the plan you will stick with.";
+        } else if (diff > 0) {
+          banner.textContent =
+            "Debt first comes out ahead by " + formatMoney(Math.abs(diff)) + " on net worth impact.";
+          cardD.classList.add("is-winner");
+        } else {
+          banner.textContent =
+            "Invest while paying minimums comes out ahead by " + formatMoney(Math.abs(diff)) + " on net worth impact.";
+          cardI.classList.add("is-winner");
+        }
+
+        const taxNote = document.getElementById("insight-tax");
+        if (taxPct > 0) {
+          taxNote.textContent =
+            "Portfolio values are before tax. At a " +
+            taxPct +
+            "% assumed tax on investment gains, take-home would be lower than the numbers above.";
+        } else {
+          taxNote.textContent =
+            "Tax on gains is not applied in the comparison; add your own haircut if you want an after-tax view.";
+        }
+
+        document.getElementById("bar-debt").style.width = "0%";
+        document.getElementById("bar-invest").style.width = "0%";
+        buildTimeline("legend-debt", "markers-debt", sDebt, T, "debt", extraMonthly);
+        buildTimeline("legend-invest", "markers-invest", sInv, T, "invest", extraMonthly);
+
+        document.getElementById("results").classList.add("is-visible");
+        requestAnimationFrame(() => {
+          document.getElementById("bar-debt").style.width = "100%";
+          document.getElementById("bar-invest").style.width = "100%";
+        });
+      }
+
+      function buildTimeline(legendId, markersId, sim, T, mode, extraMonthly) {
+        const ul = document.getElementById(legendId);
+        const markersEl = document.getElementById(markersId);
+        ul.innerHTML = "";
+        markersEl.innerHTML = "";
+        if (T < 1) return;
+
+        const seen = new Set();
+        const payoffs = sim.payoffLog
+          .filter((e) => {
+            const k = e.month + "|" + e.name;
+            if (seen.has(k)) return false;
+            seen.add(k);
+            return true;
+          })
+          .sort((a, b) => a.month - b.month || a.name.localeCompare(b.name));
+
+        payoffs.forEach((e) => {
+          const pct = Math.min(100, (e.month / T) * 100);
+          const m = document.createElement("div");
+          m.className = "timeline-marker";
+          m.style.left = pct + "%";
+          m.title = e.name + ", month " + e.month;
+          markersEl.appendChild(m);
+        });
+
+        const endM = document.createElement("div");
+        endM.className = "timeline-marker timeline-marker--end";
+        endM.title = "Comparison end (month " + T + ")";
+        markersEl.appendChild(endM);
+
+        const items = [];
+        items.push("0 — month 1 · bar spans through month " + T + " (same endpoint for both strategies).");
+
+        if (mode === "debt") {
+          if (sim.debtFreeMonth < MAX_MONTHS) {
+            items.push(
+              "Investing starts month " +
+                (sim.debtFreeMonth + 1) +
+                " (all former minimums plus your extra; $0 to investments while any debt remains)."
+            );
+          }
+          payoffs.forEach((e) => items.push(e.name + " paid off in month " + e.month + "."));
+        } else {
+          items.push(
+            "Investing " + formatMoney(extraMonthly) + " per month starts in month 1 alongside minimum debt payments."
+          );
+          payoffs.forEach((e) => items.push(e.name + " paid off in month " + e.month + "."));
+          if (sim.debtFreeMonth < MAX_MONTHS) {
+            items.push(
+              "After the last debt (month " +
+                sim.debtFreeMonth +
+                "), contributions rise to all former minimums plus your extra through month " +
+                T +
+                "."
+            );
+          }
+        }
+
+        items.forEach((text) => {
+          const li = document.createElement("li");
+          li.textContent = text;
+          ul.appendChild(li);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
