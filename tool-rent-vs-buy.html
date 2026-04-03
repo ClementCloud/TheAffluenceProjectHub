@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rent vs. Buy calculator — TAP Tools | The Affluence Project</title>
+  <title>Rent vs. Buy calculator - TAP Tools | The Affluence Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -625,7 +625,7 @@
       var renterInsuranceTotal = renterIns * totalMonths;
       var rentTotal = rentPaidOnly + renterInsuranceTotal;
 
-      /* —— Buy: per-year taxes & maintenance on appreciated value —— */
+      /* -- Buy: per-year taxes & maintenance on appreciated value -- */
       var buyExtraAnnual = 0;
       var totalMortgagePaid = 0;
       var y;
@@ -729,13 +729,13 @@
         "<h3 class=\"breakdown-title\">" + r.years + "-year detail</h3>" +
         '<table class="breakdown-table">' +
         "<thead><tr><th>Line item</th><th>Renting</th><th>Buying</th></tr></thead><tbody>" +
-        "<tr><td>Total rent paid</td><td class=\"num\">" + fmtMoney(r.rentPaidOnly) + "</td><td class=\"sub\">—</td></tr>" +
-        "<tr><td>Renter&rsquo;s insurance (total)</td><td class=\"num\">" + fmtMoney(r.renterInsuranceTotal) + "</td><td class=\"sub\">—</td></tr>" +
-        "<tr><td>Total mortgage payments</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.totalMortgagePaid) + "</td></tr>" +
-        "<tr><td>Remaining loan balance</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.remainingBalance) + "</td></tr>" +
-        "<tr><td>Estimated home value (3% / yr)</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.homeValue) + "</td></tr>" +
-        "<tr><td>Home equity</td><td class=\"sub\">—</td><td class=\"num\">" + fmtMoney(r.equity) + "</td></tr>" +
-        "<tr><td>Investment portfolio (8% / yr, monthly)</td><td class=\"num\">" + fmtMoney(r.portfolio) + "</td><td class=\"sub\">—</td></tr>" +
+        "<tr><td>Total rent paid</td><td class=\"num\">" + fmtMoney(r.rentPaidOnly) + "</td><td class=\"sub\">-</td></tr>" +
+        "<tr><td>Renter&rsquo;s insurance (total)</td><td class=\"num\">" + fmtMoney(r.renterInsuranceTotal) + "</td><td class=\"sub\">-</td></tr>" +
+        "<tr><td>Total mortgage payments</td><td class=\"sub\">-</td><td class=\"num\">" + fmtMoney(r.totalMortgagePaid) + "</td></tr>" +
+        "<tr><td>Remaining loan balance</td><td class=\"sub\">-</td><td class=\"num\">" + fmtMoney(r.remainingBalance) + "</td></tr>" +
+        "<tr><td>Estimated home value (3% / yr)</td><td class=\"sub\">-</td><td class=\"num\">" + fmtMoney(r.homeValue) + "</td></tr>" +
+        "<tr><td>Home equity</td><td class=\"sub\">-</td><td class=\"num\">" + fmtMoney(r.equity) + "</td></tr>" +
+        "<tr><td>Investment portfolio (8% / yr, monthly)</td><td class=\"num\">" + fmtMoney(r.portfolio) + "</td><td class=\"sub\">-</td></tr>" +
         "<tr><td>Net wealth position</td><td class=\"num\">" + fmtMoney(r.netRent) + "</td><td class=\"num\">" + fmtMoney(r.netBuy) + "</td></tr>" +
         "</tbody></table>";
       breakdownEl.appendChild(block);

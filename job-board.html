@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Job Board - TAP Young Professionals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #FDFCFA;
+      color: #444;
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.65;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .site-header__inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .back-link {
+      color: var(--c);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover { opacity: 0.7; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-tap {
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 20px;
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand-sub {
+      color: #888;
+      -webkit-text-fill-color: #888;
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--c);
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+    }
+
+    .pill-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .hero h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 38px);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .hero .lede {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 640px;
+    }
+
+    .hero .note {
+      font-size: 13px;
+      color: #999;
+      margin-top: 8px;
+    }
+
+    /* ── Filter Bar ── */
+    .filter-bar {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0;
+      margin-bottom: 28px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+      font-size: 13px;
+      font-weight: 600;
+      font-family: "DM Sans", sans-serif;
+      padding: 8px 18px;
+      border-radius: 100px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      color: #555;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .filter-chip:hover {
+      border-color: var(--c-accent);
+      color: var(--c);
+    }
+
+    .filter-chip.is-active {
+      background: var(--c);
+      border-color: var(--c);
+      color: #fff;
+    }
+
+    /* ── Job Listings ── */
+    .jobs-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+
+    .jobs-count {
+      font-size: 13px;
+      color: #999;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .job-card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s, opacity 0.3s, transform 0.3s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .job-card:hover {
+      border-color: var(--c-accent);
+    }
+
+    .job-card.fade-in {
+      animation: cardFadeIn 0.35s ease forwards;
+    }
+
+    @keyframes cardFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .job-card.is-hidden {
+      display: none;
+    }
+
+    .job-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .job-card__title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .job-card__company {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .referral-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+
+    .job-card__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .meta-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      background: var(--c-light);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .job-card__desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ── No Results ── */
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .no-results.is-visible {
+      display: block;
+    }
+
+    /* ── Resume Section ── */
+    .resume-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 2px solid var(--c-light);
+    }
+
+    .resume-card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .resume-card h2 {
+      font-family: "Playfair Display", serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .resume-lede {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.55;
+    }
+
+    .form-row {
+      margin-bottom: 18px;
+    }
+
+    .form-row label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .form-row input[type="text"],
+    .form-row input[type="email"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: "DM Sans", sans-serif;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-row input[type="text"]:focus,
+    .form-row input[type="email"]:focus {
+      border-color: var(--c);
+      box-shadow: 0 0 0 3px var(--c-light);
+    }
+
+    .upload-zone {
+      border: 2px dashed var(--line);
+      border-radius: 14px;
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fafaf8;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--c-accent);
+      background: var(--c-light);
+    }
+
+    .upload-zone.drag-over {
+      border-color: var(--c);
+      background: var(--c-light);
+    }
+
+    .upload-zone.has-file {
+      border-color: var(--c);
+      border-style: solid;
+      background: var(--c-light);
+    }
+
+    .upload-zone__icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .upload-zone__text strong {
+      font-size: 15px;
+      color: var(--ink);
+    }
+
+    .upload-zone__hint {
+      font-size: 13px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .upload-zone__filename {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      margin-top: 10px;
+      min-height: 0;
+    }
+
+    .upload-zone__filename:empty {
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px 0;
+      margin-top: 24px;
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: "DM Sans", sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(139, 114, 52, 0.25);
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(139, 114, 52, 0.35);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 4px 14px rgba(139, 114, 52, 0.25);
+    }
+
+    .form-error {
+      font-size: 13px;
+      color: #c0392b;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .form-error.is-visible {
+      display: block;
+    }
+
+    .form-success {
+      background: var(--c-light);
+      border: 1.5px solid var(--c-accent);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--ink);
+      margin-top: 16px;
+      line-height: 1.55;
+      display: none;
+    }
+
+    .form-success.is-visible {
+      display: block;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      border-top: 1px solid var(--line);
+    }
+
+    .site-footer a {
+      color: var(--c-accent);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 16px;
+      font-size: 14px;
+      transition: opacity 0.2s;
+    }
+
+    .site-footer a:hover { opacity: 0.8; }
+
+    .footer-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 8px;
+    }
+
+    .copy {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .site-header__inner { padding: 12px 16px; }
+      .hero { padding: 28px 16px; }
+      .filter-bar { padding: 0 16px; }
+      .jobs-section { padding: 0 16px 32px; }
+      .resume-section { padding: 0 16px 40px; margin-top: 32px; padding-top: 28px; }
+      .resume-card { padding: 24px 20px; }
+      .job-card { padding: 18px 18px; }
+      .job-card__header { flex-wrap: wrap; }
+      .upload-zone { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Young Professionals</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="pill-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a4 4 0 0 0-8 0v2"/></svg>
+      TAP Job Board
+    </div>
+    <h1>Job Board</h1>
+    <p class="lede">Curated roles across industries, backed by TAP referrals for eligible applicants. Browse openings and submit your resume below.</p>
+    <p class="note">Roles marked with a referral badge are eligible for a TAP-backed referral.</p>
+  </section>
+
+  <!-- Filter Bar -->
+  <div class="filter-bar">
+    <div class="filter-chips" id="filter-chips">
+      <button class="filter-chip is-active" data-filter="all">All Industries</button>
+      <button class="filter-chip" data-filter="finance">Finance &amp; Banking</button>
+      <button class="filter-chip" data-filter="technology">Technology</button>
+      <button class="filter-chip" data-filter="healthcare">Healthcare</button>
+      <button class="filter-chip" data-filter="real-estate">Real Estate</button>
+      <button class="filter-chip" data-filter="marketing">Marketing</button>
+      <button class="filter-chip" data-filter="education">Education</button>
+      <button class="filter-chip" data-filter="government">Government</button>
+      <button class="filter-chip" data-filter="consulting">Consulting</button>
+    </div>
+  </div>
+
+  <!-- Job Listings -->
+  <section class="jobs-section">
+    <p class="jobs-count" id="jobs-count"></p>
+
+    <div id="jobs-list">
+
+      <!-- Finance & Banking -->
+      <div class="job-card" data-industry="finance">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Financial Analyst</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Finance &amp; Banking</span>
+          <span class="meta-tag">New York, NY</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Analyze market trends and prepare financial models for investment decisions at a top-tier firm.</p>
+      </div>
+
+      <div class="job-card" data-industry="finance">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Junior Accountant</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Finance &amp; Banking</span>
+          <span class="meta-tag">Atlanta, GA</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Support monthly close processes, reconciliations, and financial reporting for a growing company.</p>
+      </div>
+
+      <div class="job-card" data-industry="finance">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Wealth Management Associate</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Finance &amp; Banking</span>
+          <span class="meta-tag">Chicago, IL</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Assist advisors with client portfolio management, research, and relationship building.</p>
+      </div>
+
+      <!-- Technology -->
+      <div class="job-card" data-industry="technology">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Software Engineer (Entry-Level)</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Technology</span>
+          <span class="meta-tag">Remote</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Build and maintain web applications using modern frameworks in a collaborative engineering team.</p>
+      </div>
+
+      <div class="job-card" data-industry="technology">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Data Analyst</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Technology</span>
+          <span class="meta-tag">San Francisco, CA</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Transform raw data into actionable insights using SQL, Python, and visualization tools.</p>
+      </div>
+
+      <div class="job-card" data-industry="technology">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">IT Support Specialist</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Technology</span>
+          <span class="meta-tag">Dallas, TX</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Provide technical support and troubleshoot hardware/software issues across the organization.</p>
+      </div>
+
+      <!-- Healthcare -->
+      <div class="job-card" data-industry="healthcare">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Medical Billing Coordinator</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Healthcare</span>
+          <span class="meta-tag">Houston, TX</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Process insurance claims, verify patient coverage, and manage billing workflows.</p>
+      </div>
+
+      <div class="job-card" data-industry="healthcare">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Public Health Associate</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Healthcare</span>
+          <span class="meta-tag">Washington, DC</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Support community health programs and data collection for a federal health agency.</p>
+      </div>
+
+      <!-- Real Estate -->
+      <div class="job-card" data-industry="real-estate">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Property Management Assistant</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Real Estate</span>
+          <span class="meta-tag">Miami, FL</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Coordinate tenant communications, lease renewals, and property maintenance schedules.</p>
+      </div>
+
+      <div class="job-card" data-industry="real-estate">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Real Estate Analyst</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Real Estate</span>
+          <span class="meta-tag">Los Angeles, CA</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Evaluate commercial properties, run financial models, and support acquisition decisions.</p>
+      </div>
+
+      <!-- Marketing -->
+      <div class="job-card" data-industry="marketing">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Social Media Coordinator</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Marketing</span>
+          <span class="meta-tag">Remote</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Plan and execute content strategies across Instagram, LinkedIn, and TikTok for a growing brand.</p>
+      </div>
+
+      <!-- Education -->
+      <div class="job-card" data-industry="education">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Academic Advisor</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Education</span>
+          <span class="meta-tag">Philadelphia, PA</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Guide students through course selection, career planning, and academic support resources.</p>
+      </div>
+
+      <!-- Government -->
+      <div class="job-card" data-industry="government">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Budget Analyst</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Government</span>
+          <span class="meta-tag">Washington, DC</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Review agency budgets, track spending, and prepare financial reports for federal programs.</p>
+      </div>
+
+      <!-- Consulting -->
+      <div class="job-card" data-industry="consulting">
+        <div class="job-card__header">
+          <div>
+            <h3 class="job-card__title">Junior Consultant</h3>
+            <p class="job-card__company">Posted by TAP Partner</p>
+          </div>
+          <span class="referral-badge">TAP Referral</span>
+        </div>
+        <div class="job-card__meta">
+          <span class="meta-tag">Consulting</span>
+          <span class="meta-tag">Boston, MA</span>
+          <span class="meta-tag">Full-Time</span>
+        </div>
+        <p class="job-card__desc">Support client engagements with research, data analysis, and presentation development.</p>
+      </div>
+
+    </div>
+
+    <div class="no-results" id="no-results">
+      No open roles in this industry right now. Check back soon or submit your resume below to be considered for future opportunities.
+    </div>
+  </section>
+
+  <!-- Resume Submission -->
+  <section class="resume-section">
+    <div class="resume-card">
+      <h2>Submit Your Resume</h2>
+      <p class="resume-lede">Interested in a TAP-backed referral? Send us your resume and we will match you with eligible openings.</p>
+
+      <div class="resume-form" id="resume-form">
+        <div class="form-row">
+          <label for="applicant-name">Full Name *</label>
+          <input type="text" id="applicant-name" placeholder="Your full name" required />
+        </div>
+        <div class="form-row">
+          <label for="applicant-email">Email *</label>
+          <input type="email" id="applicant-email" placeholder="you@email.com" required />
+        </div>
+        <div class="form-row">
+          <label for="applicant-role">Role of Interest</label>
+          <input type="text" id="applicant-role" placeholder="e.g. Financial Analyst, Software Engineer" />
+        </div>
+
+        <div class="upload-zone" id="upload-zone">
+          <div class="upload-zone__icon">📄</div>
+          <p class="upload-zone__text"><strong>Drag and drop your resume here</strong></p>
+          <p class="upload-zone__hint">or click to browse (PDF, DOC, DOCX)</p>
+          <input type="file" id="resume-file" accept=".pdf,.doc,.docx" hidden />
+          <p class="upload-zone__filename" id="filename-display"></p>
+        </div>
+
+        <p class="form-error" id="form-error"></p>
+
+        <button class="submit-btn" id="submit-btn">Submit Application</button>
+
+        <div class="form-success" id="form-success"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <a href="index.html">← Back to the TAP hub</a>
+    <div class="footer-brand">The Affluence Project</div>
+    <p class="copy">&copy; 2026 The Affluence Project</p>
+  </footer>
+
+  <script>
+    (function () {
+      const chips = document.querySelectorAll('.filter-chip');
+      const cards = document.querySelectorAll('.job-card');
+      const countEl = document.getElementById('jobs-count');
+      const noResults = document.getElementById('no-results');
+
+      function updateCount(visible) {
+        countEl.textContent = 'Showing ' + visible + ' role' + (visible !== 1 ? 's' : '');
+      }
+
+      function filterJobs(industry) {
+        let visible = 0;
+        cards.forEach(function (card) {
+          if (industry === 'all' || card.dataset.industry === industry) {
+            card.classList.remove('is-hidden');
+            card.classList.remove('fade-in');
+            void card.offsetWidth;
+            card.classList.add('fade-in');
+            visible++;
+          } else {
+            card.classList.add('is-hidden');
+            card.classList.remove('fade-in');
+          }
+        });
+        updateCount(visible);
+        if (visible === 0) {
+          noResults.classList.add('is-visible');
+        } else {
+          noResults.classList.remove('is-visible');
+        }
+      }
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          chips.forEach(function (c) { c.classList.remove('is-active'); });
+          chip.classList.add('is-active');
+          filterJobs(chip.dataset.filter);
+        });
+      });
+
+      updateCount(cards.length);
+
+      // Upload zone
+      var uploadZone = document.getElementById('upload-zone');
+      var fileInput = document.getElementById('resume-file');
+      var filenameDisplay = document.getElementById('filename-display');
+      var selectedFile = null;
+      var allowedTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
+      var allowedExtensions = ['.pdf', '.doc', '.docx'];
+
+      function isValidFile(file) {
+        var name = file.name.toLowerCase();
+        var ext = name.substring(name.lastIndexOf('.'));
+        return allowedExtensions.indexOf(ext) !== -1;
+      }
+
+      function handleFile(file) {
+        if (!isValidFile(file)) {
+          filenameDisplay.textContent = 'Invalid file type. Please upload a PDF, DOC, or DOCX.';
+          filenameDisplay.style.color = '#c0392b';
+          uploadZone.classList.remove('has-file');
+          selectedFile = null;
+          return;
+        }
+        selectedFile = file;
+        filenameDisplay.textContent = file.name;
+        filenameDisplay.style.color = '';
+        uploadZone.classList.add('has-file');
+      }
+
+      uploadZone.addEventListener('click', function () {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', function () {
+        if (fileInput.files.length > 0) {
+          handleFile(fileInput.files[0]);
+        }
+      });
+
+      uploadZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        uploadZone.classList.add('drag-over');
+      });
+
+      uploadZone.addEventListener('dragleave', function () {
+        uploadZone.classList.remove('drag-over');
+      });
+
+      uploadZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        uploadZone.classList.remove('drag-over');
+        if (e.dataTransfer.files.length > 0) {
+          handleFile(e.dataTransfer.files[0]);
+        }
+      });
+
+      // Submit
+      var submitBtn = document.getElementById('submit-btn');
+      var formError = document.getElementById('form-error');
+      var formSuccess = document.getElementById('form-success');
+      var nameInput = document.getElementById('applicant-name');
+      var emailInput = document.getElementById('applicant-email');
+      var roleInput = document.getElementById('applicant-role');
+
+      function showError(msg) {
+        formError.textContent = msg;
+        formError.classList.add('is-visible');
+        formSuccess.classList.remove('is-visible');
+      }
+
+      function hideError() {
+        formError.classList.remove('is-visible');
+      }
+
+      function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      }
+
+      submitBtn.addEventListener('click', function () {
+        hideError();
+
+        var name = nameInput.value.trim();
+        var email = emailInput.value.trim();
+        var role = roleInput.value.trim() || 'Open to opportunities';
+
+        if (!name) {
+          showError('Please enter your full name.');
+          return;
+        }
+        if (!email) {
+          showError('Please enter your email address.');
+          return;
+        }
+        if (!isValidEmail(email)) {
+          showError('Please enter a valid email address.');
+          return;
+        }
+        if (!selectedFile) {
+          showError('Please upload your resume before submitting.');
+          return;
+        }
+
+        var subject = encodeURIComponent('TAP Job Board Application - ' + name);
+        var body = encodeURIComponent(
+          'Hi TAP Team,\n\n' +
+          'My name is ' + name + ' and I am interested in applying through the TAP Job Board.\n\n' +
+          'Email: ' + email + '\n' +
+          'Role of Interest: ' + role + '\n\n' +
+          'I have attached my resume for your review. Please let me know if there is any additional information needed.\n\n' +
+          'Thank you,\n' + name
+        );
+
+        var mailto = 'mailto:info@theaffluenceproject.org?subject=' + subject + '&body=' + body;
+        window.location.href = mailto;
+
+        formSuccess.innerHTML = 'Your email client has been opened. Please attach your resume file (<strong>' + selectedFile.name + '</strong>) to the email and send it.';
+        formSuccess.classList.add('is-visible');
+      });
+    })();
+  </script>
+
+</body>
+</html>

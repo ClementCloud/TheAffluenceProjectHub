@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wills & Estate Basics: TAP | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --section-color: #6B5B8A;
+      --section-light: #F2EFF6;
+      --section-accent: #B8A9D4;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      color: #444;
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--section-color);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-link:hover { opacity: 0.8; }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--section-color);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .pill svg { width: 16px; height: 16px; color: inherit; }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 38px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .guide-section {
+      margin-bottom: 36px;
+    }
+    .guide-section h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(20px, 3vw, 24px);
+      font-weight: 700;
+      color: var(--ink);
+      border-bottom: 2px solid var(--section-light);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      line-height: 1.3;
+    }
+    .guide-section > p {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .guide-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 0;
+    }
+    .guide-list li {
+      display: flex;
+      gap: 14px;
+      padding: 14px 18px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+    }
+    .guide-list__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--section-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .guide-list li > div {
+      min-width: 0;
+    }
+    .guide-list li strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .guide-list li span:not(.guide-list__icon) {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .callout {
+      background: var(--section-light);
+      border: 1.5px solid var(--section-accent);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .callout__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(107, 91, 138, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .callout__body {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.6;
+      min-width: 0;
+    }
+    .callout__body strong {
+      color: var(--ink);
+    }
+
+    .action-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      margin-top: 32px;
+    }
+    .action-box h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--section-color);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .action-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .action-list label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1.5;
+      color: #333;
+    }
+    .action-list input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      accent-color: var(--section-color);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .action-list label.is-checked {
+      color: var(--muted);
+      text-decoration: line-through;
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+    .site-footer a:hover { opacity: 0.85; }
+    .footer-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 8px;
+    }
+    .copy {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+      <div class="brand">
+        <span class="brand-tap">TAP</span><span class="brand-sub">Parents</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="pill">
+      <svg aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-scroll-text"/></svg>
+      TAP Parents
+    </div>
+    <h1>Wills & Estate Basics</h1>
+    <p class="lede">Nobody wants to think about this. But the people you love will thank you for planning ahead.</p>
+
+    <!-- Section 1 -->
+    <section class="guide-section">
+      <h2>Why You Need a Will (Even if You're Young)</h2>
+      <p>If you have children, you need a will. Period. It's not about how much money you have. It's about who makes decisions when you can't.</p>
+      <ul class="guide-list">
+        <li>
+          <span class="guide-list__icon">⚖️</span>
+          <div><strong>Without a will, the state decides</strong><span>Intestacy laws vary, but the result is the same: a judge, not you, decides who gets your assets and who raises your kids. The process is slow, expensive, and public.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">👶</span>
+          <div><strong>Guardianship is the real reason</strong><span>For parents, the most important thing a will does is name who raises your children. Without one, a court picks, and family members may fight over it.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🎯</span>
+          <div><strong>It's about control and clarity</strong><span>A will isn't morbid. It's a gift to the people you leave behind. It removes confusion, prevents conflict, and ensures your wishes are honored, not guessed at.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">⏰</span>
+          <div><strong>Young doesn't mean invincible</strong><span>Accidents and illness don't wait for retirement age. If you own anything or love anyone, a will protects them right now, not someday.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 2 -->
+    <section class="guide-section">
+      <h2>The Essential Documents</h2>
+      <p>A will is the starting point, but a complete estate plan has four pieces. Each one handles a different scenario.</p>
+      <ul class="guide-list">
+        <li>
+          <span class="guide-list__icon">📜</span>
+          <div><strong>Last Will and Testament</strong><span>Says who gets your stuff and who raises your kids. It only takes effect after death, and it goes through probate (court review).</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🏥</span>
+          <div><strong>Living Will (Healthcare Directive)</strong><span>Spells out your medical wishes if you can't speak for yourself: life support, resuscitation, pain management. This isn't about death, it's about dignity.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🔑</span>
+          <div><strong>Durable Power of Attorney</strong><span>Names someone to handle your finances if you're incapacitated: paying bills, managing accounts, filing taxes. Without it, your family needs a court order.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🩺</span>
+          <div><strong>Healthcare Proxy</strong><span>Names someone to make medical decisions on your behalf. Different from a living will; the proxy fills in the gaps for situations you didn't anticipate.</span></div>
+        </li>
+      </ul>
+      <div class="callout">
+        <div class="callout__icon">💡</div>
+        <div class="callout__body">
+          <strong>Real talk on cost:</strong> A basic will costs $200–$500 through an attorney or as little as $50 online through services like Trust & Will or FreeWill. Not having one costs your family thousands in stress, legal fees, and court time. This is one of the cheapest forms of protection you can buy.
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section class="guide-section">
+      <h2>Naming a Guardian</h2>
+      <p>This is the conversation most parents avoid, and the one that matters most. Don't assume family members already know your wishes.</p>
+      <ul class="guide-list">
+        <li>
+          <span class="guide-list__icon">💜</span>
+          <div><strong>Choose by values, not obligation</strong><span>The best guardian shares your parenting values, has emotional stability, and actually wants the responsibility. Don't default to the oldest sibling because it feels expected.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">💰</span>
+          <div><strong>Consider financial readiness</strong><span>A guardian doesn't need to be rich, but they should be stable. Life insurance proceeds and your estate can help fund the care, so put that in writing too.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🔄</span>
+          <div><strong>Name alternates</strong><span>Your first choice might not be able or willing when the time comes. Name a backup, and ideally a third option. Update every few years or after major life changes.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🗣️</span>
+          <div><strong>Have the actual conversation</strong><span>Don't surprise someone with guardianship in a document they've never seen. Ask them directly, explain your reasoning, and confirm they're willing.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 4 -->
+    <section class="guide-section">
+      <h2>Beneficiary Designations</h2>
+      <p>Here's a fact most people don't know: beneficiary designations override your will. If your will says one thing and your 401(k) beneficiary form says another, the form wins.</p>
+      <ul class="guide-list">
+        <li>
+          <span class="guide-list__icon">🏦</span>
+          <div><strong>Check every account</strong><span>Bank accounts, 401(k), IRA, life insurance policies, brokerage accounts, HSA. Each one has its own beneficiary form. Review them all.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">📅</span>
+          <div><strong>Review yearly</strong><span>Marriage, divorce, new children, death of a beneficiary. Any life change means your forms may be outdated. Put a yearly review on your calendar.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">📋</span>
+          <div><strong>POD and TOD accounts</strong><span>Payable-on-Death (bank) and Transfer-on-Death (brokerage) designations let assets pass directly to a named person without probate. Simple, free, and hugely effective.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">⚠️</span>
+          <div><strong>Don't name minors directly</strong><span>If you list a child as beneficiary, a court will appoint a guardian to manage the money until they're 18, and then they get it all at once. Use a trust or custodial account instead.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 5 -->
+    <section class="guide-section">
+      <h2>Life Insurance Basics</h2>
+      <p>If anyone depends on your income, you need life insurance. It's not complicated once you know the basics.</p>
+      <ul class="guide-list">
+        <li>
+          <span class="guide-list__icon">📊</span>
+          <div><strong>Term vs. whole life</strong><span>Term insurance covers you for a set period (20 or 30 years) at a low cost. Whole life is permanent but costs 5–15x more. For most families, term is the clear winner; it covers the years your dependents need you most.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🧮</span>
+          <div><strong>How much do you need?</strong><span>A common rule: 10–12x your annual income. A family earning $80K should have $800K–$960K in coverage. Factor in mortgage payoff, childcare costs, and college funding.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">⏳</span>
+          <div><strong>Buy it young</strong><span>A healthy 30-year-old can get a $500K 20-year term policy for $20–$30/month. Wait until 45 and that same policy might cost $60–$80/month, or be unavailable if health changes.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">🏢</span>
+          <div><strong>Employer vs. personal</strong><span>Employer-provided life insurance is a nice perk (usually 1–2x salary), but it disappears when you leave the job. Always carry your own personal policy as your foundation.</span></div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Section 6 -->
+    <section class="guide-section">
+      <h2>Where to Keep Your Documents</h2>
+      <p>Having the right documents means nothing if nobody can find them when it matters. Accessibility is part of the plan.</p>
+      <ul class="guide-list">
+        <li>
+          <span class="guide-list__icon">🔒</span>
+          <div><strong>Fireproof safe at home</strong><span>Store originals in a fireproof, waterproof safe. A bank safe deposit box works too, but access can be delayed after death, so check your state's rules.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">📑</span>
+          <div><strong>Give copies to trusted people</strong><span>Your executor, your guardian, and at least one other trusted person should have copies. Don't keep everything in one place only you can access.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">💻</span>
+          <div><strong>Digital access matters</strong><span>Use a password manager and share master access with your executor or spouse. Include login info for bank accounts, insurance portals, email, and social media.</span></div>
+        </li>
+        <li>
+          <span class="guide-list__icon">📁</span>
+          <div><strong>Create a "what if" binder</strong><span>One physical folder with: will location, insurance policy numbers, bank account list, financial advisor contact, attorney contact, digital passwords reference, and a letter of instruction. Label it clearly and tell someone where it is.</span></div>
+        </li>
+      </ul>
+      <div class="callout">
+        <div class="callout__icon">🎯</div>
+        <div class="callout__body">
+          <strong>The one thing to do today:</strong> Tell your executor (or spouse, or trusted person) where your important documents are. If something happened tonight, could they find your will, insurance policies, and account information? If not, fix that first.
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Checklist -->
+    <div class="action-box">
+      <h3>✅ Your action checklist</h3>
+      <ul class="action-list">
+        <li><label><input type="checkbox" data-check="wills-1" /> Draft or update your will. Even a simple online will is better than nothing</label></li>
+        <li><label><input type="checkbox" data-check="wills-2" /> Name a guardian for your children and have the conversation with them</label></li>
+        <li><label><input type="checkbox" data-check="wills-3" /> Review all beneficiary designations on every account (bank, 401k, IRA, life insurance)</label></li>
+        <li><label><input type="checkbox" data-check="wills-4" /> Get a term life insurance quote; it takes 10 minutes online</label></li>
+        <li><label><input type="checkbox" data-check="wills-5" /> Create a "what if" binder with all important documents and contacts</label></li>
+        <li><label><input type="checkbox" data-check="wills-6" /> Tell your executor or spouse where to find everything</label></li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <a href="index.html">← Back to the TAP hub</a>
+    <div class="footer-brand">The Affluence Project</div>
+    <p class="copy">© 2026 The Affluence Project</p>
+  </footer>
+
+  <script>
+(function () {
+  var STORAGE_KEY = "tap-parent-wills-v1";
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      var o = JSON.parse(raw);
+      return o && typeof o === "object" ? o : {};
+    } catch (e) { return {}; }
+  }
+
+  function saveState(s) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) {}
+  }
+
+  var state = loadState();
+
+  function applyStyles() {
+    document.querySelectorAll(".action-list label").forEach(function (label) {
+      var input = label.querySelector("input");
+      label.classList.toggle("is-checked", input && input.checked);
+    });
+  }
+
+  function syncFromState() {
+    document.querySelectorAll("input[data-check]").forEach(function (input) {
+      input.checked = !!state[input.getAttribute("data-check")];
+    });
+    applyStyles();
+  }
+
+  document.querySelectorAll("input[data-check]").forEach(function (input) {
+    input.addEventListener("change", function () {
+      var id = input.getAttribute("data-check");
+      if (input.checked) state[id] = true;
+      else delete state[id];
+      saveState(state);
+      applyStyles();
+    });
+  });
+
+  syncFromState();
+})();
+  </script>
+</body>
+</html>

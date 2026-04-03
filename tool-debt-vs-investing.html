@@ -510,7 +510,7 @@
         <div class="field">
           <label for="extra-monthly">Extra monthly amount</label>
           <input type="number" id="extra-monthly" min="0" step="1" value="500" />
-          <span class="hint">Available on top of minimum debt payments — put toward debt or investments.</span>
+          <span class="hint">Available on top of minimum debt payments. Put toward debt or investments.</span>
         </div>
       </div>
     </div>
@@ -535,7 +535,7 @@
         <div class="field">
           <label for="tax-rate">Tax rate on investment gains</label>
           <input type="number" id="tax-rate" min="0" max="50" step="0.5" value="15" />
-          <span class="hint">For context only — not included in the comparison math below.</span>
+          <span class="hint">For context only, not included in the comparison math below.</span>
         </div>
       </div>
     </div>
@@ -564,20 +564,20 @@
         <article class="result-card" id="result-debt">
           <h3>Debt first</h3>
           <dl>
-            <div class="stat"><dt>Months until debt-free</dt><dd id="r-d-months">—</dd></div>
-            <div class="stat"><dt>Total interest paid</dt><dd id="r-d-interest">—</dd></div>
-            <div class="stat"><dt>Months investing (after debt)</dt><dd id="r-d-invest-mos">—</dd></div>
-            <div class="stat"><dt>Portfolio at end</dt><dd id="r-d-port">—</dd></div>
-            <div class="stat"><dt>Net worth impact</dt><dd class="highlight" id="r-d-net">—</dd></div>
+            <div class="stat"><dt>Months until debt-free</dt><dd id="r-d-months">-</dd></div>
+            <div class="stat"><dt>Total interest paid</dt><dd id="r-d-interest">-</dd></div>
+            <div class="stat"><dt>Months investing (after debt)</dt><dd id="r-d-invest-mos">-</dd></div>
+            <div class="stat"><dt>Portfolio at end</dt><dd id="r-d-port">-</dd></div>
+            <div class="stat"><dt>Net worth impact</dt><dd class="highlight" id="r-d-net">-</dd></div>
           </dl>
         </article>
         <article class="result-card" id="result-invest">
           <h3>Invest first</h3>
           <dl>
-            <div class="stat"><dt>Months until debt-free</dt><dd id="r-i-months">—</dd></div>
-            <div class="stat"><dt>Total interest paid</dt><dd id="r-i-interest">—</dd></div>
-            <div class="stat"><dt>Portfolio at end</dt><dd id="r-i-port">—</dd></div>
-            <div class="stat"><dt>Net worth impact</dt><dd class="highlight" id="r-i-net">—</dd></div>
+            <div class="stat"><dt>Months until debt-free</dt><dd id="r-i-months">-</dd></div>
+            <div class="stat"><dt>Total interest paid</dt><dd id="r-i-interest">-</dd></div>
+            <div class="stat"><dt>Portfolio at end</dt><dd id="r-i-port">-</dd></div>
+            <div class="stat"><dt>Net worth impact</dt><dd class="highlight" id="r-i-net">-</dd></div>
           </dl>
         </article>
       </div>
@@ -585,7 +585,7 @@
       <div class="timeline">
         <h3>Timeline</h3>
         <div class="timeline-row">
-          <div class="timeline-caption">Debt first — debt payoffs &amp; investing</div>
+          <div class="timeline-caption">Debt first - debt payoffs &amp; investing</div>
           <div class="timeline-markers" id="markers-debt" aria-hidden="true"></div>
           <div class="timeline-track" aria-hidden="true">
             <div class="timeline-bar" id="bar-debt" style="width:0%"></div>
@@ -593,7 +593,7 @@
           <ul class="timeline-legend" id="legend-debt"></ul>
         </div>
         <div class="timeline-row">
-          <div class="timeline-caption">Invest first — investing &amp; debt payoffs</div>
+          <div class="timeline-caption">Invest first - investing &amp; debt payoffs</div>
           <div class="timeline-markers" id="markers-invest" aria-hidden="true"></div>
           <div class="timeline-track" aria-hidden="true">
             <div class="timeline-bar" id="bar-invest" style="width:0%"></div>
@@ -848,7 +848,7 @@
         warnEl.hidden = !capped;
         if (capped) {
           warnEl.textContent =
-            "Simulation capped at 30 years. If minimums do not cover interest, balances may never pay off — raise payments or check rates.";
+            "Simulation capped at 30 years. If minimums do not cover interest, balances may never pay off. Raise payments or check rates.";
         }
 
         const investAfterDebt = Math.max(0, T - sDebt.debtFreeMonth);
@@ -856,7 +856,7 @@
           sDebt.debtFreeMonth >= MAX_MONTHS ? "30+ years (capped)" : String(sDebt.debtFreeMonth);
         document.getElementById("r-d-interest").textContent = formatMoney(sDebt.totalInterest);
         document.getElementById("r-d-invest-mos").textContent =
-          sDebt.debtFreeMonth >= MAX_MONTHS ? "—" : String(investAfterDebt);
+          sDebt.debtFreeMonth >= MAX_MONTHS ? "-" : String(investAfterDebt);
         document.getElementById("r-d-port").textContent = formatMoney(sDebt.portfolio);
         document.getElementById("r-d-net").textContent = formatMoney(sDebt.netWorth);
 
@@ -874,7 +874,7 @@
         cardI.classList.remove("is-winner");
 
         if (Math.abs(diff) < 1) {
-          banner.textContent = "Roughly a tie on net worth impact — pick the plan you will stick with.";
+          banner.textContent = "Roughly a tie on net worth impact. Pick the plan you will stick with.";
         } else if (diff > 0) {
           banner.textContent =
             "Debt first comes out ahead by " + formatMoney(Math.abs(diff)) + " on net worth impact.";
@@ -940,7 +940,7 @@
         markersEl.appendChild(endM);
 
         const items = [];
-        items.push("0 — month 1 · bar spans through month " + T + " (same endpoint for both strategies).");
+        items.push("0 - month 1 · bar spans through month " + T + " (same endpoint for both strategies).");
 
         if (mode === "debt") {
           if (sim.debtFreeMonth < MAX_MONTHS) {

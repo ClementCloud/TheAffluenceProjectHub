@@ -657,6 +657,13 @@ const SECTIONS = [
         href: "tier-affluent.html",
         subtopics: ["Housing", "Transportation", "Lifestyle & Food"],
       },
+      {
+        title: "TAP Job Board",
+        desc: "Browse curated roles by industry with TAP-backed referrals for eligible applicants. Upload your resume to get started.",
+        tileIcon: "briefcase",
+        comingSoon: true,
+        featured: true,
+      },
     ],
   },
   {
@@ -723,16 +730,22 @@ const SECTIONS = [
         title: "Benefits Breakdown",
         desc: "Decode your offer beyond the salary: health plans, 401k match, HSA, equity, and more.",
         tileIcon: "clipboard",
+        href: "guide-benefits-breakdown.html",
+        cta: "Read the guide",
       },
       {
         title: "Car Buying Smart",
         desc: "New vs used, financing traps, negotiation tactics, and total cost of ownership.",
         tileIcon: "car",
+        href: "guide-car-buying-smart.html",
+        cta: "Read the guide",
       },
       {
         title: "Career Moves That Pay",
         desc: "When to stay, when to jump, and how to negotiate the leap.",
         tileIcon: "briefcase",
+        href: "guide-career-moves.html",
+        cta: "Read the guide",
       },
     ],
   },
@@ -749,31 +762,43 @@ const SECTIONS = [
         title: "Talk Money by Age",
         desc: "Conversation starters for every stage.",
         tileIcon: "message",
+        href: "parent-talk-money.html",
+        cta: "Read the guide",
       },
       {
         title: "529 & College Savings",
         desc: "Plan before the tuition bill lands.",
         tileIcon: "backpack",
+        href: "parent-529-college.html",
+        cta: "Read the guide",
       },
       {
         title: "Family Budget Workshop",
         desc: "One household, one plan.",
         tileIcon: "bar-chart",
+        href: "parent-family-budget.html",
+        cta: "Read the guide",
       },
       {
         title: "Wills & Estate Basics",
         desc: "The conversation nobody wants to have.",
         tileIcon: "scroll-text",
+        href: "parent-wills-estate.html",
+        cta: "Read the guide",
       },
       {
         title: "Co-Parenting & Finances",
         desc: "Shared kids, shared clarity.",
         tileIcon: "handshake",
+        href: "parent-co-parenting.html",
+        cta: "Read the guide",
       },
       {
         title: "Spending With Purpose",
         desc: "Joy without justification spirals.",
         tileIcon: "party",
+        href: "parent-spending-purpose.html",
+        cta: "Read the guide",
       },
     ],
   },
@@ -924,20 +949,29 @@ function TileCard({ tile, section, delay, visible }) {
   const [hovered, setHovered] = useState(false);
   const clickable = Boolean(tile.href);
   const comingSoon = Boolean(tile.comingSoon);
+  const featured = Boolean(tile.featured);
 
   const cardStyle = {
     display: "flex",
-    flexDirection: "column",
-    background: hovered && clickable ? "#fff" : "#FFFFFF",
-    border: `1.5px solid ${hovered && clickable ? section.color : "#E8E4DE"}`,
+    flexDirection: featured ? "row" : "column",
+    alignItems: featured ? "center" : "stretch",
+    gap: featured ? 24 : undefined,
+    background: featured
+      ? "linear-gradient(135deg, #F7F3EA 0%, #F2EFF6 50%, #EEF3EF 100%)"
+      : hovered && clickable ? "#fff" : "#FFFFFF",
+    border: featured
+      ? "2px solid transparent"
+      : `1.5px solid ${hovered && clickable ? section.color : "#E8E4DE"}`,
+    backgroundClip: featured ? "padding-box" : undefined,
     borderRadius: 16,
-    padding: "28px 24px",
+    padding: featured ? "32px 28px" : "28px 24px",
     transition: "all 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
     transform: visible ? (hovered && clickable ? "translateY(-4px)" : "translateY(0)") : "translateY(24px)",
     opacity: visible ? 1 : 0,
     transitionDelay: `${delay}s`,
-    boxShadow:
-      hovered && clickable
+    boxShadow: featured
+      ? "0 4px 24px rgba(139,114,52,0.12), 0 1px 4px rgba(0,0,0,0.06)"
+      : hovered && clickable
         ? `0 12px 32px ${section.color}18, 0 2px 8px rgba(0,0,0,0.06)`
         : "0 1px 3px rgba(0,0,0,0.04)",
     boxSizing: "border-box",
@@ -946,6 +980,7 @@ function TileCard({ tile, section, delay, visible }) {
     cursor: clickable ? "pointer" : "default",
     textAlign: "left",
     width: "100%",
+    gridColumn: featured ? "1 / -1" : undefined,
   };
 
   const inner = (
@@ -956,9 +991,11 @@ function TileCard({ tile, section, delay, visible }) {
           top: 0,
           left: 0,
           right: 0,
-          height: 3,
-          background: section.color,
-          transform: hovered && clickable ? "scaleX(1)" : "scaleX(0)",
+          height: featured ? 3 : 3,
+          background: featured
+            ? "linear-gradient(90deg, #5A7C65, #8B7234, #6B5B8A)"
+            : section.color,
+          transform: featured || (hovered && clickable) ? "scaleX(1)" : "scaleX(0)",
           transformOrigin: "left",
           transition: "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
@@ -992,14 +1029,35 @@ function TileCard({ tile, section, delay, visible }) {
           <h3
             style={{
               fontFamily: "'DM Sans', sans-serif",
-              fontSize: 17,
+              fontSize: featured ? 19 : 17,
               fontWeight: 700,
               color: "#1A1A1A",
               margin: 0,
               lineHeight: 1.3,
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              flexWrap: "wrap",
             }}
           >
             {tile.title}
+            {featured ? (
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: "#fff",
+                  background: "linear-gradient(135deg, #5A7C65, #8B7234)",
+                  padding: "3px 10px",
+                  borderRadius: 100,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                All Tiers
+              </span>
+            ) : null}
           </h3>
           {tile.subtitle ? (
             <p
@@ -1111,7 +1169,7 @@ function TileCard({ tile, section, delay, visible }) {
           marginTop: "auto",
         }}
       >
-        {tile.cta || (comingSoon ? "Tier guides coming soon" : "Explore this tier")}
+        {tile.cta || (comingSoon ? "Coming soon" : "Explore this tier")}
         {clickable ? (
           <span
             style={{
@@ -1272,7 +1330,7 @@ export default function TAPGuidesHome() {
 
   return (
     <div style={{ background: "#FDFCFA", minHeight: "100vh" }}>
-      {/* Hero — fills viewport until user scrolls or picks a section */}
+      {/* Hero - fills viewport until user scrolls or picks a section */}
       <header
         style={{
           position: "relative",
@@ -1364,7 +1422,7 @@ export default function TAPGuidesHome() {
             lineHeight: 1.6,
           }}
         >
-          Interactive tools built for where you actually are — not where a textbook thinks you should be.
+          Interactive tools built for where you actually are, not where a textbook thinks you should be.
         </p>
 
         <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>

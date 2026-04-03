@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Moves That Pay: TAP Guide | The Affluence Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --gold: #8B7234;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: #FDFCFA;
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+    }
+    .site-header__inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-tap {
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub {
+      font-family: "DM Sans", sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: #888;
+      margin-left: 8px;
+      -webkit-text-fill-color: #888;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 64px;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gold);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .hero-pill svg { display: block; }
+
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 38px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .lede {
+      font-size: 17px;
+      color: var(--muted);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .guide-section { margin-bottom: 36px; }
+    .guide-section h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(20px, 3vw, 24px);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--c-light);
+    }
+    .guide-section > p {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .guide-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .guide-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px 18px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+    }
+    .guide-list__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--c-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+    }
+    .guide-list li strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .guide-list li span {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .callout {
+      background: var(--c-light);
+      border: 1.5px solid var(--c-accent);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin: 24px 0;
+    }
+    .callout__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(212, 186, 106, 0.13);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .callout strong {
+      font-size: 15px;
+      display: block;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .callout p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    .action-box {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      margin-top: 32px;
+    }
+    .action-box h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .action-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f5f3ef;
+      cursor: pointer;
+      font-size: 14px;
+      color: #444;
+    }
+    .action-check:last-child { border-bottom: none; }
+    .action-check input[type="checkbox"] {
+      accent-color: var(--c);
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+    .action-check span.checked {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .site-footer {
+      text-align: center;
+      padding: 40px 24px;
+      background: #1A1A1A;
+      border-top: 1px solid var(--line);
+    }
+    .site-footer a {
+      color: var(--c-accent);
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 16px;
+      text-decoration: none;
+    }
+    .site-footer a:hover { text-decoration: underline; }
+    .footer-brand {
+      font-family: "Playfair Display", serif;
+      font-size: 16px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="back-link" href="index.html"><span aria-hidden="true">←</span> Back to hub</a>
+    <div class="brand">
+      <span class="brand-tap">TAP</span><span class="brand-sub">Guides</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero-pill">
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="icons.svg#tap-i-briefcase"/></svg>
+    TAP Guide
+  </div>
+  <h1>Career Moves That Pay</h1>
+  <p class="lede">Your career is your biggest asset. Here's how to grow it intentionally.</p>
+
+  <!-- Section 1 -->
+  <section class="guide-section">
+    <h2>When to Stay vs. When to Jump</h2>
+    <p>Not every frustration means you should quit, and not every comfortable job means you should stay. Here's a framework for making the call clearly.</p>
+    <ul class="guide-list">
+      <li>
+        <span class="guide-list__icon">🚪</span>
+        <div>
+          <strong>Signs You Should Leave</strong>
+          <span>Your pay has been flat for 2+ years with no clear path upward. You've stopped learning new skills. The culture is toxic or your manager actively blocks your growth. You dread Monday mornings consistently, not just occasionally.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">🌱</span>
+        <div>
+          <strong>Signs You Should Stay</strong>
+          <span>You have a strong mentor or sponsor. You're on track for a promotion within 6–12 months. Your equity is vesting soon (leaving forfeits unvested shares). The company is investing in your development with training, stretch projects, or leadership exposure.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">⚖️</span>
+        <div>
+          <strong>The Decision Framework</strong>
+          <span>Ask: "Am I growing in skills, compensation, or responsibility?" If the answer is no to all three for 12+ months, it's time to explore. If yes to at least one, quantify the value and weigh it against what you'd gain elsewhere.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">📋</span>
+        <div>
+          <strong>Always Be Interview-Ready</strong>
+          <span>Even if you love your job, keep your resume updated and your network warm. The best time to look for a job is when you don't need one. You negotiate from a position of strength, not desperation.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Section 2 -->
+  <section class="guide-section">
+    <h2>Salary Negotiation 101</h2>
+    <p>Most people accept the first number they're offered. Those who negotiate earn significantly more over their careers, and the skill gets easier every time you practice it.</p>
+    <ul class="guide-list">
+      <li>
+        <span class="guide-list__icon">🔍</span>
+        <div>
+          <strong>Research Your Market Rate</strong>
+          <span>Use Glassdoor, Levels.fyi (for tech), Payscale, and LinkedIn Salary Insights. Talk to recruiters. They'll tell you ranges. Gather 3–5 data points so you know the realistic range for your role, level, and geography.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">⏰</span>
+        <div>
+          <strong>Timing the Ask</strong>
+          <span>For raises: after a major win, strong performance review, or when you've taken on new responsibilities. For new offers: after you have the offer in writing but before you've accepted. Never negotiate during the first interview.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">⬆️</span>
+        <div>
+          <strong>Anchor High</strong>
+          <span>The first number sets the range. If the market rate is $95K–$115K, open with $120K. You'll likely land at $105K–$115K. If you open at $100K, you'll get $95K–$100K. Anchoring works because the negotiation gravitates toward the first number.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">📦</span>
+        <div>
+          <strong>Negotiate Total Comp, Not Just Base</strong>
+          <span>If they can't move on base salary, ask about signing bonus, extra equity, flexible work, PTO, professional development budget, or an earlier performance review. A $5K signing bonus or extra week of PTO has real value.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">⏸️</span>
+        <div>
+          <strong>Never Accept on the Spot</strong>
+          <span>Always say: "Thank you, I'm excited about this. I'd like to take a day to review everything." This gives you time to evaluate, prepare a counter, and avoid emotional decisions. No legitimate employer will rescind for asking for 24–48 hours.</span>
+        </div>
+      </li>
+    </ul>
+    <div class="callout">
+      <div class="callout__icon">💰</div>
+      <div>
+        <strong>The Lifetime Impact</strong>
+        <p>People who negotiate earn an average of $5,000–$10,000 more per year. Over a 30-year career with raises building on that higher base, a single successful negotiation can be worth $500,000–$1,000,000 in cumulative earnings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3 -->
+  <section class="guide-section">
+    <h2>The Hidden Value of Job Hopping</h2>
+    <p>Staying loyal to one company used to be rewarded. Today, the data tells a different story: strategic moves are how most people build real wealth through their careers.</p>
+    <ul class="guide-list">
+      <li>
+        <span class="guide-list__icon">📊</span>
+        <div>
+          <strong>The Numbers Don't Lie</strong>
+          <span>Average annual raise when staying: 3–5%. Average increase when switching jobs: 10–20%. Over 10 years, that gap compounds dramatically. Someone who switches every 2–3 years can earn 50% more than someone who stays put.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">⏳</span>
+        <div>
+          <strong>The "Two-Year Minimum" Rule</strong>
+          <span>Stay at least 18–24 months to learn the role, deliver results, and avoid looking like a flight risk. One short stint is fine. You can explain it. Three in a row raises red flags with hiring managers.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">🚩</span>
+        <div>
+          <strong>When Job Hopping Hurts</strong>
+          <span>If you're in a field that values deep expertise (academia, medicine, certain engineering roles), frequent moves can signal lack of depth. If you're on a vesting schedule or promotion track, leaving too early costs you real money.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">💬</span>
+        <div>
+          <strong>How to Frame It in Interviews</strong>
+          <span>Never badmouth past employers. Frame each move as seeking growth: "I joined X to develop my skills in Y, accomplished Z, and now I'm looking for the next challenge in [area they offer]." The narrative should show intentional progression, not restlessness.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Section 4 -->
+  <section class="guide-section">
+    <h2>Skills That Actually Increase Earning Power</h2>
+    <p>Not all skills are created equal when it comes to income. Focus your development time on skills that employers actually pay a premium for.</p>
+    <ul class="guide-list">
+      <li>
+        <span class="guide-list__icon">💻</span>
+        <div>
+          <strong>High-ROI Technical Skills</strong>
+          <span>Data analysis (SQL, Python, Excel), cloud platforms (AWS, Azure), AI/ML fundamentals, and cybersecurity are in demand across nearly every industry. Even basic proficiency can boost your value by 10–25% in non-technical roles.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">📜</span>
+        <div>
+          <strong>Certifications Worth Getting</strong>
+          <span>PMP for project management ($10K–$20K salary premium). AWS certifications for cloud roles. CPA for accounting. Google Analytics for marketing. Focus on certifications that are required or strongly preferred in job postings for your target role.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">👥</span>
+        <div>
+          <strong>The Management Premium</strong>
+          <span>Managing people typically comes with a 15–30% salary bump. Even if you don't want to manage full-time, leading a project, mentoring juniors, or managing cross-functional initiatives signals leadership ability and justifies higher pay.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">🔤</span>
+        <div>
+          <strong>T-Shaped Skill Development</strong>
+          <span>Go deep in one area (the vertical bar of the T) and develop working knowledge across related areas (the horizontal bar). A marketer who also understands data, a developer who gets product strategy: these combinations command premium compensation.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">🗣️</span>
+        <div>
+          <strong>Communication &amp; Influence</strong>
+          <span>The ability to write clearly, present confidently, and persuade stakeholders is the most underrated career accelerator. People who communicate well get promoted faster, get assigned high-visibility projects, and are remembered by leadership.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Section 5 -->
+  <section class="guide-section">
+    <h2>Networking Without Being Awkward</h2>
+    <p>Networking isn't about collecting business cards or sending cold LinkedIn messages. It's about building genuine relationships that create opportunities naturally.</p>
+    <ul class="guide-list">
+      <li>
+        <span class="guide-list__icon">🔗</span>
+        <div>
+          <strong>LinkedIn Optimization</strong>
+          <span>Use a professional photo (profiles with photos get 21x more views). Write a headline that describes your value, not just your title. Post or comment 2–3 times per week. Recruiters search by keywords, so make sure yours match the roles you want.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">☕</span>
+        <div>
+          <strong>Informational Interviews</strong>
+          <span>Reach out to people in roles you want with a specific, short ask: "I'd love to hear how you transitioned into [role]. Could I buy you a 20-minute coffee?" Most people are flattered to be asked and happy to share. Keep it under 30 minutes and follow up with a thank-you note.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">🎁</span>
+        <div>
+          <strong>Give Before You Ask</strong>
+          <span>Share useful articles, make introductions, congratulate people on wins, offer your expertise. Build the relationship before you need something. When you do ask, people are far more willing to help someone who's already added value.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">🕸️</span>
+        <div>
+          <strong>The "Weak Ties" Advantage</strong>
+          <span>Research shows that your most valuable career opportunities come from acquaintances, not close friends. Your close circle knows the same opportunities you do. Weak ties bridge different networks and surface jobs, ideas, and connections you'd never find otherwise.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">📅</span>
+        <div>
+          <strong>Build a Networking Habit</strong>
+          <span>Block 30 minutes per week to reach out to one person, engage with industry content, or attend a virtual event. Consistency beats intensity. Small, regular investments in relationships compound over years into a powerful professional network.</span>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Section 6 -->
+  <section class="guide-section">
+    <h2>Building Multiple Income Streams</h2>
+    <p>Relying on a single paycheck is a financial risk. Diversifying your income, even modestly, creates resilience and accelerates your wealth-building timeline.</p>
+    <ul class="guide-list">
+      <li>
+        <span class="guide-list__icon">🚀</span>
+        <div>
+          <strong>Side Hustles That Scale</strong>
+          <span>The best side hustles leverage skills you already have and can grow without trading more hours. Consulting, creating digital products (courses, templates, guides), or building a niche content platform can start small and scale over time.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">💼</span>
+        <div>
+          <strong>Freelancing Your Professional Skills</strong>
+          <span>If you're a developer, designer, writer, marketer, or analyst, your skills have direct market value. Platforms like Upwork, Toptal, and Contra connect you with clients. Start with 5–10 hours/week and charge 1.5–2x your hourly rate. Clients pay for flexibility and expertise.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">📈</span>
+        <div>
+          <strong>Passive Income Basics</strong>
+          <span>Dividend-paying index funds, high-yield savings accounts, REITs, and rental income are legitimate passive sources. "Passive" still requires upfront capital or effort. Start with what you have: $500/month invested at 8% annual returns grows to $90,000+ in 10 years.</span>
+        </div>
+      </li>
+      <li>
+        <span class="guide-list__icon">⚠️</span>
+        <div>
+          <strong>When a Side Hustle Becomes a Liability</strong>
+          <span>If your side project is hurting your performance at your day job, causing burnout, or violating your employment agreement, it's doing more harm than good. Check your contract for non-compete and moonlighting clauses. Your primary job is still your biggest income lever.</span>
+        </div>
+      </li>
+    </ul>
+    <div class="callout">
+      <div class="callout__icon">⚡</div>
+      <div>
+        <strong>The Right Order of Operations</strong>
+        <p>Max out your primary income first (negotiate, get promoted, switch jobs if needed). Then invest consistently. Only then layer in side income. A $15K raise at your day job is often faster and more sustainable than building a side hustle from scratch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Action Checklist -->
+  <div class="action-box">
+    <h3>Your Action Steps</h3>
+    <label class="action-check">
+      <input type="checkbox" data-key="0" />
+      <span>Research your market rate on Glassdoor, Levels.fyi, and Payscale, and write down the range for your role, level, and location</span>
+    </label>
+    <label class="action-check">
+      <input type="checkbox" data-key="1" />
+      <span>Update your resume and LinkedIn profile, and make sure your headline, experience descriptions, and skills match the roles you'd want next</span>
+    </label>
+    <label class="action-check">
+      <input type="checkbox" data-key="2" />
+      <span>Identify one high-ROI skill to develop over the next 3–6 months. Pick something that appears frequently in job postings for your target role</span>
+    </label>
+    <label class="action-check">
+      <input type="checkbox" data-key="3" />
+      <span>Reach out to 3 people who are in the role or company you'd like to be in next, and request a brief informational interview</span>
+    </label>
+    <label class="action-check">
+      <input type="checkbox" data-key="4" />
+      <span>Write and practice your negotiation script. Prepare your anchor number, justification, and alternatives if they can't move on base salary</span>
+    </label>
+    <label class="action-check">
+      <input type="checkbox" data-key="5" />
+      <span>Set a calendar reminder every 6 months to review your career trajectory: are you growing in skills, comp, or responsibility?</span>
+    </label>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <a href="index.html">← Back to the TAP hub</a>
+  <div class="footer-brand">The Affluence Project</div>
+  <p class="copy">© 2026 The Affluence Project</p>
+</footer>
+
+<script>
+(function() {
+  var KEY = 'tap-guide-career-v1';
+  var checks = document.querySelectorAll('.action-box input[type="checkbox"]');
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
+
+  checks.forEach(function(cb) {
+    var k = cb.getAttribute('data-key');
+    if (saved[k]) {
+      cb.checked = true;
+      cb.closest('.action-check').querySelector('span').classList.add('checked');
+    }
+    cb.addEventListener('change', function() {
+      saved[k] = cb.checked;
+      cb.closest('.action-check').querySelector('span').classList.toggle('checked', cb.checked);
+      localStorage.setItem(KEY, JSON.stringify(saved));
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

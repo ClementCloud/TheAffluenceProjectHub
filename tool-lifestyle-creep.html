@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lifestyle Creep Check — TAP Tools | The Affluence Project</title>
+  <title>Lifestyle Creep Check - TAP Tools | The Affluence Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -612,7 +612,7 @@
                 stroke-dasharray="251.2" stroke-dashoffset="251.2" />
             </svg>
             <div class="score-gauge__label">
-              <span id="score-pct" class="score-gauge__pct">—</span>
+              <span id="score-pct" class="score-gauge__pct">-</span>
               <span class="score-gauge__sub">Creep score</span>
             </div>
           </div>
@@ -757,14 +757,14 @@
   }
 
   function formatChange(delta) {
-    if (Math.abs(delta) < 0.005) return "—";
+    if (Math.abs(delta) < 0.005) return "-";
     var sign = delta > 0 ? "+" : "−";
     var absv = Math.abs(Math.round(delta));
     return sign + formatMoney(absv);
   }
 
   function formatPctRaise(pct) {
-    if (pct === null || !isFinite(pct)) return "—";
+    if (pct === null || !isFinite(pct)) return "-";
     var rounded = Math.round(pct * 10) / 10;
     return (rounded % 1 === 0 ? String(Math.round(rounded)) : rounded.toFixed(1)) + "%";
   }
@@ -858,7 +858,7 @@
 
     var interp;
     if (scoreCapped === null) {
-      document.getElementById("score-pct").textContent = "—";
+      document.getElementById("score-pct").textContent = "-";
       document.getElementById("score-label").textContent = "";
       document.getElementById("score-desc").textContent = raise <= 0 ? "Increase your after take-home above your before amount to see a creep score." : "";
       document.getElementById("score-label").style.color = "";
@@ -895,10 +895,10 @@
       document.getElementById("whatif-fv").textContent = formatMoneyDec(whatifFv);
       document.getElementById("whatif-life").textContent = formatMoneyDec(halfRaise) + " / month";
     } else {
-      document.getElementById("whatif-m").textContent = "—";
-      document.getElementById("whatif-y").textContent = "—";
-      document.getElementById("whatif-fv").textContent = "—";
-      document.getElementById("whatif-life").textContent = "—";
+      document.getElementById("whatif-m").textContent = "-";
+      document.getElementById("whatif-y").textContent = "-";
+      document.getElementById("whatif-fv").textContent = "-";
+      document.getElementById("whatif-life").textContent = "-";
     }
 
     var tbody = document.getElementById("cat-tbody");
