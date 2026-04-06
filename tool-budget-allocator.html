@@ -99,6 +99,71 @@
       font-size: 12px;
       color: #666;
     }
+
+    .breadcrumb-nav--tool {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 12px 24px 0;
+      box-sizing: border-box;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .breadcrumb-nav--tool ol {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+    .breadcrumb-nav--tool li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav--tool li:not(:last-child)::after {
+      content: "/";
+      color: #bbb;
+      margin-left: 2px;
+      font-weight: 400;
+    }
+    .breadcrumb-nav--tool a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .breadcrumb-nav--tool a:hover { text-decoration: underline; }
+    .breadcrumb-nav--tool [aria-current="page"] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .related-block--tool {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      box-sizing: border-box;
+      border-top: 1px solid var(--line);
+      margin-top: 32px;
+      padding-top: 28px;
+    }
+    .related-block__title {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .related-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .related-links a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .related-links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -111,7 +176,24 @@
     </div>
   </header>
 
+  <nav class="breadcrumb-nav--tool" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li><a href="index.html#tap-tools">TAP Tools</a></li>
+      <li aria-current="page">Budget Allocator</li>
+    </ol>
+  </nav>
+
   <div id="app-root"></div>
+
+  <section class="related-block--tool" aria-labelledby="related-heading-budget">
+    <h2 id="related-heading-budget" class="related-block__title">You might also like</h2>
+    <ul class="related-links">
+      <li><a href="tool-lifestyle-creep.html">Lifestyle creep check</a></li>
+      <li><a href="tool-rent-vs-buy.html">Renting vs. buying</a></li>
+      <li><a href="index.html#tap-tools">More tools on the hub</a></li>
+    </ul>
+  </section>
 
   <footer class="site-footer">
     <a href="index.html">← Back to the TAP hub</a>
@@ -121,6 +203,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script type="text/babel">
     const { useState, useCallback, useMemo, useRef, useEffect } = React;
@@ -403,6 +486,74 @@
         setCategories((prev) => prev.map((c) => (cutMap[c.label] !== undefined ? { ...c, pct: cutMap[c.label] } : c)));
       };
 
+      const exportToCsv = useCallback(() => {
+        const sorted = [...categories].sort((a, b) => a.priority - b.priority);
+        const esc = (v) => `"${String(v).replace(/"/g, '""')}"`;
+        const rows = [
+          ["Category", "Priority", "Percent (%)", "Monthly amount ($)"],
+          ...sorted.map((c) => [c.label, c.priority, c.pct, ((c.pct / 100) * income).toFixed(2)]),
+          ["", "", "Total allocated %", totalPct],
+          ["", "", "Monthly income ($)", income.toFixed(2)],
+        ];
+        const csv = rows.map((r) => r.map(esc).join(",")).join("\r\n");
+        const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `tap-budget-${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, [categories, income, totalPct]);
+
+      const exportToPdf = useCallback(() => {
+        const jspdf = window.jspdf;
+        if (!jspdf || !jspdf.jsPDF) {
+          alert("PDF export could not load. Use the Excel (CSV) export instead.");
+          return;
+        }
+        const { jsPDF } = jspdf;
+        const doc = new jsPDF({ unit: "pt", format: "letter" });
+        const sorted = [...categories].sort((a, b) => a.priority - b.priority);
+        let y = 56;
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("TAP Budget Allocator", 48, y);
+        y += 28;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        doc.text(`Monthly income: ${formatMoney(income)}`, 48, y);
+        y += 18;
+        doc.text(`Total allocated: ${totalPct}%`, 48, y);
+        y += 28;
+        doc.setFontSize(9);
+        doc.setFont("helvetica", "bold");
+        doc.text("Category", 48, y);
+        doc.text("Pri", 300, y);
+        doc.text("%", 340, y);
+        doc.text("Monthly", 400, y);
+        y += 16;
+        doc.setFont("helvetica", "normal");
+        sorted.forEach((c) => {
+          if (y > 720) {
+            doc.addPage();
+            y = 56;
+          }
+          doc.text(c.label.length > 48 ? c.label.slice(0, 45) + "…" : c.label, 48, y);
+          doc.text(String(c.priority), 300, y);
+          doc.text(String(c.pct), 340, y);
+          doc.text(formatMoney((c.pct / 100) * income), 400, y);
+          y += 20;
+        });
+        y += 12;
+        doc.setFontSize(8);
+        doc.setFont("helvetica", "italic");
+        doc.setTextColor(100);
+        doc.text("The Affluence Project — exported budget", 48, y);
+        doc.save(`tap-budget-${new Date().toISOString().slice(0, 10)}.pdf`);
+      }, [categories, income, totalPct]);
+
       const barData = useMemo(() => {
         const sorted = [...categories].sort((a, b) => a.priority - b.priority);
         let cumPct = 0;
@@ -447,7 +598,7 @@
           </div>
 
           {/* Top Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 32 }}>
+          <div className="ba-stats-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16, marginBottom: 32 }}>
             <div style={{
               background: "#fff", borderRadius: 14, padding: "20px 22px",
               border: `1.5px solid ${COLORS.line}`, boxShadow: "0 4px 18px rgba(0,0,0,0.04)"
@@ -660,6 +811,58 @@
                 <div style={{ fontSize: 10, color: "#aaa", fontWeight: 500 }}>{c.pct}% of income</div>
               </div>
             ))}
+          </div>
+
+          <div
+            style={{
+              marginTop: 28,
+              paddingTop: 24,
+              borderTop: `1.5px solid ${COLORS.line}`,
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: 12,
+            }}
+          >
+            <span style={{ fontSize: 13, fontWeight: 600, color: COLORS.ink, width: "100%", marginBottom: 4 }}>Export your budget</span>
+            <button
+              type="button"
+              onClick={exportToCsv}
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+                fontWeight: 600,
+                color: "#fff",
+                background: `linear-gradient(135deg, ${COLORS.green}, ${COLORS.gold})`,
+                border: "none",
+                borderRadius: 10,
+                padding: "12px 20px",
+                cursor: "pointer",
+                boxShadow: "0 4px 14px rgba(45,106,79,0.25)",
+              }}
+            >
+              Download Excel (CSV)
+            </button>
+            <button
+              type="button"
+              onClick={exportToPdf}
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+                fontWeight: 600,
+                color: COLORS.ink,
+                background: "#fff",
+                border: `1.5px solid ${COLORS.line}`,
+                borderRadius: 10,
+                padding: "12px 20px",
+                cursor: "pointer",
+              }}
+            >
+              Download PDF
+            </button>
+            <span style={{ fontSize: 12, color: COLORS.muted, flex: "1 1 200px", minWidth: 0 }}>
+              CSV opens cleanly in Excel and Google Sheets. PDF is a simple printable summary.
+            </span>
           </div>
         </div>
       );

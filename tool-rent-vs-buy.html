@@ -402,6 +402,64 @@
       margin: 0 4px;
       color: #666;
     }
+
+    .breadcrumb-nav {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .breadcrumb-nav ol {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after {
+      content: "/";
+      color: #bbb;
+      margin-left: 2px;
+      font-weight: 400;
+    }
+    .breadcrumb-nav a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .related-block {
+      margin-top: 48px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+    .related-block__title {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .related-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .related-links a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .related-links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -414,7 +472,14 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="index.html">TAP Hub</a></li>
+        <li><a href="index.html#tap-tools">TAP Tools</a></li>
+        <li aria-current="page">Rent vs. Buy</li>
+      </ol>
+    </nav>
     <div class="pill">
       <svg class="tap-icon tap-icon--sm" aria-hidden="true" focusable="false"><use href="icons.svg#tap-i-home"/></svg>
       TAP Tool
@@ -540,6 +605,15 @@
           This calculator compares total costs and wealth building. Buying builds equity but locks up capital. Renting keeps you flexible but depends on disciplined investing. The right answer depends on how long you plan to stay, your local market, and whether you will actually invest the difference.
         </p>
       </aside>
+    </section>
+
+    <section class="related-block" aria-labelledby="related-heading-rvb">
+      <h2 id="related-heading-rvb" class="related-block__title">You might also like</h2>
+      <ul class="related-links">
+        <li><a href="tool-budget-allocator.html">Budget allocator</a></li>
+        <li><a href="guide-car-buying-smart.html">Car buying guide</a></li>
+        <li><a href="index.html#tap-tools">More tools on the hub</a></li>
+      </ul>
     </section>
   </main>
 

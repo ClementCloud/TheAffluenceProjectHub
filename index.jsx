@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 function Icon({ name, size = 20, color = "currentColor", style }) {
   return (
@@ -23,7 +23,18 @@ const TIER_BANDS = [
   { title: "Affluent", subtitle: "$500K+", min: 500000, max: Infinity, href: "tier-affluent.html", icon: "gem", color: "#6B5B8A" },
 ];
 
-function NetWorthCalculator({ sectionColor }) {
+/** Matches fixed “Main site” bar + notch; section nav uses this as sticky `top` */
+const MAIN_SITE_BAR_STICKY_TOP = "calc(64px + env(safe-area-inset-top, 0px))";
+
+function NetWorthCalculator({
+  sectionColor,
+  colorLight = "#F7F3EA",
+  colorAccent = "#D4BA6A",
+  panelId = "tier-calculator-panel",
+  embed = false,
+  onRequestClose,
+}) {
+  const isMobile = useMediaQueryMobile();
   const [open, setOpen] = useState(false);
   const [result, setResult] = useState(null);
   const [assets, setAssets] = useState({
@@ -80,7 +91,7 @@ function NetWorthCalculator({ sectionColor }) {
   const inputStyle = {
     width: "100%",
     fontFamily: "'DM Sans', sans-serif",
-    fontSize: 15,
+    fontSize: isMobile ? 16 : 15,
     border: "1.5px solid #E8E4DE",
     borderRadius: 10,
     padding: "10px 14px 10px 28px",
@@ -98,10 +109,12 @@ function NetWorthCalculator({ sectionColor }) {
     marginBottom: 4,
   };
 
-  if (!open) {
+  if (!embed && !open) {
     return (
       <button
         type="button"
+        aria-expanded={false}
+        aria-controls={panelId}
         onClick={() => setOpen(true)}
         style={{
           all: "unset",
@@ -112,14 +125,15 @@ function NetWorthCalculator({ sectionColor }) {
           background: "#fff",
           border: "2px dashed " + sectionColor,
           borderRadius: 16,
-          padding: "24px",
+          padding: isMobile ? "18px 16px" : "24px",
           width: "100%",
           boxSizing: "border-box",
           transition: "all 0.3s ease",
           gridColumn: "1 / -1",
+          minHeight: isMobile ? 72 : undefined,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = "#F7F3EA";
+          e.currentTarget.style.background = colorLight;
           e.currentTarget.style.borderStyle = "solid";
         }}
         onMouseLeave={(e) => {
@@ -132,7 +146,7 @@ function NetWorthCalculator({ sectionColor }) {
             width: 48,
             height: 48,
             borderRadius: 14,
-            background: "#F7F3EA",
+            background: colorLight,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -172,26 +186,38 @@ function NetWorthCalculator({ sectionColor }) {
 
   return (
     <div
+      id={panelId}
+      role="region"
+      aria-label="Net worth calculator"
       style={{
-        gridColumn: "1 / -1",
-        background: "#fff",
-        border: `2px solid ${sectionColor}`,
-        borderRadius: 16,
-        padding: "32px 28px",
+        gridColumn: embed ? undefined : "1 / -1",
+        background: embed ? "transparent" : "#fff",
+        border: embed ? "none" : `2px solid ${sectionColor}`,
+        borderRadius: embed ? 0 : 16,
+        padding: isMobile ? "20px 16px 24px" : "32px 28px",
         boxSizing: "border-box",
-        animation: "fadeSlideIn 0.35s ease",
+        animation: embed ? undefined : "fadeSlideIn 0.35s ease",
       }}
     >
       <style>{`@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: isMobile ? 18 : 24,
+          flexWrap: isMobile ? "wrap" : "nowrap",
+          gap: isMobile ? 8 : 0,
+        }}
+      >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div
             style={{
               width: 44,
               height: 44,
               borderRadius: 12,
-              background: "#F7F3EA",
+              background: colorLight,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -201,6 +227,7 @@ function NetWorthCalculator({ sectionColor }) {
           </div>
           <div>
             <h3
+              id={embed ? "tier-drawer-title" : undefined}
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontSize: 18,
@@ -218,7 +245,15 @@ function NetWorthCalculator({ sectionColor }) {
         </div>
         <button
           type="button"
-          onClick={() => { setOpen(false); setResult(null); }}
+          id={embed ? "tier-drawer-close" : undefined}
+          onClick={() => {
+            setResult(null);
+            if (embed) {
+              onRequestClose?.();
+            } else {
+              setOpen(false);
+            }
+          }}
           style={{
             all: "unset",
             cursor: "pointer",
@@ -240,7 +275,13 @@ function NetWorthCalculator({ sectionColor }) {
         </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 28 }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: isMobile ? 22 : 28,
+        }}
+      >
         <div>
           <h4
             style={{
@@ -380,7 +421,7 @@ function NetWorthCalculator({ sectionColor }) {
           fontSize: 16,
           fontWeight: 700,
           color: "#fff",
-          background: `linear-gradient(135deg, ${sectionColor}, #D4BA6A)`,
+          background: `linear-gradient(135deg, ${sectionColor}, ${colorAccent})`,
           padding: "14px 0",
           borderRadius: 12,
           textAlign: "center",
@@ -677,6 +718,27 @@ const SECTIONS = [
     color: "#2D6A4F",
     colorLight: "#E9F5EF",
     colorAccent: "#74C69D",
+    hasTierCalculator: true,
+    staffPicks: [
+      {
+        title: "Vehicle Affordability",
+        href: "tool-vehicle-affordability.html",
+        blurb: "Stress-test your payment and total cost before you sign.",
+        tileIcon: "car",
+      },
+      {
+        title: "Budget Allocator",
+        href: "tool-budget-allocator.html",
+        blurb: "Give every dollar a job and rebalance when life changes.",
+        tileIcon: "bar-chart",
+      },
+      {
+        title: "Rent vs. Buy",
+        href: "tool-rent-vs-buy.html",
+        blurb: "See the long-term math for renting versus owning.",
+        tileIcon: "home",
+      },
+    ],
     tiles: [
       {
         title: "Rent vs. Buy",
@@ -804,6 +866,68 @@ const SECTIONS = [
   },
 ];
 
+/** Curated links for hero search (client-side filter). */
+const SITE_SEARCH_LINKS = [
+  { title: "Vehicle Affordability", href: "tool-vehicle-affordability.html", kw: "car vehicle auto loan payment lease afford" },
+  { title: "Budget Allocator", href: "tool-budget-allocator.html", kw: "budget allocate income spending categories" },
+  { title: "Rent vs. Buy", href: "tool-rent-vs-buy.html", kw: "rent buy home house mortgage apartment" },
+  { title: "Debt vs. Investing", href: "tool-debt-vs-investing.html", kw: "debt invest payoff snowball avalanche 401k" },
+  { title: "Lifestyle Creep Check", href: "tool-lifestyle-creep.html", kw: "raise salary creep spending lifestyle" },
+  { title: "Car Buying Smart (guide)", href: "guide-car-buying-smart.html", kw: "car buying dealer negotiate used new" },
+  { title: "Benefits Breakdown", href: "guide-benefits-breakdown.html", kw: "benefits 401k hsa health insurance offer salary" },
+  { title: "Career Moves That Pay", href: "guide-career-moves.html", kw: "career job negotiate salary interview" },
+  { title: "Few things to know", href: "few-things.html", kw: "student college credit first apartment" },
+  { title: "Internships", href: "internships.html", kw: "internship resume application nyc" },
+  { title: "Talk Money by Age", href: "parent-talk-money.html", kw: "kids children parents family money talk" },
+  { title: "529 & College Savings", href: "parent-529-college.html", kw: "529 college tuition savings kid" },
+  { title: "What is my tier? (Young Pros)", href: "#young-professionals", kw: "tier net worth calculator wealth path" },
+];
+
+/** Goal-first shortcuts: primary action + optional secondary link. */
+const GOAL_INTENTS = [
+  {
+    label: "Find my wealth tier",
+    subtitle: "From Emerging to Affluent — see where you sit, then open guides matched to your band.",
+    featured: true,
+    primary: { scrollId: "young-professionals", cta: "Open calculator" },
+  },
+  {
+    label: "Buy a car for less",
+    primary: { href: "tool-vehicle-affordability.html", cta: "Run the numbers" },
+    secondary: { href: "guide-car-buying-smart.html", label: "Car buying guide" },
+  },
+  {
+    label: "Decide on renting vs. buying",
+    primary: { href: "tool-rent-vs-buy.html", cta: "Compare costs" },
+    secondary: { scrollId: "young-professionals", label: "Tier housing guides" },
+  },
+  {
+    label: "Decode my job offer",
+    primary: { href: "guide-benefits-breakdown.html", cta: "Benefits guide" },
+    secondary: { scrollId: "tap-tools", label: "All tools" },
+  },
+  {
+    label: "Pay debt or invest",
+    primary: { href: "tool-debt-vs-investing.html", cta: "Open calculator" },
+    secondary: { scrollId: "guides", label: "Career & money guides" },
+  },
+  {
+    label: "Prevent lifestyle creep",
+    primary: { href: "tool-lifestyle-creep.html", cta: "Check creep" },
+    secondary: { href: "tool-budget-allocator.html", label: "Budget allocator" },
+  },
+  {
+    label: "Build a monthly budget",
+    primary: { href: "tool-budget-allocator.html", cta: "Allocate income" },
+    secondary: { scrollId: "tap-tools", label: "More tools" },
+  },
+  {
+    label: "Help my kids with money",
+    primary: { href: "parent-talk-money.html", cta: "Parents guide" },
+    secondary: { scrollId: "parents", label: "All parent topics" },
+  },
+];
+
 function useInView(ref) {
   const [visible, setVisible] = useState(false);
   useEffect(() => {
@@ -823,16 +947,183 @@ function useInView(ref) {
   return visible;
 }
 
+function useMediaQueryMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const fn = () => setIsMobile(mq.matches);
+    fn();
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+  return isMobile;
+}
+
+function StaffPicksRow({ picks, section, visible }) {
+  const isMobile = useMediaQueryMobile();
+  const headingId = "staff-picks-heading";
+  return (
+    <div
+      role="region"
+      aria-labelledby={headingId}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(20px)",
+        transition: "all 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+        marginBottom: isMobile ? 24 : 32,
+        borderRadius: isMobile ? 16 : 20,
+        padding: isMobile ? "18px 14px 16px" : "24px 22px 22px",
+        background: `linear-gradient(165deg, ${section.colorLight} 0%, #ffffff 38%, ${section.colorLight} 100%)`,
+        border: `2px solid ${section.color}2E`,
+        boxShadow: `0 8px 36px ${section.color}18, 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.95)`,
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 5,
+          background: `linear-gradient(90deg, ${section.color} 0%, ${section.colorAccent} 55%, ${section.color} 100%)`,
+        }}
+      />
+      <div style={{ position: "relative", marginBottom: 18 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px 14px", marginBottom: 6 }}>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#fff",
+              background: `linear-gradient(135deg, ${section.color}, ${section.colorAccent})`,
+              padding: "7px 12px",
+              borderRadius: 100,
+              boxShadow: `0 3px 12px ${section.color}40`,
+            }}
+          >
+            Staff picks
+          </span>
+          <h3
+            id={headingId}
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 22,
+              fontWeight: 700,
+              color: "#1A1A1A",
+              margin: 0,
+              lineHeight: 1.2,
+            }}
+          >
+            Start with these
+          </h3>
+        </div>
+        <p
+          style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 14,
+            color: "#555",
+            margin: 0,
+            lineHeight: 1.55,
+            maxWidth: 640,
+          }}
+        >
+          Hand-picked calculators we recommend running first—before you dive into the full library.
+        </p>
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(260px, 1fr))",
+          gap: isMobile ? 12 : 16,
+          position: "relative",
+        }}
+      >
+        {picks.map((p) => (
+          <a
+            key={p.href}
+            href={p.href}
+            style={{
+              display: "block",
+              textDecoration: "none",
+              color: "inherit",
+              background: "#fff",
+              border: `2px solid ${section.color}24`,
+              borderRadius: isMobile ? 14 : 16,
+              padding: isMobile ? "16px 14px" : "20px 18px 18px",
+              transition: "box-shadow 0.25s ease, border-color 0.25s ease, transform 0.2s ease",
+              boxShadow: `0 4px 16px ${section.color}10, 0 1px 3px rgba(0,0,0,0.05)`,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.border = `2px solid ${section.color}`;
+              e.currentTarget.style.boxShadow = `0 12px 32px ${section.color}28, 0 4px 12px rgba(0,0,0,0.06)`;
+              e.currentTarget.style.transform = "translateY(-3px)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.border = `2px solid ${section.color}24`;
+              e.currentTarget.style.boxShadow = `0 4px 16px ${section.color}10, 0 1px 3px rgba(0,0,0,0.05)`;
+              e.currentTarget.style.transform = "translateY(0)";
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  background: section.colorLight,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0,
+                  boxShadow: `0 0 0 2px ${section.color}18`,
+                }}
+              >
+                <Icon name={p.tileIcon} size={22} color={section.color} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: "#1A1A1A",
+                    marginBottom: 4,
+                  }}
+                >
+                  {p.title}
+                </div>
+                <p style={{ fontSize: 13, color: "#666", margin: 0, lineHeight: 1.5 }}>{p.blurb}</p>
+                <span style={{ fontSize: 12, fontWeight: 600, color: section.color, marginTop: 8, display: "inline-block" }}>
+                  Open →
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SectionBlock({ section, index }) {
   const ref = useRef(null);
   const visible = useInView(ref);
   const isEven = index % 2 === 0;
+  const isMobile = useMediaQueryMobile();
 
   return (
     <section
       ref={ref}
       style={{
-        padding: "80px 0",
+        padding: isMobile ? "48px 0" : "80px 0",
         background: isEven ? "#FDFCFA" : section.colorLight,
         position: "relative",
         overflow: "hidden",
@@ -852,14 +1143,14 @@ function SectionBlock({ section, index }) {
         }}
       />
 
-      <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 24px" }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: isMobile ? "0 16px" : "0 24px" }}>
         {/* Section header */}
         <div
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? "translateY(0)" : "translateY(30px)",
             transition: "all 0.7s cubic-bezier(0.22, 1, 0.36, 1)",
-            marginBottom: 48,
+            marginBottom: isMobile ? 32 : 48,
           }}
         >
           <div
@@ -885,7 +1176,7 @@ function SectionBlock({ section, index }) {
           <h2
             style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(28px, 4vw, 42px)",
+              fontSize: isMobile ? "clamp(24px, 6vw, 34px)" : "clamp(28px, 4vw, 42px)",
               fontWeight: 700,
               color: "#1A1A1A",
               margin: "0 0 8px 0",
@@ -919,16 +1210,26 @@ function SectionBlock({ section, index }) {
           ) : null}
         </div>
 
+        {/* Staff picks (TAP Tools) */}
+        {section.staffPicks && section.staffPicks.length ? (
+          <StaffPicksRow picks={section.staffPicks} section={section} visible={visible} />
+        ) : null}
+
         {/* Tiles grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: 20,
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: isMobile ? 16 : 20,
           }}
         >
           {section.hasTierCalculator ? (
-            <NetWorthCalculator sectionColor={section.color} />
+            <NetWorthCalculator
+              sectionColor={section.color}
+              colorLight={section.colorLight}
+              colorAccent={section.colorAccent}
+              panelId={section.id === "tap-tools" ? "tier-calculator-panel-tools" : "tier-calculator-panel"}
+            />
           ) : null}
           {section.tiles.map((tile, i) => (
             <TileCard
@@ -937,6 +1238,7 @@ function SectionBlock({ section, index }) {
               section={section}
               delay={i * 0.08}
               visible={visible}
+              isMobile={isMobile}
             />
           ))}
         </div>
@@ -945,7 +1247,7 @@ function SectionBlock({ section, index }) {
   );
 }
 
-function TileCard({ tile, section, delay, visible }) {
+function TileCard({ tile, section, delay, visible, isMobile }) {
   const [hovered, setHovered] = useState(false);
   const clickable = Boolean(tile.href);
   const comingSoon = Boolean(tile.comingSoon);
@@ -953,9 +1255,9 @@ function TileCard({ tile, section, delay, visible }) {
 
   const cardStyle = {
     display: "flex",
-    flexDirection: featured ? "row" : "column",
-    alignItems: featured ? "center" : "stretch",
-    gap: featured ? 24 : undefined,
+    flexDirection: featured ? (isMobile ? "column" : "row") : "column",
+    alignItems: featured ? (isMobile ? "stretch" : "center") : "stretch",
+    gap: featured ? (isMobile ? 16 : 24) : undefined,
     background: featured
       ? "linear-gradient(135deg, #F7F3EA 0%, #F2EFF6 50%, #EEF3EF 100%)"
       : hovered && clickable ? "#fff" : "#FFFFFF",
@@ -964,7 +1266,7 @@ function TileCard({ tile, section, delay, visible }) {
       : `1.5px solid ${hovered && clickable ? section.color : "#E8E4DE"}`,
     backgroundClip: featured ? "padding-box" : undefined,
     borderRadius: 16,
-    padding: featured ? "32px 28px" : "28px 24px",
+    padding: featured ? (isMobile ? "22px 18px" : "32px 28px") : isMobile ? "22px 18px" : "28px 24px",
     transition: "all 0.35s cubic-bezier(0.22, 1, 0.36, 1)",
     transform: visible ? (hovered && clickable ? "translateY(-4px)" : "translateY(0)") : "translateY(24px)",
     opacity: visible ? 1 : 0,
@@ -1214,18 +1516,126 @@ function TileCard({ tile, section, delay, visible }) {
   );
 }
 
+function MainSiteFixedBar() {
+  const isMobile = useMediaQueryMobile();
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 150,
+        paddingTop: "calc(10px + env(safe-area-inset-top, 0px))",
+        paddingBottom: 10,
+        paddingLeft: 16,
+        paddingRight: 16,
+        background: "rgba(253, 252, 250, 0.92)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid #E8E4DE",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        boxSizing: "border-box",
+      }}
+    >
+      <a
+        href="https://theaffluenceproject.org"
+        rel="noopener noreferrer"
+        aria-label="The Affluence Project — return to main website"
+        style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: isMobile ? 13 : 14,
+          fontWeight: 600,
+          color: "#5A7C65",
+          background: "#fff",
+          border: "1.5px solid #E8E4DE",
+          borderRadius: 100,
+          padding: isMobile ? "11px 18px" : "10px 20px",
+          minHeight: 44,
+          lineHeight: 1.25,
+          textDecoration: "none",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 6,
+          flexShrink: 0,
+          whiteSpace: "nowrap",
+          boxSizing: "border-box",
+        }}
+      >
+        ← Main site
+      </a>
+    </div>
+  );
+}
+
 function NavPill({ sections, active, onSelect }) {
+  const isMobile = useMediaQueryMobile();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQ, setSearchQ] = useState("");
+
+  const filteredSearch = useMemo(() => {
+    const t = searchQ.trim().toLowerCase();
+    if (!t) return [];
+    return SITE_SEARCH_LINKS.filter(
+      (l) =>
+        l.title.toLowerCase().includes(t) ||
+        l.kw.includes(t) ||
+        l.kw.split(" ").some((w) => w.includes(t))
+    ).slice(0, 8);
+  }, [searchQ]);
+
+  const handleNavClick = (id) => {
+    onSelect(id);
+    setMenuOpen(false);
+  };
+
+  const navButtons = (compact) =>
+    sections.map((s) => (
+      <button
+        key={s.id}
+        type="button"
+        aria-current={active === s.id ? "true" : undefined}
+        onClick={() => handleNavClick(s.id)}
+        style={{
+          all: "unset",
+          cursor: "pointer",
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: compact ? 15 : 13,
+          fontWeight: active === s.id ? 700 : 500,
+          color: active === s.id ? s.color : "#888",
+          padding: compact ? "14px 16px" : "8px 16px",
+          minHeight: compact ? 48 : undefined,
+          borderRadius: 100,
+          background: active === s.id ? `${s.colorLight}` : "transparent",
+          transition: "all 0.25s ease",
+          whiteSpace: "nowrap",
+          display: "flex",
+          alignItems: "center",
+          width: compact ? "100%" : "auto",
+          boxSizing: "border-box",
+        }}
+      >
+        <span style={{ display: "inline-flex", alignItems: "center", marginRight: 6 }}>
+          <Icon name={s.sectionIcon} size={15} color={active === s.id ? s.color : "#888"} />
+        </span>
+        {s.navShortLabel || s.label}
+      </button>
+    ));
+
   return (
     <div
       style={{
         position: "sticky",
-        top: 0,
+        top: MAIN_SITE_BAR_STICKY_TOP,
         zIndex: 100,
-        background: "rgba(253, 252, 250, 0.85)",
+        background: "rgba(253, 252, 250, 0.92)",
         backdropFilter: "blur(16px)",
         WebkitBackdropFilter: "blur(16px)",
         borderBottom: "1px solid #E8E4DE",
-        padding: "0 24px",
+        padding: isMobile ? "0 16px" : "0 24px",
       }}
     >
       <div
@@ -1235,18 +1645,24 @@ function NavPill({ sections, active, onSelect }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 60,
+          minHeight: isMobile ? 52 : 56,
+          flexWrap: "wrap",
+          gap: isMobile ? 10 : 8,
+          padding: isMobile ? "10px 0" : "8px 0",
         }}
       >
         <div
           style={{
             fontFamily: "'Playfair Display', serif",
-            fontSize: 18,
+            fontSize: isMobile ? 17 : 18,
             fontWeight: 700,
             color: "#1A1A1A",
             display: "flex",
             alignItems: "center",
             gap: 8,
+            flexShrink: 0,
+            flexWrap: "wrap",
+            maxWidth: isMobile ? "min(100%, 200px)" : undefined,
           }}
         >
           <span
@@ -1258,37 +1674,386 @@ function NavPill({ sections, active, onSelect }) {
           >
             TAP
           </span>
-          <span style={{ color: "#999", fontWeight: 400, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>
-            Interactive Guides
-          </span>
+          {!isMobile ? (
+            <span style={{ color: "#999", fontWeight: 400, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }}>
+              Interactive Guides
+            </span>
+          ) : null}
         </div>
 
-        <nav style={{ display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "flex-end" }}>
-          {sections.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => onSelect(s.id)}
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1, justifyContent: "flex-end", flexWrap: "wrap", minWidth: 0 }}>
+          <div style={{ position: "relative", minWidth: isMobile ? 0 : 160, maxWidth: isMobile ? "100%" : 220, flex: isMobile ? "1 1 160px" : "1 1 140px" }}>
+            <label htmlFor="site-search" className="visually-hidden">
+              Search pages and tools
+            </label>
+            <input
+              id="site-search"
+              type="search"
+              placeholder="Search…"
+              value={searchQ}
+              onChange={(e) => setSearchQ(e.target.value)}
+              autoComplete="off"
               style={{
-                all: "unset",
-                cursor: "pointer",
+                width: "100%",
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: 13,
-                fontWeight: active === s.id ? 700 : 500,
-                color: active === s.id ? s.color : "#888",
-                padding: "8px 16px",
+                fontSize: isMobile ? 16 : 13,
+                padding: isMobile ? "11px 14px" : "8px 12px",
+                minHeight: isMobile ? 44 : undefined,
+                border: "1.5px solid #E8E4DE",
                 borderRadius: 100,
-                background: active === s.id ? `${s.colorLight}` : "transparent",
-                transition: "all 0.25s ease",
-                whiteSpace: "nowrap",
+                background: "#fff",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
+            {filteredSearch.length > 0 ? (
+              <ul
+                role="listbox"
+                style={{
+                  position: "absolute",
+                  top: "100%",
+                  left: 0,
+                  right: 0,
+                  margin: "4px 0 0 0",
+                  padding: 8,
+                  listStyle: "none",
+                  background: "#fff",
+                  border: "1.5px solid #E8E4DE",
+                  borderRadius: 12,
+                  boxShadow: "0 12px 32px rgba(0,0,0,0.12)",
+                  zIndex: 200,
+                  maxHeight: 280,
+                  overflowY: "auto",
+                }}
+              >
+                {filteredSearch.map((item) => (
+                  <li key={item.href + item.title}>
+                    <a
+                      href={item.href}
+                      role="option"
+                      style={{
+                        display: "block",
+                        padding: "8px 10px",
+                        fontSize: 13,
+                        color: "#333",
+                        textDecoration: "none",
+                        borderRadius: 8,
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = "#F7F3EA";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "transparent";
+                      }}
+                    >
+                      {item.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+
+          {isMobile ? (
+            <>
+              <button
+                type="button"
+                aria-expanded={menuOpen}
+                aria-controls="mobile-section-nav"
+                aria-label={menuOpen ? "Close section menu" : "Open section menu"}
+                onClick={() => setMenuOpen((o) => !o)}
+                style={{
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "#8B7234",
+                  background: "#F7F3EA",
+                  border: "1.5px solid #E8E4DE",
+                  borderRadius: 100,
+                  padding: "11px 18px",
+                  minHeight: 44,
+                  cursor: "pointer",
+                  flexShrink: 0,
+                }}
+              >
+                {menuOpen ? "Close" : "Sections"}
+              </button>
+            </>
+          ) : null}
+        </div>
+      </div>
+
+      {!isMobile ? (
+        <nav aria-label="Site sections" style={{ maxWidth: 1120, margin: "0 auto", padding: "0 24px 10px", display: "flex", gap: 4, flexWrap: "wrap", justifyContent: "flex-end" }}>
+          {navButtons(false)}
+        </nav>
+      ) : null}
+
+      {isMobile && menuOpen ? (
+        <nav id="mobile-section-nav" aria-label="Site sections" style={{ maxWidth: 1120, margin: "0 auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: 6 }}>
+          {navButtons(true)}
+        </nav>
+      ) : null}
+    </div>
+  );
+}
+
+function AudiencePathStrip() {
+  const isMobile = useMediaQueryMobile();
+  return (
+    <div
+      style={{
+        maxWidth: 1120,
+        margin: "0 auto",
+        padding: isMobile ? "16px 16px 20px" : "20px 24px 24px",
+        fontFamily: "'DM Sans', sans-serif",
+        fontSize: isMobile ? 13 : 14,
+        color: "#555",
+        lineHeight: 1.65,
+        borderBottom: "1px solid #E8E4DE",
+        background: "linear-gradient(180deg, #FAF8F5 0%, #FDFCFA 100%)",
+      }}
+    >
+      <p style={{ margin: 0, maxWidth: 900 }}>
+        <strong style={{ color: "#5A7C65" }}>Students:</strong> foundations, credit, internships, and first big money moves.{" "}
+        <strong style={{ color: "#8B7234" }}>Young Professionals:</strong> income, net worth tiers, housing and lifestyle tradeoffs, and interactive tools. Pick the path that matches where you are today.
+      </p>
+    </div>
+  );
+}
+
+function GoalIntentStrip({ onScrollTo, onOpenTierCalculator }) {
+  const isMobile = useMediaQueryMobile();
+  const featured = GOAL_INTENTS.find((g) => g.featured);
+  const rest = GOAL_INTENTS.filter((g) => !g.featured);
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        maxWidth: 900,
+        margin: isMobile ? "0 auto 24px" : "0 auto 32px",
+        textAlign: "left",
+      }}
+    >
+      <h2
+        style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: 13,
+          fontWeight: 700,
+          letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          color: "#8B7234",
+          margin: "0 0 14px 0",
+        }}
+      >
+        What do you want to do?
+      </h2>
+
+      {featured ? (
+        <div
+          role="region"
+          aria-label="Find my wealth tier"
+          style={{
+            position: "relative",
+            marginBottom: isMobile ? 14 : 16,
+            padding: isMobile ? "18px 16px 20px" : "22px 22px 24px",
+            borderRadius: 16,
+            overflow: "hidden",
+            background: "linear-gradient(145deg, #F7F3EA 0%, #fff 42%, #EEF5F0 100%)",
+            border: "2px solid #8B723455",
+            boxShadow: "0 10px 36px rgba(90,124,101,0.12), 0 2px 8px rgba(139,114,52,0.08)",
+          }}
+        >
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: 4,
+              background: "linear-gradient(90deg, #5A7C65 0%, #8B7234 50%, #5A7C65 100%)",
+            }}
+          />
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 10,
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#fff",
+              background: "linear-gradient(135deg, #5A7C65, #8B7234)",
+              padding: "6px 12px",
+              borderRadius: 100,
+              marginBottom: 12,
+            }}
+          >
+            Start here
+          </div>
+          <div
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: isMobile ? 22 : 26,
+              fontWeight: 700,
+              color: "#1A1A1A",
+              lineHeight: 1.2,
+              marginBottom: 8,
+            }}
+          >
+            {featured.label}
+          </div>
+          {featured.subtitle ? (
+            <p
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: isMobile ? 14 : 15,
+                color: "#555",
+                lineHeight: 1.55,
+                margin: "0 0 16px 0",
+                maxWidth: 560,
               }}
             >
-              <span style={{ display: "inline-flex", alignItems: "center", marginRight: 6 }}>
-                <Icon name={s.sectionIcon} size={15} color={active === s.id ? s.color : "#888"} />
-              </span>
-              {s.navShortLabel || s.label}
+              {featured.subtitle}
+            </p>
+          ) : null}
+          {featured.primary.href ? (
+            <a
+              href={featured.primary.href}
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+                fontWeight: 600,
+                color: "#fff",
+                background: "linear-gradient(135deg, #5A7C65, #8B7234)",
+                padding: "12px 22px",
+                borderRadius: 100,
+                textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                boxShadow: "0 4px 16px rgba(139,114,52,0.35)",
+              }}
+            >
+              {featured.primary.cta}
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                if (featured.primary.scrollId === "young-professionals" && onOpenTierCalculator) {
+                  onOpenTierCalculator();
+                } else if (featured.primary.scrollId) {
+                  onScrollTo(featured.primary.scrollId);
+                }
+              }}
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 14,
+                fontWeight: 600,
+                color: "#fff",
+                background: "linear-gradient(135deg, #5A7C65, #8B7234)",
+                padding: "12px 22px",
+                borderRadius: 100,
+                border: "none",
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                boxShadow: "0 4px 16px rgba(139,114,52,0.35)",
+              }}
+            >
+              {featured.primary.cta}
             </button>
-          ))}
-        </nav>
+          )}
+        </div>
+      ) : null}
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(260px, 1fr))",
+          gap: isMobile ? 10 : 12,
+        }}
+      >
+        {rest.map((g) => (
+          <div
+            key={g.label}
+            style={{
+              background: "#fff",
+              border: "1.5px solid #E8E4DE",
+              borderRadius: 14,
+              padding: isMobile ? "14px 14px" : "14px 16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
+              boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+            }}
+          >
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: "#1A1A1A", lineHeight: 1.35 }}>{g.label}</span>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+              {g.primary.href ? (
+                <a
+                  href={g.primary.href}
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#fff",
+                    background: "linear-gradient(135deg, #5A7C65, #8B7234)",
+                    padding: "8px 14px",
+                    borderRadius: 100,
+                    textDecoration: "none",
+                    display: "inline-block",
+                  }}
+                >
+                  {g.primary.cta}
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => onScrollTo(g.primary.scrollId)}
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#fff",
+                    background: "linear-gradient(135deg, #5A7C65, #8B7234)",
+                    padding: "8px 14px",
+                    borderRadius: 100,
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  {g.primary.cta}
+                </button>
+              )}
+              {g.secondary?.href ? (
+                <a href={g.secondary.href} style={{ fontSize: 12, fontWeight: 600, color: "#8B7234" }}>
+                  {g.secondary.label} →
+                </a>
+              ) : g.secondary?.scrollId ? (
+                <button
+                  type="button"
+                  onClick={() => onScrollTo(g.secondary.scrollId)}
+                  style={{
+                    all: "unset",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: "#8B7234",
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                >
+                  {g.secondary.label} →
+                </button>
+              ) : null}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -1296,6 +2061,35 @@ function NavPill({ sections, active, onSelect }) {
 
 export default function TAPGuidesHome() {
   const [activeSection, setActiveSection] = useState(null);
+  const [tierDrawerOpen, setTierDrawerOpen] = useState(false);
+  const isMobile = useMediaQueryMobile();
+  const ypSection = SECTIONS.find((s) => s.id === "young-professionals");
+
+  useEffect(() => {
+    if (!tierDrawerOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setTierDrawerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [tierDrawerOpen]);
+
+  useEffect(() => {
+    if (!tierDrawerOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [tierDrawerOpen]);
+
+  useEffect(() => {
+    if (!tierDrawerOpen) return;
+    const id = window.setTimeout(() => {
+      document.getElementById("tier-drawer-close")?.focus();
+    }, 50);
+    return () => window.clearTimeout(id);
+  }, [tierDrawerOpen]);
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -1303,14 +2097,50 @@ export default function TAPGuidesHome() {
       "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap";
     link.rel = "stylesheet";
     document.head.appendChild(link);
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "description");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute(
+      "content",
+      "TAP Interactive Guides: tools and guides for students, young professionals, and parents. Budget, housing, career, benefits, and more."
+    );
   }, []);
 
   const scrollTo = (id) => {
     setActiveSection(id);
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    try {
+      if (typeof history !== "undefined" && history.replaceState) {
+        history.replaceState(null, "", "#" + encodeURIComponent(id));
+      } else {
+        window.location.hash = id;
+      }
+    } catch {
+      window.location.hash = id;
+    }
   };
 
-  // Track active section on scroll
+  // Deep link: open #section from URL
+  useEffect(() => {
+    const applyHash = () => {
+      const raw = window.location.hash.replace(/^#/, "");
+      if (!raw) return;
+      const id = decodeURIComponent(raw);
+      if (SECTIONS.some((s) => s.id === id)) {
+        setActiveSection(id);
+        setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+      }
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
+
+  // Track active section on scroll (hash updates on nav clicks and shared links only)
   useEffect(() => {
     const handler = () => {
       for (const s of SECTIONS) {
@@ -1329,12 +2159,27 @@ export default function TAPGuidesHome() {
   }, []);
 
   return (
-    <div style={{ background: "#FDFCFA", minHeight: "100vh" }}>
+    <div style={{ background: "#FDFCFA", minHeight: "100vh", overflowX: "hidden" }}>
+      <style>{`
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+        a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid #8B7234; outline-offset: 2px; }
+        .skip-link { position: absolute; left: -9999px; z-index: 9999; padding: 12px 20px; background: #1A1A1A; color: #fff; font-weight: 600; text-decoration: none; border-radius: 0 0 8px 0; }
+        .skip-link:focus { left: 16px; top: calc(64px + env(safe-area-inset-top, 0px)); }
+        @media (max-width: 768px) {
+          input[type="search"], input[type="text"], input[type="email"], input[type="number"], input[type="tel"], textarea, select {
+            font-size: 16px;
+          }
+        }
+      `}</style>
+      <MainSiteFixedBar />
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       {/* Hero - fills viewport until user scrolls or picks a section */}
       <header
         style={{
           position: "relative",
-          minHeight: "100vh",
+          minHeight: isMobile ? "min(100dvh, 100vh)" : "100vh",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -1342,7 +2187,9 @@ export default function TAPGuidesHome() {
           textAlign: "center",
           overflow: "hidden",
           background: "linear-gradient(180deg, #FDFCFA 0%, #F5F1EB 100%)",
-          padding: "60px 24px 40px",
+          padding: isMobile
+            ? "calc(64px + env(safe-area-inset-top, 0px) + 24px) 16px max(28px, env(safe-area-inset-bottom, 0px))"
+            : "calc(64px + env(safe-area-inset-top, 0px) + 24px) 24px 40px",
         }}
       >
         {/* Decorative circles */}
@@ -1425,7 +2272,18 @@ export default function TAPGuidesHome() {
           Interactive tools built for where you actually are, not where a textbook thinks you should be.
         </p>
 
-        <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: isMobile ? "grid" : "flex",
+            gridTemplateColumns: isMobile ? "repeat(2, minmax(0, 1fr))" : undefined,
+            justifyContent: "center",
+            gap: isMobile ? 10 : 12,
+            flexWrap: "wrap",
+            width: "100%",
+            maxWidth: isMobile ? 420 : undefined,
+            boxSizing: "border-box",
+          }}
+        >
           {SECTIONS.map((s) => (
             <button
               key={s.id}
@@ -1434,17 +2292,21 @@ export default function TAPGuidesHome() {
                 all: "unset",
                 cursor: "pointer",
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: 15,
+                fontSize: isMobile ? 14 : 15,
                 fontWeight: 600,
                 color: s.color,
                 background: s.colorLight,
                 border: `1.5px solid ${s.colorAccent}55`,
-                padding: "12px 28px",
+                padding: isMobile ? "12px 14px" : "12px 28px",
+                minHeight: isMobile ? 48 : undefined,
                 borderRadius: 100,
                 transition: "all 0.3s ease",
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: 8,
+                boxSizing: "border-box",
+                width: isMobile ? "100%" : "auto",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = s.color;
@@ -1467,7 +2329,7 @@ export default function TAPGuidesHome() {
         <div
           style={{
             position: "absolute",
-            bottom: 28,
+            bottom: isMobile ? "max(16px, env(safe-area-inset-bottom, 0px))" : 28,
             left: "50%",
             transform: "translateX(-50%)",
             display: "flex",
@@ -1504,25 +2366,95 @@ export default function TAPGuidesHome() {
         </div>
       </header>
 
+      <div style={{ maxWidth: 1120, margin: "0 auto", padding: isMobile ? "24px 16px 8px" : "32px 24px 8px" }}>
+        <GoalIntentStrip onScrollTo={scrollTo} onOpenTierCalculator={() => setTierDrawerOpen(true)} />
+      </div>
+
+      <AudiencePathStrip />
+
       {/* Sticky nav */}
       <NavPill sections={SECTIONS} active={activeSection} onSelect={scrollTo} />
 
-      {/* Sections */}
-      {SECTIONS.map((section, i) => (
-        <div key={section.id} id={section.id}>
-          <SectionBlock section={section} index={i} />
-        </div>
-      ))}
+      <main id="main-content">
+        {/* Sections */}
+        {SECTIONS.map((section, i) => (
+          <div key={section.id} id={section.id}>
+            <SectionBlock section={section} index={i} />
+          </div>
+        ))}
+      </main>
+
+      {tierDrawerOpen && ypSection ? (
+        <>
+          <div
+            role="presentation"
+            aria-hidden="true"
+            onClick={() => setTierDrawerOpen(false)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 180,
+              background: "rgba(26, 26, 26, 0.45)",
+              WebkitBackdropFilter: "blur(4px)",
+              backdropFilter: "blur(4px)",
+            }}
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tier-drawer-title"
+            style={{
+              position: "fixed",
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: "min(100vw, 440px)",
+              zIndex: 200,
+              background: "#FDFCFA",
+              boxShadow: "-12px 0 48px rgba(0,0,0,0.18)",
+              display: "flex",
+              flexDirection: "column",
+              paddingTop: "env(safe-area-inset-top, 0px)",
+              paddingBottom: "env(safe-area-inset-bottom, 0px)",
+              animation: "tierDrawerSlide 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards",
+            }}
+          >
+            <style>{`
+              @keyframes tierDrawerSlide {
+                from { transform: translateX(100%); opacity: 0.96; }
+                to { transform: translateX(0); opacity: 1; }
+              }
+            `}</style>
+            <div
+              style={{
+                overflowY: "auto",
+                flex: 1,
+                WebkitOverflowScrolling: "touch",
+                padding: isMobile ? "8px 12px 28px" : "12px 16px 20px",
+              }}
+            >
+              <NetWorthCalculator
+                embed
+                onRequestClose={() => setTierDrawerOpen(false)}
+                sectionColor={ypSection.color}
+                colorLight={ypSection.colorLight}
+                colorAccent={ypSection.colorAccent}
+                panelId="tier-calculator-panel-hub-drawer"
+              />
+            </div>
+          </div>
+        </>
+      ) : null}
 
       {/* Footer */}
       <footer
         style={{
           textAlign: "center",
-          padding: "60px 24px",
+          padding: isMobile ? "40px 16px max(32px, env(safe-area-inset-bottom, 0px))" : "60px 24px",
           background: "#1A1A1A",
           color: "#999",
           fontFamily: "'DM Sans', sans-serif",
-          fontSize: 14,
+          fontSize: isMobile ? 13 : 14,
         }}
       >
         <div
@@ -1539,7 +2471,10 @@ export default function TAPGuidesHome() {
         <p style={{ margin: "0 0 4px 0" }}>
           Creating generational wealth through mentorship, networking & advocacy.
         </p>
-        <p style={{ margin: 0, fontSize: 12, color: "#666" }}>
+        <p style={{ margin: "16px auto 0", maxWidth: 560, fontSize: 13, color: "#888", lineHeight: 1.55 }}>
+          TAP Interactive Guides are educational tools and readings. They are not personalized financial, legal, or tax advice. Referrals and programs may have eligibility rules; always confirm details that matter to you.
+        </p>
+        <p style={{ margin: "12px 0 0 0", fontSize: 12, color: "#666" }}>
           © {new Date().getFullYear()} The Affluence Project. All rights reserved.
         </p>
       </footer>

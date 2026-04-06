@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Job Board - TAP Young Professionals</title>
+  <meta name="description" content="Browse curated roles and submit your resume for TAP-backed referrals. Young Professionals job board from The Affluence Project." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -19,6 +20,24 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      z-index: 9999;
+      padding: 12px 16px;
+      background: var(--c);
+      color: #fff;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 0 0 8px 0;
+    }
+    .skip-link:focus {
+      left: 12px;
+      top: 0;
+      outline: 2px solid var(--ink);
+      outline-offset: 2px;
+    }
 
     body {
       background: #FDFCFA;
@@ -507,9 +526,112 @@
       .job-card__header { flex-wrap: wrap; }
       .upload-zone { padding: 24px 16px; }
     }
+
+    .breadcrumb-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 12px 24px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .breadcrumb-nav ol {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after {
+      content: "/";
+      color: #bbb;
+      margin-left: 2px;
+      font-weight: 400;
+    }
+    .breadcrumb-nav a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .related-block {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 56px;
+      border-top: 1px solid var(--line);
+    }
+    .related-block__title {
+      font-family: "Playfair Display", serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .related-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .related-links a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .related-links a:hover { text-decoration: underline; }
+
+    .mailto-fallback {
+      margin-top: 24px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      background: var(--c-light);
+      border: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .mailto-fallback h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+    .mailto-fallback__row {
+      margin-bottom: 10px;
+    }
+    .mailto-fallback__row strong {
+      display: block;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #888;
+      margin-bottom: 4px;
+    }
+    .mailto-fallback__row code,
+    .mailto-fallback__pre {
+      display: block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #333;
+    }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <!-- Header -->
   <header class="site-header">
@@ -521,6 +643,15 @@
     </div>
   </header>
 
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li><a href="index.html#young-professionals">Young Professionals</a></li>
+      <li aria-current="page">Job Board</li>
+    </ol>
+  </nav>
+
+  <main id="main-content">
   <!-- Hero -->
   <section class="hero">
     <div class="pill-badge">
@@ -820,8 +951,45 @@
         <button class="submit-btn" id="submit-btn">Submit Application</button>
 
         <div class="form-success" id="form-success"></div>
+
+        <div class="mailto-fallback" aria-labelledby="mailto-fallback-title">
+          <h3 id="mailto-fallback-title">If your email app does not open</h3>
+          <p style="margin:0 0 12px;font-size:14px;color:var(--muted);line-height:1.5">Copy the pieces below into a new message and attach your resume file manually.</p>
+          <div class="mailto-fallback__row">
+            <strong>To</strong>
+            <code id="mailto-fallback-to">info@theaffluenceproject.org</code>
+          </div>
+          <div class="mailto-fallback__row">
+            <strong>Subject</strong>
+            <code id="mailto-fallback-subject">TAP Job Board Application — (add your name)</code>
+          </div>
+          <div class="mailto-fallback__row">
+            <strong>Body (template)</strong>
+            <div class="mailto-fallback__pre" id="mailto-fallback-body">Hi TAP Team,
+
+My name is (your name) and I am interested in applying through the TAP Job Board.
+
+Email: (your email)
+Role of interest: (role or &quot;open to opportunities&quot;)
+
+I have attached my resume. Please let me know if you need anything else.
+
+Thank you,
+(your name)</div>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+  </main>
+
+  <section class="related-block" aria-labelledby="related-heading-jobs">
+    <h2 id="related-heading-jobs" class="related-block__title">You might also like</h2>
+    <ul class="related-links">
+      <li><a href="guide-career-moves.html">Career Moves That Pay</a></li>
+      <li><a href="internships.html">Internships that count</a></li>
+      <li><a href="guide-benefits-breakdown.html">Benefits breakdown</a></li>
+    </ul>
   </section>
 
   <!-- Footer -->
@@ -995,6 +1163,28 @@
         formSuccess.innerHTML = 'Your email client has been opened. Please attach your resume file (<strong>' + selectedFile.name + '</strong>) to the email and send it.';
         formSuccess.classList.add('is-visible');
       });
+
+      var subFallback = document.getElementById('mailto-fallback-subject');
+      var bodyFallback = document.getElementById('mailto-fallback-body');
+      function syncMailtoFallback() {
+        var name = nameInput.value.trim() || '(your name)';
+        var email = emailInput.value.trim() || '(your email)';
+        var role = roleInput.value.trim() || 'Open to opportunities';
+        if (subFallback) subFallback.textContent = 'TAP Job Board Application — ' + name;
+        if (bodyFallback) {
+          bodyFallback.textContent =
+            'Hi TAP Team,\n\n' +
+            'My name is ' + name + ' and I am interested in applying through the TAP Job Board.\n\n' +
+            'Email: ' + email + '\n' +
+            'Role of interest: ' + role + '\n\n' +
+            'I have attached my resume. Please let me know if you need anything else.\n\n' +
+            'Thank you,\n' + name;
+        }
+      }
+      nameInput.addEventListener('input', syncMailtoFallback);
+      emailInput.addEventListener('input', syncMailtoFallback);
+      roleInput.addEventListener('input', syncMailtoFallback);
+      syncMailtoFallback();
     })();
   </script>
 

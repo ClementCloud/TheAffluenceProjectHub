@@ -264,6 +264,64 @@
       font-size: 12px;
       color: rgba(255,255,255,0.2);
     }
+
+    .breadcrumb-nav {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .breadcrumb-nav ol {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after {
+      content: "/";
+      color: #bbb;
+      margin-left: 2px;
+      font-weight: 400;
+    }
+    .breadcrumb-nav a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .related-block {
+      margin-top: 48px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+    .related-block__title {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .related-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .related-links a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .related-links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -277,7 +335,14 @@
   </div>
 </header>
 
-<main>
+<main id="main-content">
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li><a href="index.html#young-professionals">Young Professionals</a></li>
+      <li aria-current="page">Car Buying Smart</li>
+    </ol>
+  </nav>
   <div class="hero-pill">
     <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="icons.svg#tap-i-car"/></svg>
     TAP Guide
@@ -557,6 +622,15 @@
       <span>Never reveal your monthly payment target, trade-in, or financing to the dealer until you've negotiated the purchase price separately</span>
     </label>
   </div>
+
+  <section class="related-block" aria-labelledby="related-heading-car-guide">
+    <h2 id="related-heading-car-guide" class="related-block__title">You might also like</h2>
+    <ul class="related-links">
+      <li><a href="guide-career-moves.html">Career Moves That Pay</a></li>
+      <li><a href="tool-rent-vs-buy.html">Rent vs. buy (housing)</a></li>
+      <li><a href="tool-vehicle-affordability.html">Vehicle affordability calculator</a></li>
+    </ul>
+  </section>
 </main>
 
 <footer class="site-footer">

@@ -115,6 +115,71 @@
       .va-stats-grid { grid-template-columns: repeat(3, 1fr); }
       .va-footer-cards { grid-template-columns: repeat(4, 1fr); }
     }
+
+    .breadcrumb-nav--tool {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 12px 24px 0;
+      box-sizing: border-box;
+      font-size: 13px;
+      color: #666;
+    }
+    .breadcrumb-nav--tool ol {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+    .breadcrumb-nav--tool li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav--tool li:not(:last-child)::after {
+      content: "/";
+      color: #bbb;
+      margin-left: 2px;
+      font-weight: 400;
+    }
+    .breadcrumb-nav--tool a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .breadcrumb-nav--tool a:hover { text-decoration: underline; }
+    .breadcrumb-nav--tool [aria-current="page"] {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .related-block--tool {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      box-sizing: border-box;
+      border-top: 1px solid var(--line);
+      margin-top: 32px;
+      padding-top: 28px;
+    }
+    .related-block__title {
+      font-family: "Playfair Display", serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .related-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .related-links a {
+      color: var(--c);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .related-links a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -127,7 +192,24 @@
     </div>
   </header>
 
+  <nav class="breadcrumb-nav--tool" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li><a href="index.html#tap-tools">TAP Tools</a></li>
+      <li aria-current="page">Vehicle Affordability</li>
+    </ol>
+  </nav>
+
   <div id="app-root"></div>
+
+  <section class="related-block--tool" aria-labelledby="related-heading-vehicle">
+    <h2 id="related-heading-vehicle" class="related-block__title">You might also like</h2>
+    <ul class="related-links">
+      <li><a href="guide-car-buying-smart.html">Car buying guide</a></li>
+      <li><a href="tool-rent-vs-buy.html">Rent vs. buy</a></li>
+      <li><a href="index.html#tap-tools">More tools on the hub</a></li>
+    </ul>
+  </section>
 
   <footer class="site-footer">
     <a href="index.html">← Back to the TAP hub</a>
