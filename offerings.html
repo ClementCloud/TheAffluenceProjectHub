@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>What TAP Offers | The Affluence Project</title>
+  <meta name="description" content="Everything The Affluence Project offers in one place: TAP Talks, TAP Guides, the TAP Legacy Scholarship, the TAP Community, and the TAP Job Board. Free for everyone." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --paper: #FDFCFA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+    .skip-link { position: absolute; left: -9999px; z-index: 9999; padding: 12px 20px; background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; border-radius: 0 0 8px 0; }
+    .skip-link:focus { left: 16px; top: 8px; }
+
+    /* ---------- header ---------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    }
+    .site-header__inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .back-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--c);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand { font-family: "Playfair Display", serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+    .brand-tap {
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-sub { font-family: "DM Sans", sans-serif; font-weight: 400; font-size: 12px; color: #888; margin-left: 8px; -webkit-text-fill-color: #888; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 32px 24px 72px; }
+
+    /* ---------- breadcrumb ---------- */
+    .breadcrumb-nav { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .breadcrumb-nav ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after { content: "/"; color: #bbb; margin-left: 2px; }
+    .breadcrumb-nav a { color: var(--c); font-weight: 600; text-decoration: none; }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+    /* ---------- hero ---------- */
+    .hero { text-align: center; padding: 12px 0 8px; position: relative; }
+    .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--c);
+      background: rgba(139, 114, 52, 0.07);
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.15;
+      margin: 0 auto 16px;
+      max-width: 640px;
+    }
+    h1 .grad {
+      background: linear-gradient(135deg, #5A7C65, #8B7234);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .lede { font-size: clamp(16px, 2vw, 18px); color: #777; max-width: 560px; margin: 0 auto 22px; line-height: 1.6; }
+    .free-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #EEF3EF;
+      border: 1.5px solid #A8C5B0;
+      color: #3E5A47;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 20px;
+      border-radius: 100px;
+    }
+    .free-badge svg { display: block; color: #5A7C65; }
+
+    /* ---------- jump chips ---------- */
+    .jump { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 28px auto 0; max-width: 760px; }
+    .jump a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--chip, var(--c));
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 100px;
+      padding: 10px 18px;
+      min-height: 44px;
+      transition: all 0.25s ease;
+    }
+    .jump a:hover { background: var(--chip, var(--c)); color: #fff; border-color: var(--chip, var(--c)); transform: translateY(-2px); }
+    .jump a:hover svg { color: #fff; }
+    .jump svg { display: block; color: var(--chip, var(--c)); transition: color 0.25s ease; }
+
+    /* ---------- section heads ---------- */
+    .block { margin-top: 56px; }
+    .block__head { margin-bottom: 20px; }
+    .block__head h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(22px, 3.2vw, 28px);
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .block__head p { font-size: 15px; color: var(--muted); max-width: 620px; }
+
+    /* ---------- offering cards ---------- */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .card {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-top: 4px solid var(--card-c);
+      border-radius: 16px;
+      padding: 26px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      scroll-margin-top: 92px;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .card:hover { box-shadow: 0 12px 32px rgba(26, 26, 26, 0.07); transform: translateY(-3px); }
+    .card--wide { grid-column: 1 / -1; }
+    .card__top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+    .card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--card-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .card__icon svg { display: block; color: var(--card-c); }
+    .card__titles { flex: 1; min-width: 0; }
+    .card h3 { font-family: "Playfair Display", serif; font-size: 22px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .card__kicker { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--card-c); margin-top: 4px; }
+    .card__desc { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 16px; }
+    .card__list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 20px; }
+    .card__list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); line-height: 1.55; }
+    .card__list svg { color: var(--card-c); margin-top: 3px; flex-shrink: 0; display: block; }
+    .card__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 100px;
+      padding: 11px 22px;
+      min-height: 44px;
+      transition: all 0.25s ease;
+      border: 1.5px solid transparent;
+    }
+    .btn--solid { background: var(--card-c); color: #fff; }
+    .btn--solid:hover { filter: brightness(1.12); transform: translateY(-1px); }
+    .btn--ghost { background: #fff; color: var(--card-c); border-color: var(--line); }
+    .btn--ghost:hover { background: var(--card-light); border-color: var(--card-c); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--card-c);
+      background: var(--card-light);
+      border-radius: 100px;
+      padding: 5px 12px;
+      align-self: flex-start;
+    }
+
+    /* ---------- wealth stages ---------- */
+    .stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+    .stage {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 16px;
+      text-align: center;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+    .stage:hover { border-color: var(--stage-c); transform: translateY(-2px); }
+    .stage__icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--stage-light);
+    }
+    .stage__icon svg { display: block; color: var(--stage-c); }
+    .stage strong { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+    .stage span { font-size: 13px; color: var(--muted); }
+    .stages-note {
+      margin-top: 16px;
+      background: var(--c-light);
+      border: 1.5px solid var(--c-accent);
+      border-radius: 14px;
+      padding: 18px 22px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .stages-note svg { color: var(--c); flex-shrink: 0; margin-top: 2px; display: block; }
+    .stages-note strong { display: block; font-size: 15px; color: var(--ink); margin-bottom: 3px; }
+    .stages-note p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    /* ---------- support ---------- */
+    .support { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .support-item {
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 20px;
+    }
+    .support-item h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .support-item p { font-size: 14px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; }
+    .support-item a { font-size: 14px; font-weight: 600; color: var(--c); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .support-item a:hover { text-decoration: underline; }
+
+    /* ---------- connect strip ---------- */
+    .connect {
+      margin-top: 56px;
+      background: var(--ink);
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      color: #fff;
+    }
+    .connect h2 { font-family: "Playfair Display", serif; font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; margin-bottom: 10px; }
+    .connect p { font-size: 15px; color: rgba(255,255,255,0.62); max-width: 480px; margin: 0 auto 24px; line-height: 1.6; }
+    .connect__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .connect__actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 100px;
+      padding: 12px 24px;
+      min-height: 44px;
+      transition: all 0.25s ease;
+    }
+    .connect__actions .is-primary { background: var(--c-accent); color: #1A1A1A; }
+    .connect__actions .is-primary:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .connect__actions .is-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1.5px solid rgba(255,255,255,0.18); }
+    .connect__actions .is-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .connect svg { display: block; }
+
+    /* ---------- footer ---------- */
+    .site-footer {
+      text-align: center;
+      padding: 44px 24px max(36px, env(safe-area-inset-bottom, 0px));
+      background: var(--ink);
+    }
+    .site-footer > a { color: var(--c-accent); font-weight: 600; display: inline-block; margin-bottom: 16px; text-decoration: none; font-size: 14px; }
+    .site-footer > a:hover { text-decoration: underline; }
+    .footer-brand { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-tag { font-size: 14px; color: #999; }
+    .footer-legal { margin: 16px auto 0; max-width: 560px; font-size: 13px; color: #888; line-height: 1.55; }
+    .copy { margin-top: 12px; font-size: 12px; color: #666; }
+
+    @media (max-width: 600px) {
+      main { padding: 24px 16px 56px; }
+      .card { padding: 22px 18px 20px; }
+      .connect { padding: 32px 20px; border-radius: 16px; }
+      .btn { width: 100%; }
+      .card__actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- inline icon sprite (mirrors icons.svg) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="tap-i-briefcase" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></g></symbol>
+  <symbol id="tap-i-check-circle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g></symbol>
+  <symbol id="tap-i-compass" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"/></g></symbol>
+  <symbol id="tap-i-crosshair" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></g></symbol>
+  <symbol id="tap-i-gem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9l4-6Z"/><path d="M11 3 8 9h8l-3-6"/><path d="M2 9h20"/></g></symbol>
+  <symbol id="tap-i-heart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></g></symbol>
+  <symbol id="tap-i-leaf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 7.2 17 17 0 0 1 17 4a7 7 0 0 1 1.4 9.8 7 7 0 0 1-7.4 6.2Z"/><path d="M12 22s-3-2.5-3-7c0-3 2.5-5.5 5.5-6"/></g></symbol>
+  <symbol id="tap-i-message" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g></symbol>
+  <symbol id="tap-i-rocket" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></g></symbol>
+  <symbol id="tap-i-scroll-text" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-8"/><path d="M19 18V6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2Z"/><path d="M7 8v12"/></g></symbol>
+  <symbol id="tap-i-sprout" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h14"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.9 2.2 2.3 3.7"/><path d="M14.1 6a7 7 0 0 0-1.1 4"/></g></symbol>
+  <symbol id="tap-i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g></symbol>
+  <symbol id="tap-i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="back-link" href="index.html"><span aria-hidden="true">&larr;</span> Back to hub</a>
+    <div class="brand">
+      <span class="brand-tap">TAP</span><span class="brand-sub">Guides</span>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li aria-current="page">What we offer</li>
+    </ol>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="eyebrow">The Affluence Project</div>
+    <h1>Everything We Offer, <span class="grad">In One Place.</span></h1>
+    <p class="lede">Live sessions, interactive tools, a scholarship, and a community. Different doors into the same thing: building wealth that lasts past you.</p>
+    <div class="free-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-heart"/></svg>
+      Free for everyone
+    </div>
+
+    <nav class="jump" aria-label="Jump to an offering">
+      <a href="#tap-talks" style="--chip:#8B7234"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-message"/></svg>TAP Talks</a>
+      <a href="#tap-guides" style="--chip:#2D6A4F"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-compass"/></svg>TAP Guides</a>
+      <a href="#scholarship" style="--chip:#5A7C65"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-scroll-text"/></svg>Scholarship</a>
+      <a href="#community" style="--chip:#6B5B8A"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-users"/></svg>Community</a>
+      <a href="#job-board" style="--chip:#5A6C8A"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-briefcase"/></svg>Job Board</a>
+    </nav>
+  </section>
+
+  <!-- ============ OFFERINGS ============ -->
+  <section class="block" aria-labelledby="offerings-heading">
+    <div class="block__head">
+      <h2 id="offerings-heading">The Programs</h2>
+      <p>Start anywhere. Most people find one thing that fits, then work their way into the rest.</p>
+    </div>
+
+    <div class="cards">
+
+      <!-- TAP Talks -->
+      <article class="card" id="tap-talks" style="--card-c:#8B7234; --card-light:#F7F3EA">
+        <div class="card__top">
+          <div class="card__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-message"/></svg></div>
+          <div class="card__titles">
+            <h3>TAP Talks</h3>
+            <div class="card__kicker">Live sessions, seasonal episodes</div>
+          </div>
+        </div>
+        <p class="card__desc">Virtual and hybrid financial education sessions that run in seasonal episodes. Each one takes a single money topic and breaks it all the way down, from the hurdle that keeps people stuck to the one move you can make this week.</p>
+        <ul class="card__list">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Episodes tiered by where you actually are, so nothing goes over your head</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Every session covers the wealth anchor, the most important thing, and a direct action</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Recent topics: credit and debt, buying a car, career strategy</li>
+        </ul>
+        <div class="card__actions">
+          <a class="btn btn--solid" href="tap-talks.html">See the lineup</a>
+          <a class="btn btn--ghost" href="https://www.instagram.com/theaffluenceproject/" target="_blank" rel="noopener noreferrer">Episode updates</a>
+        </div>
+      </article>
+
+      <!-- TAP Guides -->
+      <article class="card" id="tap-guides" style="--card-c:#2D6A4F; --card-light:#E9F5EF">
+        <div class="card__top">
+          <div class="card__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-compass"/></svg></div>
+          <div class="card__titles">
+            <h3>TAP Guides</h3>
+            <div class="card__kicker">Interactive tools and reads</div>
+          </div>
+        </div>
+        <p class="card__desc">The hub you are on right now. Calculators that run your real numbers, guidance sorted by wealth stage, and plain language guides for students, young professionals, and parents.</p>
+        <ul class="card__list">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Net worth calculator that places you in one of five wealth stages</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Tools for rent vs. buy, debt vs. investing, budgeting, and car affordability</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Guides on benefits, career moves, internships, and family money talks</li>
+        </ul>
+        <div class="card__actions">
+          <a class="btn btn--solid" href="https://tapguides.theaffluenceproject.org" rel="noopener">Open TAP Guides</a>
+          <a class="btn btn--ghost" href="https://tapguides.theaffluenceproject.org/#tap-tools" rel="noopener">Browse the tools</a>
+        </div>
+      </article>
+
+      <!-- Scholarship -->
+      <article class="card" id="scholarship" style="--card-c:#5A7C65; --card-light:#EEF3EF">
+        <div class="card__top">
+          <div class="card__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-scroll-text"/></svg></div>
+          <div class="card__titles">
+            <h3>TAP Legacy Scholarship</h3>
+            <div class="card__kicker">For New York high school seniors</div>
+          </div>
+        </div>
+        <p class="card__desc">An essay based award for New York high school seniors heading into higher education. No application fee. Write about how you plan to build something that outlasts you, and let the work speak.</p>
+        <ul class="card__list">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Open to NY high school seniors continuing on to higher education</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Essay based and reviewed by the TAP team</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Funds go straight toward the cost of school</li>
+        </ul>
+        <div class="card__actions">
+          <a class="btn btn--solid" href="https://www.theaffluenceproject.org/tapscholarship" target="_blank" rel="noopener noreferrer">Apply now</a>
+        </div>
+      </article>
+
+      <!-- Community -->
+      <article class="card" id="community" style="--card-c:#6B5B8A; --card-light:#F2EFF6">
+        <div class="card__top">
+          <div class="card__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-users"/></svg></div>
+          <div class="card__titles">
+            <h3>TAP Community</h3>
+            <div class="card__kicker">Slack and Instagram</div>
+          </div>
+        </div>
+        <p class="card__desc">Where the conversation keeps going after the session ends. Ask the question you did not want to ask out loud, share the win nobody else would get, and stay close to people building the same thing.</p>
+        <ul class="card__list">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Slack for questions, accountability, and resource drops</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-check-circle"/></svg>Instagram for daily breakdowns and episode announcements</li>
+        </ul>
+        <div class="card__actions">
+          <a class="btn btn--solid" href="https://join.slack.com/t/the-affluence-project/shared_invite/zt-3mlu42c52-8pNoX_CRrjY7qcdM_rQDhQ" target="_blank" rel="noopener noreferrer">Join the Slack</a>
+          <a class="btn btn--ghost" href="https://www.instagram.com/theaffluenceproject/" target="_blank" rel="noopener noreferrer">Follow on Instagram</a>
+        </div>
+      </article>
+
+      <!-- Job Board -->
+      <article class="card card--wide" id="job-board" style="--card-c:#5A6C8A; --card-light:#EEF1F6">
+        <div class="card__top">
+          <div class="card__icon"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-briefcase"/></svg></div>
+          <div class="card__titles">
+            <h3>TAP Job Board</h3>
+            <div class="card__kicker">Roles and referrals</div>
+          </div>
+          <span class="tag">Coming soon</span>
+        </div>
+        <p class="card__desc">Curated roles by industry, with referrals from the TAP network for eligible applicants. Upload a resume, apply, and get in front of someone who can actually move it forward. Follow along on Instagram and we will announce the day it opens.</p>
+        <div class="card__actions">
+          <a class="btn btn--ghost" href="https://tapguides.theaffluenceproject.org/#young-professionals" rel="noopener">See internship resources</a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ WEALTH STAGES ============ -->
+  <section class="block" aria-labelledby="stages-heading">
+    <div class="block__head">
+      <h2 id="stages-heading">The 5 Wealth Stages</h2>
+      <p>Everything we teach is sorted by stage, so the advice you get matches the position you are actually in.</p>
+    </div>
+
+    <div class="stages">
+      <div class="stage" style="--stage-c:#c0392b; --stage-light:#FBEEEC">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-sprout"/></svg></div>
+        <strong>Emerging</strong>
+        <span>Negative to $0</span>
+      </div>
+      <div class="stage" style="--stage-c:#27ae60; --stage-light:#EAF7F0">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-leaf"/></svg></div>
+        <strong>Rooted</strong>
+        <span>$1 to $49K</span>
+      </div>
+      <div class="stage" style="--stage-c:#2980b9; --stage-light:#EAF2F9">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-rocket"/></svg></div>
+        <strong>Progressing</strong>
+        <span>$50K to $199K</span>
+      </div>
+      <div class="stage" style="--stage-c:#8B7234; --stage-light:#F7F3EA">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-target"/></svg></div>
+        <strong>Aligned</strong>
+        <span>$200K to $499K</span>
+      </div>
+      <div class="stage" style="--stage-c:#6B5B8A; --stage-light:#F2EFF6">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-gem"/></svg></div>
+        <strong>Affluent</strong>
+        <span>$500K+</span>
+      </div>
+    </div>
+
+    <div class="stages-note">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-crosshair"/></svg>
+      <div>
+        <strong>Not a ranking. A starting point.</strong>
+        <p>Run your numbers in the net worth calculator and the hub will point you to the guides built for your stage.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SUPPORT ============ -->
+  <section class="block" aria-labelledby="support-heading">
+    <div class="block__head">
+      <h2 id="support-heading">Want to Help Build It</h2>
+      <p>The Affluence Project is a registered 501(c)(3) nonprofit. Everything we publish stays free because people show up for it.</p>
+    </div>
+
+    <div class="support">
+      <div class="support-item">
+        <h3>Donate</h3>
+        <p>Fund scholarships, sessions, and the tools on this site. Every dollar goes back into programming.</p>
+        <a href="https://www.theaffluenceproject.org/donate" target="_blank" rel="noopener noreferrer">Give to TAP <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="support-item">
+        <h3>Volunteer or mentor</h3>
+        <p>Lead a session, review scholarship essays, or mentor someone a few steps behind you.</p>
+        <a href="https://www.theaffluenceproject.org/contact-1" target="_blank" rel="noopener noreferrer">Get involved <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="support-item">
+        <h3>Partner with us</h3>
+        <p>Bring TAP Talks to your school, employer, or community group, or sponsor a season of programming.</p>
+        <a href="https://www.theaffluenceproject.org/partnership-application" target="_blank" rel="noopener noreferrer">Start a conversation <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONNECT ============ -->
+  <section class="connect" aria-labelledby="connect-heading">
+    <h2 id="connect-heading">Pick a Door and Walk Through It</h2>
+    <p>You do not need to have it figured out first. Start with the tools, come to a session, or just follow along.</p>
+    <div class="connect__actions">
+      <a class="is-primary" href="https://tapguides.theaffluenceproject.org" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-compass"/></svg>
+        Explore the tools
+      </a>
+      <a class="is-secondary" href="https://www.instagram.com/theaffluenceproject/" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-heart"/></svg>
+        Follow @theaffluenceproject
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <a href="index.html"><span aria-hidden="true">&larr;</span> Back to the TAP hub</a>
+  <div class="footer-brand">The Affluence Project</div>
+  <p class="footer-tag">Creating generational wealth through mentorship, networking &amp; advocacy.</p>
+  <p class="footer-legal">
+    TAP Interactive Guides are educational tools and readings. They are not personalized financial, legal, or tax advice. Programs and awards may have eligibility rules; always confirm details that matter to you.
+  </p>
+  <p class="copy">&copy; <span id="year">2026</span> The Affluence Project. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

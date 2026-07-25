@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>TAP Talks | The Affluence Project</title>
+  <meta name="description" content="TAP Talks: free virtual and hybrid financial education sessions from The Affluence Project, running in seasonal episodes. See the current lineup and join the next session." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --paper: #FDFCFA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+    .skip-link { position: absolute; left: -9999px; z-index: 9999; padding: 12px 20px; background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; border-radius: 0 0 8px 0; }
+    .skip-link:focus { left: 16px; top: 8px; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    }
+    .site-header__inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .back-link { font-size: 14px; font-weight: 600; color: var(--c); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .brand { font-family: "Playfair Display", serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+    .brand-tap { background: linear-gradient(135deg, #5A7C65, #8B7234); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-sub { font-family: "DM Sans", sans-serif; font-weight: 400; font-size: 12px; color: #888; margin-left: 8px; -webkit-text-fill-color: #888; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 32px 24px 72px; }
+
+    .breadcrumb-nav { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .breadcrumb-nav ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after { content: "/"; color: #bbb; margin-left: 2px; }
+    .breadcrumb-nav a { color: var(--c); font-weight: 600; text-decoration: none; }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+    /* hero */
+    .hero { text-align: center; padding: 8px 0 4px; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--c); color: #fff;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 18px;
+    }
+    .hero-pill svg { display: block; }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(34px, 5.2vw, 54px);
+      font-weight: 700; color: var(--ink); line-height: 1.12;
+      margin: 0 auto 16px; max-width: 620px;
+    }
+    h1 .grad { background: linear-gradient(135deg, #5A7C65, #8B7234); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .lede { font-size: clamp(16px, 2vw, 18px); color: #777; max-width: 560px; margin: 0 auto 22px; line-height: 1.6; }
+    .free-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #EEF3EF; border: 1.5px solid #A8C5B0; color: #3E5A47;
+      font-size: 14px; font-weight: 600; padding: 9px 20px; border-radius: 100px;
+    }
+    .free-badge svg { display: block; color: #5A7C65; }
+
+    /* next session */
+    .next {
+      margin-top: 36px;
+      background: linear-gradient(135deg, #1A1A1A 0%, #2A2418 100%);
+      border-radius: 20px; padding: 34px 30px; color: #fff; position: relative; overflow: hidden;
+    }
+    .next::after {
+      content: ""; position: absolute; top: -70px; right: -50px; width: 220px; height: 220px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(212,186,106,0.16), transparent 70%); pointer-events: none;
+    }
+    .next__tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-accent); background: rgba(212,186,106,0.14);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .next__tag svg { display: block; }
+    .next h2 { font-family: "Playfair Display", serif; font-size: clamp(24px, 3.6vw, 34px); font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+    .next__when { font-size: 15px; color: var(--c-accent); font-weight: 600; margin-bottom: 12px; }
+    .next p { font-size: 15px; color: rgba(255,255,255,0.66); max-width: 520px; margin-bottom: 22px; line-height: 1.6; }
+    .next__actions { display: flex; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; }
+    .next__actions a {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      border-radius: 100px; padding: 12px 26px; min-height: 46px; transition: all 0.25s ease;
+    }
+    .next__actions .is-primary { background: var(--c-accent); color: #1A1A1A; }
+    .next__actions .is-primary:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .next__actions .is-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1.5px solid rgba(255,255,255,0.2); }
+    .next__actions .is-secondary:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
+    .next svg { display: block; }
+
+    /* generic block */
+    .block { margin-top: 56px; }
+    .block__head { margin-bottom: 20px; }
+    .block__head h2 { font-family: "Playfair Display", serif; font-size: clamp(22px, 3.2vw, 28px); font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .block__head p { font-size: 15px; color: var(--muted); max-width: 640px; }
+
+    /* anatomy cards */
+    .anatomy { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .anat {
+      background: #fff; border: 1.5px solid var(--line); border-left: 4px solid var(--c-accent);
+      border-radius: 14px; padding: 22px 20px;
+    }
+    .anat__icon {
+      width: 42px; height: 42px; border-radius: 12px; background: var(--c-light);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
+    }
+    .anat__icon svg { display: block; color: var(--c); }
+    .anat h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c); margin-bottom: 7px; }
+    .anat p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    /* episodes */
+    .episodes { display: flex; flex-direction: column; gap: 14px; }
+    .ep {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+      padding: 22px 24px; display: flex; gap: 18px; align-items: flex-start;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .ep:hover { border-color: var(--c-accent); box-shadow: 0 10px 28px rgba(26,26,26,0.06); transform: translateY(-2px); }
+    .ep--next { border-color: var(--c-accent); background: var(--c-light); }
+    .ep__num {
+      width: 54px; height: 54px; border-radius: 14px; background: var(--c-light);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0;
+      border: 1.5px solid var(--c-accent);
+    }
+    .ep--next .ep__num { background: #fff; }
+    .ep__num span:first-child { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c); line-height: 1; }
+    .ep__num span:last-child { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.1; }
+    .ep__body { flex: 1; min-width: 0; }
+    .ep__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 5px; }
+    .ep__head h3 { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .ep__status {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 100px;
+    }
+    .is-upnext { background: var(--c); color: #fff; }
+    .is-past { background: #F1EFEA; color: #8a8578; }
+    .ep__meta { font-size: 13px; font-weight: 600; color: var(--c); margin-bottom: 7px; display: flex; align-items: center; gap: 7px; }
+    .ep__meta svg { display: block; }
+    .ep__body > p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+    .ep__anchor { font-size: 13px; color: #555; background: #FAF8F4; border-radius: 10px; padding: 10px 14px; border-left: 3px solid var(--c-accent); }
+    .ep__anchor strong { color: var(--ink); font-weight: 600; }
+
+    /* stages */
+    .stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 12px; }
+    .stage { background: #fff; border: 1.5px solid var(--line); border-radius: 14px; padding: 18px 14px; text-align: center; transition: border-color 0.25s ease, transform 0.25s ease; }
+    .stage:hover { border-color: var(--stage-c); transform: translateY(-2px); }
+    .stage__icon { width: 40px; height: 40px; border-radius: 12px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; background: var(--stage-light); }
+    .stage__icon svg { display: block; color: var(--stage-c); }
+    .stage strong { display: block; font-size: 15px; font-weight: 700; color: var(--ink); }
+    .stage span { font-size: 13px; color: var(--muted); }
+
+    .callout {
+      background: var(--c-light); border: 1.5px solid var(--c-accent); border-radius: 14px;
+      padding: 20px 22px; display: flex; gap: 14px; align-items: flex-start; margin-top: 18px;
+    }
+    .callout svg { color: var(--c); flex-shrink: 0; margin-top: 2px; display: block; }
+    .callout strong { display: block; font-size: 15px; color: var(--ink); margin-bottom: 3px; }
+    .callout p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+    /* connect */
+    .connect { margin-top: 56px; background: var(--ink); border-radius: 20px; padding: 40px 32px; text-align: center; color: #fff; }
+    .connect h2 { font-family: "Playfair Display", serif; font-size: clamp(22px, 3.2vw, 30px); font-weight: 700; margin-bottom: 10px; }
+    .connect p { font-size: 15px; color: rgba(255,255,255,0.62); max-width: 500px; margin: 0 auto 24px; line-height: 1.6; }
+    .connect__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .connect__actions a { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 100px; padding: 12px 24px; min-height: 44px; transition: all 0.25s ease; }
+    .connect__actions .is-primary { background: var(--c-accent); color: #1A1A1A; }
+    .connect__actions .is-primary:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .connect__actions .is-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1.5px solid rgba(255,255,255,0.18); }
+    .connect__actions .is-secondary:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+    .connect svg { display: block; }
+
+    .site-footer { text-align: center; padding: 44px 24px max(36px, env(safe-area-inset-bottom, 0px)); background: var(--ink); }
+    .site-footer > a { color: var(--c-accent); font-weight: 600; display: inline-block; margin-bottom: 16px; text-decoration: none; font-size: 14px; }
+    .site-footer > a:hover { text-decoration: underline; }
+    .footer-brand { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-tag { font-size: 14px; color: #999; }
+    .footer-legal { margin: 16px auto 0; max-width: 560px; font-size: 13px; color: #888; line-height: 1.55; }
+    .copy { margin-top: 12px; font-size: 12px; color: #666; }
+
+    @media (max-width: 600px) {
+      main { padding: 24px 16px 56px; }
+      .next { padding: 28px 20px; border-radius: 16px; }
+      .next__actions a { width: 100%; }
+      .ep { flex-direction: column; gap: 14px; padding: 20px 18px; }
+      .connect { padding: 32px 20px; border-radius: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- inline icon sprite (mirrors icons.svg) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="tap-i-briefcase" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></g></symbol>
+  <symbol id="tap-i-car" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></g></symbol>
+  <symbol id="tap-i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g></symbol>
+  <symbol id="tap-i-credit-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></g></symbol>
+  <symbol id="tap-i-crosshair" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></g></symbol>
+  <symbol id="tap-i-gem" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 13L2 9l4-6Z"/><path d="M11 3 8 9h8l-3-6"/><path d="M2 9h20"/></g></symbol>
+  <symbol id="tap-i-heart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></g></symbol>
+  <symbol id="tap-i-landmark" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M4 6h16"/><path d="M6 4v4"/><path d="M18 4v4"/><path d="M2 10h20"/></g></symbol>
+  <symbol id="tap-i-leaf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 7.2 17 17 0 0 1 17 4a7 7 0 0 1 1.4 9.8 7 7 0 0 1-7.4 6.2Z"/><path d="M12 22s-3-2.5-3-7c0-3 2.5-5.5 5.5-6"/></g></symbol>
+  <symbol id="tap-i-lightbulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></g></symbol>
+  <symbol id="tap-i-message" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g></symbol>
+  <symbol id="tap-i-rocket" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></g></symbol>
+  <symbol id="tap-i-sparkle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8-6.2-.2 4.8 3.8L7.6 18 12 14.4 16.4 18l-2.2-5.8 4.8-3.8-6.2.2L12 3Z"/></g></symbol>
+  <symbol id="tap-i-sprout" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h14"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.9 2.2 2.3 3.7"/><path d="M14.1 6a7 7 0 0 0-1.1 4"/></g></symbol>
+  <symbol id="tap-i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></g></symbol>
+  <symbol id="tap-i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g></symbol>
+  <symbol id="tap-i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="back-link" href="offerings.html"><span aria-hidden="true">&larr;</span> All programs</a>
+    <div class="brand">
+      <span class="brand-tap">TAP</span><span class="brand-sub">Guides</span>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="https://tapguides.theaffluenceproject.org" rel="noopener">TAP Hub</a></li>
+      <li><a href="offerings.html">What we offer</a></li>
+      <li aria-current="page">TAP Talks</li>
+    </ol>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-pill">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-message"/></svg>
+      TAP Talks
+    </div>
+    <h1>One Money Topic. <span class="grad">Broken All The Way Down.</span></h1>
+    <p class="lede">Live virtual and hybrid sessions that run in seasonal episodes. Show up, get the real breakdown, leave with one thing you can actually do this week.</p>
+    <div class="free-badge">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-heart"/></svg>
+      Free for everyone
+    </div>
+  </section>
+
+  <!-- ============ NEXT SESSION ============ -->
+  <!-- TODO: update episode title, date, time, and the Zoom link before each session -->
+  <section class="next" aria-labelledby="next-heading">
+    <div class="next__tag">
+      <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-clock"/></svg>
+      Up next
+    </div>
+    <h2 id="next-heading">Season 2, Episode 6</h2>
+    <div class="next__when">Date to be announced &middot; 7:00 PM EST &middot; Virtual</div>
+    <p>Registration is not required. When the session goes live, the join link goes up on our Linktree and Instagram. Come with questions.</p>
+    <div class="next__actions">
+      <a class="is-primary" href="https://linktr.ee/theaffluenceproject" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-sparkle"/></svg>
+        Get the join link
+      </a>
+      <a class="is-secondary" href="https://www.youtube.com/@TheAffluenceProject" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-star"/></svg>
+        Watch past talks
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ WHAT HAPPENS ============ -->
+  <section class="block" aria-labelledby="anatomy-heading">
+    <div class="block__head">
+      <h2 id="anatomy-heading">What Happens In A Session</h2>
+      <p>Every TAP Talk moves through the same three beats, no matter the topic. You always leave with something to do, not just something to think about.</p>
+    </div>
+    <div class="anatomy">
+      <div class="anat">
+        <div class="anat__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-landmark"/></svg></div>
+        <h3>The Wealth Anchor</h3>
+        <p>The thing about this topic that quietly holds people back. We name it first, because you cannot get around a hurdle you have not looked at.</p>
+      </div>
+      <div class="anat">
+        <div class="anat__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-lightbulb"/></svg></div>
+        <h3>Most Important Thing</h3>
+        <p>If you remember nothing else from the hour, this is the part that matters. One idea, said plainly, with the reasoning behind it.</p>
+      </div>
+      <div class="anat">
+        <div class="anat__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-target"/></svg></div>
+        <h3>Direct Action Now</h3>
+        <p>The specific move to make this week. Small enough to finish, big enough to matter, and never something you need a lot of money to start.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LINEUP ============ -->
+  <!-- TODO: confirm episode numbers, dates, and topics against the current season -->
+  <section class="block" aria-labelledby="lineup-heading">
+    <div class="block__head">
+      <h2 id="lineup-heading">This Season's Lineup</h2>
+      <p>Season 2 runs through the money decisions that show up early and cost the most when you get them wrong.</p>
+    </div>
+
+    <div class="episodes">
+
+      <article class="ep">
+        <div class="ep__num"><span>Ep</span><span>03</span></div>
+        <div class="ep__body">
+          <div class="ep__head">
+            <h3>Credit &amp; Debt</h3>
+            <span class="ep__status is-past">Aired</span>
+          </div>
+          <div class="ep__meta"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-credit-card"/></svg>Season 2</div>
+          <p>How credit actually gets scored, which debts to attack first, and why the minimum payment is designed to keep you there. Includes the difference between debt that builds something and debt that just costs you.</p>
+          <div class="ep__anchor"><strong>The Wealth Anchor:</strong> Treating a credit score like a grade instead of a tool.</div>
+        </div>
+      </article>
+
+      <article class="ep">
+        <div class="ep__num"><span>Ep</span><span>04</span></div>
+        <div class="ep__body">
+          <div class="ep__head">
+            <h3>Buying A Car Without Getting Got</h3>
+            <span class="ep__status is-past">Aired</span>
+          </div>
+          <div class="ep__meta"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-car"/></svg>Season 2</div>
+          <p>New versus used, where dealers actually make their money, and how to read a financing offer before you sign it. Total cost of ownership, not just the monthly payment.</p>
+          <div class="ep__anchor"><strong>The Wealth Anchor:</strong> Shopping for a monthly payment instead of a total price.</div>
+        </div>
+      </article>
+
+      <article class="ep">
+        <div class="ep__num"><span>Ep</span><span>05</span></div>
+        <div class="ep__body">
+          <div class="ep__head">
+            <h3>Career Strategy</h3>
+            <span class="ep__status is-past">Aired</span>
+          </div>
+          <div class="ep__meta"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-briefcase"/></svg>Season 2 &middot; May 20</div>
+          <p>When to stay, when to move, and how to read a full offer instead of just the salary line. Negotiation language you can say out loud without feeling greedy.</p>
+          <div class="ep__anchor"><strong>The Wealth Anchor:</strong> Loyalty priced below what the market already pays you.</div>
+        </div>
+      </article>
+
+      <article class="ep ep--next">
+        <div class="ep__num"><span>Ep</span><span>06</span></div>
+        <div class="ep__body">
+          <div class="ep__head">
+            <h3>Topic to be announced</h3>
+            <span class="ep__status is-upnext">Up next</span>
+          </div>
+          <div class="ep__meta"><svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-clock"/></svg>Date coming soon</div>
+          <p>Follow along on Instagram or join the Slack and you will know the topic and date before anyone else does.</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ TIERED ============ -->
+  <section class="block" aria-labelledby="stages-heading">
+    <div class="block__head">
+      <h2 id="stages-heading">Tiered To Where You Are</h2>
+      <p>Sessions are organized by audience level, so the same topic lands differently depending on your stage. Nothing goes over your head and nothing wastes your time.</p>
+    </div>
+
+    <div class="stages">
+      <div class="stage" style="--stage-c:#c0392b; --stage-light:#FBEEEC">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-sprout"/></svg></div>
+        <strong>Emerging</strong><span>Negative to $0</span>
+      </div>
+      <div class="stage" style="--stage-c:#27ae60; --stage-light:#EAF7F0">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-leaf"/></svg></div>
+        <strong>Rooted</strong><span>$1 to $49K</span>
+      </div>
+      <div class="stage" style="--stage-c:#2980b9; --stage-light:#EAF2F9">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-rocket"/></svg></div>
+        <strong>Progressing</strong><span>$50K to $199K</span>
+      </div>
+      <div class="stage" style="--stage-c:#8B7234; --stage-light:#F7F3EA">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-target"/></svg></div>
+        <strong>Aligned</strong><span>$200K to $499K</span>
+      </div>
+      <div class="stage" style="--stage-c:#6B5B8A; --stage-light:#F2EFF6">
+        <div class="stage__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-gem"/></svg></div>
+        <strong>Affluent</strong><span>$500K+</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-crosshair"/></svg>
+      <div>
+        <strong>Not sure which stage you are in</strong>
+        <p>Run your numbers through the net worth calculator on the TAP Guides hub and it will place you, then point you to the guides built for that stage.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONNECT ============ -->
+  <section class="connect" aria-labelledby="connect-heading">
+    <h2 id="connect-heading">Never Miss An Episode</h2>
+    <p>Topics and dates drop in the Slack and on Instagram first. Past talks live on YouTube whenever you want to catch up.</p>
+    <div class="connect__actions">
+      <a class="is-primary" href="https://join.slack.com/t/the-affluence-project/shared_invite/zt-3mlu42c52-8pNoX_CRrjY7qcdM_rQDhQ" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-users"/></svg>
+        Join the Slack
+      </a>
+      <a class="is-secondary" href="https://www.instagram.com/theaffluenceproject/" target="_blank" rel="noopener noreferrer">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-heart"/></svg>
+        Follow @theaffluenceproject
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <a href="offerings.html"><span aria-hidden="true">&larr;</span> See everything TAP offers</a>
+  <div class="footer-brand">The Affluence Project</div>
+  <p class="footer-tag">Creating generational wealth through mentorship, networking &amp; advocacy.</p>
+  <p class="footer-legal">
+    TAP Talks are educational sessions. They are not personalized financial, legal, or tax advice. Session topics and dates may change; always confirm details that matter to you.
+  </p>
+  <p class="copy">&copy; <span id="year">2026</span> The Affluence Project. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

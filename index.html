@@ -218,7 +218,7 @@
         colorLight: "#EEF3EF",
         colorAccent: "#A8C5B0",
         tiles: [
-          { title: "Few things to know (choosing wealth)", desc: "Core setup, credit, net worth, your first car and apartment, all in one guide.", tileIcon: "lightbulb", href: "few-things.html" },
+          { title: "Few things to know (if you are choosing wealth)", desc: "Core setup, credit, net worth, your first car and apartment, all in one guide.", tileIcon: "lightbulb", href: "few-things.html" },
           { title: "Internships That Count", desc: "Find roles, stand out in applications, and turn experience into momentum.", tileIcon: "briefcase", href: "internships.html" },
         ],
       },
@@ -314,6 +314,7 @@
       { title: "Talk Money by Age", href: "parent-talk-money.html", kw: "kids children parents family money talk" },
       { title: "529 & College Savings", href: "parent-529-college.html", kw: "529 college tuition savings kid" },
       { title: "What is my tier? (Young Pros)", href: "#young-professionals", kw: "tier net worth calculator wealth path" },
+      { title: "What TAP offers", href: "offerings.html", kw: "programs offerings tap talk scholarship community slack job board donate volunteer about" },
     ];
 
     var GOAL_INTENTS = [
@@ -871,6 +872,7 @@
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-start",
+            gap: 8,
             boxSizing: "border-box",
           }}
         >
@@ -900,6 +902,32 @@
             }}
           >
             ← Main site
+          </a>
+          <a
+            href="offerings.html"
+            aria-label="What The Affluence Project offers"
+            style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: isMobile ? 13 : 14,
+              fontWeight: 600,
+              color: "#8B7234",
+              background: "#F7F3EA",
+              border: "1.5px solid #D4BA6A55",
+              borderRadius: 100,
+              padding: isMobile ? "11px 18px" : "10px 20px",
+              minHeight: 44,
+              lineHeight: 1.25,
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+              flexShrink: 0,
+              whiteSpace: "nowrap",
+              boxSizing: "border-box",
+            }}
+          >
+            All programs
           </a>
         </div>
       );
