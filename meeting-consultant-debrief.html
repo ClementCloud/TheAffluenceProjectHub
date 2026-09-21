@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Consultant Meeting Debrief | The Affluence Project</title>
+  <meta name="description" content="Board strategy debrief from TAP's consultant meeting with Tamar: grant readiness, positioning, program portfolio, roadmap, and action tracker." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --paper: #FDFCFA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+    .skip-link { position: absolute; left: -9999px; z-index: 9999; padding: 12px 20px; background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; border-radius: 0 0 8px 0; }
+    .skip-link:focus { left: 16px; top: 8px; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    }
+    .site-header__inner { max-width: 960px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .back-link { font-size: 14px; font-weight: 600; color: var(--c); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .brand { font-family: "Playfair Display", serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+    .brand-tap { background: linear-gradient(135deg, #5A7C65, #8B7234); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-sub { font-family: "DM Sans", sans-serif; font-weight: 400; font-size: 12px; color: #888; margin-left: 8px; -webkit-text-fill-color: #888; }
+
+    main { max-width: 960px; margin: 0 auto; padding: 32px 24px 72px; }
+
+    .breadcrumb-nav { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .breadcrumb-nav ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after { content: "/"; color: #bbb; margin-left: 2px; }
+    .breadcrumb-nav a { color: var(--c); font-weight: 600; text-decoration: none; }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+    .hero-band {
+      background: linear-gradient(135deg, #1A1A1A 0%, #2A2418 100%);
+      border-radius: 20px; padding: 34px 30px; color: #fff; position: relative; overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .hero-band::after {
+      content: ""; position: absolute; top: -70px; right: -50px; width: 240px; height: 240px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(212,186,106,0.18), transparent 70%); pointer-events: none;
+    }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-accent); background: rgba(212,186,106,0.14);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .hero-pill svg { display: block; }
+    .hero-band h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(28px, 4.5vw, 44px);
+      font-weight: 700; line-height: 1.15; margin-bottom: 12px; max-width: 720px;
+      position: relative; z-index: 1;
+    }
+    .hero-band .lede {
+      font-size: 15px; color: rgba(255,255,255,0.68); max-width: 640px; line-height: 1.65;
+      margin-bottom: 24px; position: relative; z-index: 1;
+    }
+    .hero-band .lede strong { color: var(--c-accent); font-weight: 600; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px;
+      position: relative; z-index: 1;
+    }
+    .quote {
+      background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 18px 20px; font-size: 15px; line-height: 1.6;
+      color: rgba(255,255,255,0.78);
+    }
+    .quote strong { color: var(--c-accent); }
+    .meta {
+      display: grid; gap: 10px; font-size: 14px; color: rgba(255,255,255,0.55);
+    }
+    .meta div {
+      display: flex; justify-content: space-between; gap: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 8px;
+    }
+    .meta b { color: #fff; font-weight: 600; }
+
+    .tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin: 0 0 22px; position: sticky; top: 57px; z-index: 40;
+      padding: 12px 0; background: rgba(253, 252, 250, 0.94);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .tab {
+      border: 1.5px solid var(--line); background: #fff; color: var(--muted);
+      padding: 9px 14px; border-radius: 100px; font-weight: 650; font-size: 13px;
+      transition: all 0.2s ease;
+    }
+    .tab:hover { border-color: var(--c-accent); color: var(--ink); }
+    .tab.active { background: var(--c); color: #fff; border-color: var(--c); }
+
+    .section { display: none; animation: fade 0.22s ease; }
+    .section.active { display: block; }
+    @keyframes fade {
+      from { opacity: 0.55; transform: translateY(5px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .section-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(22px, 3.2vw, 28px);
+      font-weight: 700; color: var(--ink); margin: 4px 0 8px;
+    }
+    .section-intro {
+      color: var(--muted); line-height: 1.6; margin: 0 0 20px;
+      max-width: 720px; font-size: 15px;
+    }
+
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .card {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 16px; padding: 20px;
+    }
+    .card h3 {
+      font-family: "Playfair Display", serif;
+      margin: 0 0 8px; font-size: 18px; font-weight: 700; color: var(--ink);
+    }
+    .card p { margin: 0; color: var(--muted); line-height: 1.55; font-size: 14px; }
+    .span4 { grid-column: span 4; }
+    .span6 { grid-column: span 6; }
+    .span12 { grid-column: span 12; }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 5px 11px; border-radius: 100px;
+      background: var(--c-light); color: var(--c);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      border: 1px solid var(--c-accent); margin-bottom: 10px;
+    }
+    .kpi {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(22px, 3vw, 28px);
+      color: var(--ink); font-weight: 700; margin: 0.15rem 0 8px; line-height: 1.2;
+    }
+    .mini { font-size: 13px; color: var(--muted); }
+
+    .list { display: grid; gap: 12px; margin-top: 12px; }
+    .list-item { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%; background: var(--c);
+      margin-top: 7px; box-shadow: 0 0 0 5px rgba(139,114,52,0.1);
+    }
+    .list-item b { display: block; margin-bottom: 3px; color: var(--ink); font-size: 14px; }
+
+    .program { display: flex; flex-direction: column; gap: 10px; height: 100%; }
+    .program__icon {
+      width: 42px; height: 42px; border-radius: 12px; background: var(--c-light);
+      display: flex; align-items: center; justify-content: center; color: var(--c);
+    }
+    .program__icon svg { display: block; }
+    .program .foot {
+      margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+      font-size: 13px; color: var(--muted);
+    }
+
+    .callout {
+      background: var(--c-light); border: 1.5px solid var(--c-accent); border-left: 4px solid var(--c);
+      border-radius: 14px; padding: 16px 18px; color: #555; line-height: 1.55; font-size: 14px;
+    }
+    .callout strong { color: var(--ink); }
+
+    .timeline { display: grid; gap: 14px; }
+    .step { display: grid; grid-template-columns: 42px 1fr; gap: 14px; align-items: start; }
+    .stepnum {
+      width: 42px; height: 42px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--c); color: #fff; font-weight: 800; font-size: 14px;
+    }
+    .stepbox {
+      padding: 14px 16px; border: 1.5px solid var(--line); border-radius: 14px; background: #fff;
+    }
+    .stepbox b { display: block; margin-bottom: 4px; color: var(--ink); font-size: 15px; }
+    .stepbox span { color: var(--muted); line-height: 1.55; font-size: 14px; }
+
+    .consultant { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .consultant .left {
+      padding: 22px; border-radius: 16px;
+      background: linear-gradient(145deg, #F7F3EA, #fff);
+      border: 1.5px solid var(--c-accent);
+    }
+    .consultant .right {
+      padding: 22px; border-radius: 16px; background: #fff; border: 1.5px solid var(--line);
+    }
+    .consultant h3 {
+      font-family: "Playfair Display", serif;
+      font-size: 22px; font-weight: 700; color: var(--ink); margin: 0.6rem 0 12px;
+    }
+    .pillrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .pill {
+      padding: 7px 12px; border-radius: 100px; border: 1.5px solid var(--line);
+      color: var(--muted); font-size: 12px; font-weight: 600; background: #fff;
+    }
+
+    .taskbar {
+      display: flex; justify-content: space-between; gap: 12px;
+      align-items: center; flex-wrap: wrap; margin-bottom: 16px;
+    }
+    .taskbar b { color: var(--ink); }
+    .progresswrap { flex: 1; min-width: 220px; }
+    .progress { height: 10px; border-radius: 100px; background: #EEEAE3; overflow: hidden; }
+    .progress > div {
+      height: 100%; width: 0;
+      background: linear-gradient(90deg, var(--c), var(--c-accent));
+      transition: width 0.25s ease;
+    }
+    .task {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 12px;
+      align-items: start; padding: 15px 0; border-bottom: 1px solid var(--line);
+      cursor: pointer;
+    }
+    .task:last-child { border-bottom: 0; }
+    input[type="checkbox"] {
+      width: 20px; height: 20px; accent-color: #8B7234; margin-top: 2px;
+    }
+    .owner {
+      white-space: nowrap; font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 5px 10px; border-radius: 100px;
+      background: var(--c-light); color: var(--c); border: 1px solid var(--c-accent);
+    }
+    .task b { display: block; margin-bottom: 4px; color: var(--ink); font-size: 14px; }
+    .task small { color: var(--muted); line-height: 1.5; font-size: 13px; }
+
+    .decision { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .decision button {
+      padding: 14px 16px; border-radius: 14px; border: 1.5px solid var(--line);
+      background: #fff; color: var(--ink); cursor: pointer; text-align: left;
+      font-weight: 650; font-size: 14px; transition: all 0.2s ease;
+    }
+    .decision button:hover { border-color: var(--c-accent); transform: translateY(-1px); }
+    .decision button.selected {
+      border-color: var(--c); background: var(--c-light);
+    }
+    .decision .mini { display: block; margin-top: 6px; font-weight: 400; }
+
+    .site-footer { text-align: center; padding: 44px 24px max(36px, env(safe-area-inset-bottom, 0px)); background: var(--ink); }
+    .site-footer > a { color: var(--c-accent); font-weight: 600; display: inline-block; margin-bottom: 16px; text-decoration: none; font-size: 14px; }
+    .site-footer > a:hover { text-decoration: underline; }
+    .footer-brand { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-tag { font-size: 14px; color: #999; }
+    .footer-legal { margin: 16px auto 0; max-width: 560px; font-size: 13px; color: #888; line-height: 1.55; }
+    .copy { margin-top: 12px; font-size: 12px; color: #666; }
+
+    @media (max-width: 820px) {
+      .hero-grid, .consultant, .decision { grid-template-columns: 1fr; }
+      .span4, .span6, .span12 { grid-column: span 12; }
+      .hero-band { padding: 28px 20px; border-radius: 16px; }
+      .task { grid-template-columns: auto 1fr; }
+      .owner { grid-column: 2; justify-self: start; }
+    }
+    @media (max-width: 600px) {
+      main { padding: 24px 16px 56px; }
+      .tabs { top: 53px; }
+    }
+  </style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="tap-i-briefcase" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></g></symbol>
+  <symbol id="tap-i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g></symbol>
+  <symbol id="tap-i-lightbulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></g></symbol>
+  <symbol id="tap-i-message" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g></symbol>
+  <symbol id="tap-i-scroll-text" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12h-5"/><path d="M15 8h-5"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></g></symbol>
+  <symbol id="tap-i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="back-link" href="meetings.html"><span aria-hidden="true">&larr;</span> Meeting details</a>
+    <div class="brand">
+      <span class="brand-tap">TAP</span><span class="brand-sub">Meetings</span>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li><a href="meetings.html">Meeting details</a></li>
+      <li aria-current="page">Consultant debrief</li>
+    </ol>
+  </nav>
+
+  <section class="hero-band" aria-labelledby="debrief-heading">
+    <div class="hero-pill">
+      <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-lightbulb"/></svg>
+      Board strategy debrief
+    </div>
+    <h1 id="debrief-heading">Consultant Meeting Outcomes</h1>
+    <p class="lede">
+      A clear, board-friendly summary of what nonprofit consultant
+      <strong>Tamar</strong> identified about The Affluence Project,
+      what needs to be strengthened, and how we can move forward
+      with her as an ongoing resource.
+    </p>
+    <div class="hero-grid">
+      <div class="quote">
+        Our clearest mission anchor:
+        <strong>“Leaving a net positive.”</strong>
+        <br><br>
+        The goal is to help people build, protect, and pass on wealth
+        so the next generation starts ahead.
+      </div>
+      <div class="meta">
+        <div><span>Meeting date</span><b>September 21, 2026</b></div>
+        <div><span>Consultant</span><b>Tamar</b></div>
+        <div><span>Primary focus</span><b>Grant readiness + positioning</b></div>
+        <div><span>Collaboration</span><b>Ongoing pro bono advisory</b></div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs" aria-label="Debrief sections">
+    <button class="tab active" data-tab="snapshot" type="button">Executive Snapshot</button>
+    <button class="tab" data-tab="identified" type="button">What Was Identified</button>
+    <button class="tab" data-tab="programs" type="button">Current Programs</button>
+    <button class="tab" data-tab="roadmap" type="button">Roadmap</button>
+    <button class="tab" data-tab="tamar" type="button">How Tamar Helps</button>
+    <button class="tab" data-tab="actions" type="button">Board Action Tracker</button>
+  </nav>
+
+  <!-- EXECUTIVE SNAPSHOT -->
+  <section id="snapshot" class="section active" aria-labelledby="snapshot-title">
+    <h2 class="section-title" id="snapshot-title">Executive Snapshot</h2>
+    <p class="section-intro">
+      The meeting confirmed that TAP has a meaningful mission and real
+      programming, but we are still operating like an early-stage nonprofit.
+      The next phase is about making our story easier to understand,
+      proving impact with better data, and building the internal structure
+      needed before pursuing larger grants.
+    </p>
+    <div class="grid">
+      <div class="card span4">
+        <span class="badge">Mission</span>
+        <div class="kpi">Leave a net positive</div>
+        <p>Help people prepare for, protect, and pass on wealth.</p>
+      </div>
+      <div class="card span4">
+        <span class="badge">Stage</span>
+        <div class="kpi">Early growth</div>
+        <p>Legitimate programs exist, but funding, metrics, budgets, and staffing are still developing.</p>
+      </div>
+      <div class="card span4">
+        <span class="badge">Priority</span>
+        <div class="kpi">Grant-ready first</div>
+        <p>Build the foundation before pursuing large institutional funding.</p>
+      </div>
+      <div class="card span6">
+        <h3>What Tamar saw as strong</h3>
+        <div class="list">
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>A clear underlying purpose</b>
+              <span class="mini">TAP is trying to improve the financial starting point of the next generation.</span>
+            </div>
+          </div>
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Existing programs to build from</b>
+              <span class="mini">TAP Talks, the professional network, live events, and the Legacy Scholarship already create real touchpoints.</span>
+            </div>
+          </div>
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>A defined audience is emerging</b>
+              <span class="mini">Young professionals are the core audience, with students as an important secondary group.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card span6">
+        <h3>What must improve next</h3>
+        <div class="list">
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Sharper public messaging</b>
+              <span class="mini">Website and donor language should quickly explain who we serve, what we do, where we operate, and why it matters.</span>
+            </div>
+          </div>
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Better impact evidence</b>
+              <span class="mini">Move beyond “people reached” toward documented actions and outcomes.</span>
+            </div>
+          </div>
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Operational readiness</b>
+              <span class="mini">Budgets, reporting capacity, stewardship processes, and repeatable fundraising systems need to be established.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IDENTIFIED -->
+  <section id="identified" class="section" aria-labelledby="identified-title">
+    <h2 class="section-title" id="identified-title">What Was Identified About TAP</h2>
+    <p class="section-intro">
+      These are the main organizational findings from the discussion,
+      translated into clear board-level takeaways.
+    </p>
+    <div class="grid">
+      <div class="card span6">
+        <h3>1. Our mission is stronger than our current wording</h3>
+        <p>
+          The underlying idea is compelling: people should be able
+          to build wealth, protect it, and leave more behind than they
+          started with. The phrase <strong style="color:var(--c)">“leaving a net positive”</strong>
+          gives us a simple strategic anchor.
+        </p>
+      </div>
+      <div class="card span6">
+        <h3>2. Our audience needs to be tighter</h3>
+        <p>
+          Trying to serve “everyone” makes fundraising and communications
+          less effective. The recommended center of gravity is
+          <strong>young professionals up to roughly age 45</strong>,
+          with students as a secondary audience.
+        </p>
+      </div>
+      <div class="card span6">
+        <h3>3. We have programs, but not yet enough consolidated proof</h3>
+        <p>
+          We can point to talks, events, scholarships, mentorship,
+          and community reach. The missing piece is a single view of
+          participation plus outcome-based proof such as referrals made,
+          jobs or internships secured, financial actions taken, or
+          scholarship alumni progress.
+        </p>
+      </div>
+      <div class="card span6">
+        <h3>4. We should not rush into large grants</h3>
+        <p>
+          Institutional grants come with reporting and stewardship
+          obligations. Before scaling grant applications, TAP needs
+          stronger budgets, consistent metrics, clearer program
+          definitions, and enough capacity to manage awarded funds well.
+        </p>
+      </div>
+      <div class="card span12">
+        <div class="callout">
+          <strong>Board takeaway:</strong>
+          The issue is not whether TAP has substance. It does.
+          The issue is packaging that substance into a clear,
+          measurable, fundable nonprofit story.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section id="programs" class="section" aria-labelledby="programs-title">
+    <h2 class="section-title" id="programs-title">Current Program Portfolio</h2>
+    <p class="section-intro">
+      Tamar’s review reinforced that these programs are the foundation
+      of TAP’s current impact story. The next step is to define the
+      purpose and measurable outcomes of each one.
+    </p>
+    <div class="grid">
+      <div class="card span4 program">
+        <div class="program__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-users"/></svg></div>
+        <h3>TAP Network</h3>
+        <p>Volunteer professionals connect students and young professionals with mentorship, referrals, introductions, and career guidance.</p>
+        <div class="foot">Potential metrics: introductions made, mentor matches, referrals, internship and job outcomes.</div>
+      </div>
+      <div class="card span4 program">
+        <div class="program__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-message"/></svg></div>
+        <h3>TAP Talks</h3>
+        <p>Short educational intros followed by open discussion, with topics tailored to five net-worth stages.</p>
+        <div class="foot">Potential metrics: attendance, repeat attendance, post-session actions, content completion.</div>
+      </div>
+      <div class="card span4 program">
+        <div class="program__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-briefcase"/></svg></div>
+        <h3>In-Person Events</h3>
+        <p>Community-building events such as the Brooklyn kickoff and Intention Brunches focused on goals, accountability, and peer support.</p>
+        <div class="foot">Potential metrics: registrations, attendance, donor conversion, connections formed.</div>
+      </div>
+      <div class="card span6 program">
+        <div class="program__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-scroll-text"/></svg></div>
+        <h3>Legacy Scholarship</h3>
+        <p>Annual scholarships for students plus a lunch that connects recipients, parents, and alumni.</p>
+        <div class="foot">Potential metrics: dollars awarded, recipients, graduation progress, internships, alumni engagement.</div>
+      </div>
+      <div class="card span6 program">
+        <div class="program__icon"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-globe"/></svg></div>
+        <h3>Future Partner Expansion</h3>
+        <p>Long-term ambition to extend TAP through trusted partners in multiple U.S. cities rather than relying only on a centralized team.</p>
+        <div class="foot">Future metrics: partner cities, active volunteers, local programming, people served.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap" class="section" aria-labelledby="roadmap-title">
+    <h2 class="section-title" id="roadmap-title">Recommended Roadmap</h2>
+    <p class="section-intro">
+      The immediate goal is not “apply for every grant.”
+      It is to build the minimum operating system that lets TAP
+      pursue funding with credibility and manage it responsibly.
+    </p>
+    <div class="timeline">
+      <div class="step">
+        <div class="stepnum">1</div>
+        <div class="stepbox">
+          <b>Clarify the message</b>
+          <span>Align the website, donor materials, and program descriptions around who we serve, what we do, where we operate, and the “leaving a net positive” mission.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepnum">2</div>
+        <div class="stepbox">
+          <b>Consolidate impact data</b>
+          <span>Build one master tally across TAP Talks, Zeffy, email, scholarships, and the Network. Add outcome metrics, not only attendance.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepnum">3</div>
+        <div class="stepbox">
+          <b>Create simple program budgets</b>
+          <span>Document current spend, realistic program costs, and 1 to 3 year projections. Be ready to explain exactly what new funding would unlock.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepnum">4</div>
+        <div class="stepbox">
+          <b>Use common grant applications as practice</b>
+          <span>Draft strong reusable answers for mission, population served, geography, need, programming, impact, funding history, and use of funds.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepnum">5</div>
+        <div class="stepbox">
+          <b>Pursue right-sized funding</b>
+          <span>Start with grants and partners appropriate for TAP’s current scale. Grow into larger institutional opportunities as reporting capacity and proof of impact improve.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="stepnum">6</div>
+        <div class="stepbox">
+          <b>Build stewardship into the operating model</b>
+          <span>For every grant or larger donation accepted, define who tracks spending, who reports outcomes, and how funders will be updated.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAMAR -->
+  <section id="tamar" class="section" aria-labelledby="tamar-title">
+    <h2 class="section-title" id="tamar-title">How Tamar Can Help Us Now</h2>
+    <p class="section-intro">
+      Tamar is most valuable as a strategic resource who can help
+      us avoid common early-stage nonprofit mistakes and build
+      a stronger fundraising foundation.
+    </p>
+    <div class="consultant">
+      <div class="left">
+        <span class="badge">Immediate resource</span>
+        <h3>Tamar’s Near-Term Commitments</h3>
+        <div class="list">
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Common grant applications</b>
+              <span class="mini">Provide New Jersey and New York templates and explain the questions we should be prepared to answer.</span>
+            </div>
+          </div>
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Timely NJ opportunities</b>
+              <span class="mini">Identify a few current grant opportunities that can help us understand fit and expectations.</span>
+            </div>
+          </div>
+          <div class="list-item">
+            <span class="dot"></span>
+            <div>
+              <b>Fundraising language guidance</b>
+              <span class="mini">Help us understand current philanthropic framing, including the shift from “financial literacy” toward broader “economic mobility” language.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right">
+        <h3>Best Use of the Relationship</h3>
+        <p style="color:var(--muted);line-height:1.6;font-size:14px;">
+          Rather than treating Tamar only as someone who finds grants,
+          we can use her to pressure-test our positioning,
+          review draft grant answers, help shape budgets,
+          and identify what funders will expect before we apply.
+        </p>
+        <div class="pillrow">
+          <span class="pill">Grant readiness</span>
+          <span class="pill">Messaging review</span>
+          <span class="pill">Fundraising strategy</span>
+          <span class="pill">Application feedback</span>
+          <span class="pill">Board advising</span>
+          <span class="pill">Stewardship planning</span>
+        </div>
+        <div class="callout" style="margin-top:18px;">
+          <strong>Suggested cadence:</strong>
+          Invite Tamar into selected Wednesday board meetings
+          when we have concrete materials to review,
+          rather than simply for general updates.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIONS -->
+  <section id="actions" class="section" aria-labelledby="actions-title">
+    <h2 class="section-title" id="actions-title">Board Action Tracker</h2>
+    <p class="section-intro">
+      Use this as the working checklist for the next phase.
+      Checkmarks are saved on the device so board members
+      can use the page during planning sessions.
+    </p>
+    <div class="card">
+      <div class="taskbar">
+        <div>
+          <b>Grant-readiness progress</b>
+          <div class="mini"><span id="doneCount">0</span> of 8 priority actions complete</div>
+        </div>
+        <div class="progresswrap">
+          <div class="progress"><div id="progressFill"></div></div>
+        </div>
+      </div>
+
+      <label class="task">
+        <input type="checkbox" data-task="1">
+        <span>
+          <b>Consolidate total reach</b>
+          <small>Combine TAP Talks views and attendance, Zeffy registrations, scholarship participants, email engagement, and Network participation into one master count.</small>
+        </span>
+        <span class="owner">Board / Ops</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="2">
+        <span>
+          <b>Define 3 to 5 outcome metrics</b>
+          <small>Track actions people take after engaging with TAP, not only how many people attended.</small>
+        </span>
+        <span class="owner">Board</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="3">
+        <span>
+          <b>Rewrite core organization summary</b>
+          <small>Create a short, repeatable description of mission, audience, geography, programs, and intended outcomes.</small>
+        </span>
+        <span class="owner">Comms</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="4">
+        <span>
+          <b>Draft grant application answers</b>
+          <small>Use Tamar’s common application templates to create reusable baseline responses.</small>
+        </span>
+        <span class="owner">Leadership</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="5">
+        <span>
+          <b>Create program budgets</b>
+          <small>Prepare a basic current-year budget plus 1 to 3 year projections for core programs.</small>
+        </span>
+        <span class="owner">Finance</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="6">
+        <span>
+          <b>Define use-of-funds priorities</b>
+          <small>Be explicit about what additional funding unlocks: more events, stronger marketing, staffing, technology, scholarship growth, or other needs.</small>
+        </span>
+        <span class="owner">Board</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="7">
+        <span>
+          <b>Review Tamar’s grant opportunities</b>
+          <small>Assess fit, eligibility, reporting burden, timeline, and whether TAP is ready to pursue each opportunity.</small>
+        </span>
+        <span class="owner">Leadership</span>
+      </label>
+      <label class="task">
+        <input type="checkbox" data-task="8">
+        <span>
+          <b>Schedule a focused Tamar board session</b>
+          <small>Invite Tamar to a Wednesday 7:00 PM meeting once the board has draft messaging, metrics, or grant materials ready for review.</small>
+        </span>
+        <span class="owner">Leadership</span>
+      </label>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h3>Board Discussion Prompt</h3>
+      <p style="margin-bottom:14px;color:var(--muted);font-size:14px;">
+        Which area should we treat as the first board-wide priority?
+      </p>
+      <div class="decision">
+        <button type="button" data-choice="Messaging">
+          A. Messaging and positioning
+          <span class="mini">Make TAP easier to understand externally.</span>
+        </button>
+        <button type="button" data-choice="Impact">
+          B. Impact measurement
+          <span class="mini">Prove what participants actually gain or do.</span>
+        </button>
+        <button type="button" data-choice="Budgets">
+          C. Budgets and financial readiness
+          <span class="mini">Build grant-style budgets and projections.</span>
+        </button>
+        <button type="button" data-choice="Funding">
+          D. Funding pipeline
+          <span class="mini">Review realistic grants and donor opportunities.</span>
+        </button>
+      </div>
+      <p class="mini" id="choiceText" style="margin-top:12px;">No priority selected on this device yet.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <a href="meetings.html"><span aria-hidden="true">&larr;</span> Back to meeting details</a>
+  <div class="footer-brand">The Affluence Project</div>
+  <p class="footer-tag">Creating generational wealth through mentorship, networking &amp; advocacy.</p>
+  <p class="footer-legal">
+    Internal board strategy tool. Consultant Meeting Debrief &middot; September 21, 2026.
+  </p>
+  <p class="copy">&copy; <span id="year">2026</span> The Affluence Project. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const tabs = document.querySelectorAll(".tab");
+  const sections = document.querySelectorAll(".section");
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      sections.forEach(section => section.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById(tab.dataset.tab).classList.add("active");
+      window.scrollTo({
+        top: document.querySelector(".tabs").offsetTop - 8,
+        behavior: "smooth"
+      });
+    });
+  });
+
+  const checks = [...document.querySelectorAll('input[type="checkbox"][data-task]')];
+
+  checks.forEach(check => {
+    const saved = localStorage.getItem("tap-task-" + check.dataset.task);
+    check.checked = saved === "1";
+    check.addEventListener("change", () => {
+      localStorage.setItem("tap-task-" + check.dataset.task, check.checked ? "1" : "0");
+      updateProgress();
+    });
+  });
+
+  function updateProgress() {
+    const done = checks.filter(check => check.checked).length;
+    document.getElementById("doneCount").textContent = done;
+    document.getElementById("progressFill").style.width = ((done / checks.length) * 100) + "%";
+  }
+
+  updateProgress();
+
+  const priorityButtons = document.querySelectorAll(".decision button");
+  const priorChoice = localStorage.getItem("tap-board-priority");
+
+  if (priorChoice) {
+    priorityButtons.forEach(button => {
+      button.classList.toggle("selected", button.dataset.choice === priorChoice);
+    });
+    document.getElementById("choiceText").textContent =
+      "Selected priority on this device: " + priorChoice;
+  }
+
+  priorityButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      priorityButtons.forEach(item => item.classList.remove("selected"));
+      button.classList.add("selected");
+      localStorage.setItem("tap-board-priority", button.dataset.choice);
+      document.getElementById("choiceText").textContent =
+        "Selected priority on this device: " + button.dataset.choice;
+    });
+  });
+</script>
+
+</body>
+</html>

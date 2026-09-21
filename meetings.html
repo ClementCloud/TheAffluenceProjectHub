@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Meeting Details | The Affluence Project</title>
+  <meta name="description" content="TAP meeting details in one place: ad hoc sessions, TAP Talks, and board meetings. Find agendas, join links, and follow-up notes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --c: #8B7234;
+      --c-light: #F7F3EA;
+      --c-accent: #D4BA6A;
+      --ink: #1A1A1A;
+      --muted: #666;
+      --line: #E8E4DE;
+      --paper: #FDFCFA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--paper);
+      -webkit-font-smoothing: antialiased;
+      font-family: "DM Sans", sans-serif;
+      color: #444;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    button { font-family: inherit; cursor: pointer; }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--c); outline-offset: 2px; }
+    .skip-link { position: absolute; left: -9999px; z-index: 9999; padding: 12px 20px; background: var(--ink); color: #fff; font-weight: 600; text-decoration: none; border-radius: 0 0 8px 0; }
+    .skip-link:focus { left: 16px; top: 8px; }
+
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    }
+    .site-header__inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .back-link { font-size: 14px; font-weight: 600; color: var(--c); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .brand { font-family: "Playfair Display", serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+    .brand-tap { background: linear-gradient(135deg, #5A7C65, #8B7234); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-sub { font-family: "DM Sans", sans-serif; font-weight: 400; font-size: 12px; color: #888; margin-left: 8px; -webkit-text-fill-color: #888; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 32px 24px 72px; }
+
+    .breadcrumb-nav { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .breadcrumb-nav ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+    .breadcrumb-nav li { display: inline-flex; align-items: center; gap: 6px; }
+    .breadcrumb-nav li:not(:last-child)::after { content: "/"; color: #bbb; margin-left: 2px; }
+    .breadcrumb-nav a { color: var(--c); font-weight: 600; text-decoration: none; }
+    .breadcrumb-nav a:hover { text-decoration: underline; }
+    .breadcrumb-nav [aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+    .hero { text-align: center; padding: 8px 0 4px; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--c); color: #fff;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 18px;
+    }
+    .hero-pill svg { display: block; }
+    h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(34px, 5.2vw, 54px);
+      font-weight: 700; color: var(--ink); line-height: 1.12;
+      margin: 0 auto 16px; max-width: 640px;
+    }
+    h1 .grad { background: linear-gradient(135deg, #5A7C65, #8B7234); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .lede { font-size: clamp(16px, 2vw, 18px); color: #777; max-width: 560px; margin: 0 auto 22px; line-height: 1.6; }
+
+    .jump {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+      margin-top: 8px;
+    }
+    .jump a {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; text-decoration: none;
+      color: var(--ink); background: #fff; border: 1.5px solid var(--line);
+      padding: 10px 16px; border-radius: 100px;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .jump a:hover {
+      border-color: var(--c-accent);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(26,26,26,0.05);
+    }
+    .jump svg { display: block; color: var(--c); }
+
+    .block { margin-top: 56px; scroll-margin-top: 80px; }
+    .block__head { margin-bottom: 20px; }
+    .block__head h2 { font-family: "Playfair Display", serif; font-size: clamp(22px, 3.2vw, 28px); font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .block__head p { font-size: 15px; color: var(--muted); max-width: 640px; }
+
+    .meetings { display: flex; flex-direction: column; gap: 14px; }
+    .meeting {
+      background: #fff; border: 1.5px solid var(--line); border-radius: 16px;
+      padding: 22px 24px; display: flex; gap: 18px; align-items: flex-start;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    }
+    .meeting:hover { border-color: var(--c-accent); box-shadow: 0 10px 28px rgba(26,26,26,0.06); transform: translateY(-2px); }
+    .meeting__icon {
+      width: 54px; height: 54px; border-radius: 14px; background: var(--c-light);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      border: 1.5px solid var(--c-accent); color: var(--c);
+    }
+    .meeting__icon svg { display: block; }
+    .meeting__body { flex: 1; min-width: 0; }
+    .meeting__head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 5px; }
+    .meeting__head h3 { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1.25; }
+    .meeting__status {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+      padding: 4px 11px; border-radius: 100px;
+    }
+    .is-ready { background: var(--c); color: #fff; }
+    .is-live { background: #EEF3EF; color: #3E5A47; border: 1px solid #A8C5B0; }
+    .is-soon { background: #F1EFEA; color: #8a8578; }
+    .meeting__meta { font-size: 13px; font-weight: 600; color: var(--c); margin-bottom: 7px; display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+    .meeting__meta svg { display: block; }
+    .meeting__body > p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+    .meeting__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .meeting__actions a {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      border-radius: 100px; padding: 10px 20px; min-height: 42px; transition: all 0.25s ease;
+    }
+    .meeting__actions .is-primary { background: var(--c); color: #fff; }
+    .meeting__actions .is-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .meeting__actions .is-secondary { background: var(--c-light); color: var(--ink); border: 1.5px solid var(--c-accent); }
+    .meeting__actions .is-secondary:hover { background: #fff; transform: translateY(-1px); }
+    .meeting__actions svg { display: block; }
+
+    .empty {
+      background: #fff; border: 1.5px dashed var(--line); border-radius: 16px;
+      padding: 28px 24px; text-align: center;
+    }
+    .empty strong { display: block; font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+    .empty p { font-size: 14px; color: var(--muted); max-width: 420px; margin: 0 auto; }
+
+    .next {
+      margin-top: 0;
+      background: linear-gradient(135deg, #1A1A1A 0%, #2A2418 100%);
+      border-radius: 20px; padding: 28px 26px; color: #fff; position: relative; overflow: hidden;
+    }
+    .next::after {
+      content: ""; position: absolute; top: -70px; right: -50px; width: 220px; height: 220px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(212,186,106,0.16), transparent 70%); pointer-events: none;
+    }
+    .next__tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--c-accent); background: rgba(212,186,106,0.14);
+      padding: 6px 14px; border-radius: 100px; margin-bottom: 14px;
+    }
+    .next__tag svg { display: block; }
+    .next h3 { font-family: "Playfair Display", serif; font-size: clamp(22px, 3.2vw, 28px); font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+    .next__when { font-size: 14px; color: var(--c-accent); font-weight: 600; margin-bottom: 10px; }
+    .next p { font-size: 14px; color: rgba(255,255,255,0.66); max-width: 520px; margin-bottom: 18px; line-height: 1.6; }
+    .next__actions { display: flex; flex-wrap: wrap; gap: 12px; position: relative; z-index: 1; }
+    .next__actions a {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 14px; font-weight: 600; text-decoration: none;
+      border-radius: 100px; padding: 12px 22px; min-height: 44px; transition: all 0.25s ease;
+    }
+    .next__actions .is-primary { background: var(--c-accent); color: #1A1A1A; }
+    .next__actions .is-primary:hover { filter: brightness(1.08); transform: translateY(-2px); }
+    .next__actions .is-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1.5px solid rgba(255,255,255,0.2); }
+    .next__actions .is-secondary:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
+    .next svg { display: block; }
+
+    .site-footer { text-align: center; padding: 44px 24px max(36px, env(safe-area-inset-bottom, 0px)); background: var(--ink); }
+    .site-footer > a { color: var(--c-accent); font-weight: 600; display: inline-block; margin-bottom: 16px; text-decoration: none; font-size: 14px; }
+    .site-footer > a:hover { text-decoration: underline; }
+    .footer-brand { font-family: "Playfair Display", serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .footer-tag { font-size: 14px; color: #999; }
+    .footer-legal { margin: 16px auto 0; max-width: 560px; font-size: 13px; color: #888; line-height: 1.55; }
+    .copy { margin-top: 12px; font-size: 12px; color: #666; }
+
+    @media (max-width: 600px) {
+      main { padding: 24px 16px 56px; }
+      .meeting { flex-direction: column; gap: 14px; padding: 20px 18px; }
+      .meeting__actions a { width: 100%; }
+      .next { padding: 24px 20px; border-radius: 16px; }
+      .next__actions a { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="tap-i-calendar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></g></symbol>
+  <symbol id="tap-i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g></symbol>
+  <symbol id="tap-i-lightbulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></g></symbol>
+  <symbol id="tap-i-message" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></g></symbol>
+  <symbol id="tap-i-sparkle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8-6.2-.2 4.8 3.8L7.6 18 12 14.4 16.4 18l-2.2-5.8 4.8-3.8-6.2.2L12 3Z"/></g></symbol>
+  <symbol id="tap-i-users" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g></symbol>
+  <symbol id="tap-i-landmark" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7"/><path d="M14 18v-7"/><path d="M4 6h16"/><path d="M6 4v4"/><path d="M18 4v4"/><path d="M2 10h20"/></g></symbol>
+</svg>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="back-link" href="index.html"><span aria-hidden="true">&larr;</span> TAP Hub</a>
+    <div class="brand">
+      <span class="brand-tap">TAP</span><span class="brand-sub">Meetings</span>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="index.html">TAP Hub</a></li>
+      <li aria-current="page">Meeting details</li>
+    </ol>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-pill">
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-calendar"/></svg>
+      Meeting details
+    </div>
+    <h1>One Place For <span class="grad">Every Session.</span></h1>
+    <p class="lede">Ad hoc working sessions, TAP Talks, and board meetings. Find the notes, join links, and follow-ups without digging through chats.</p>
+    <nav class="jump" aria-label="Jump to a meeting type">
+      <a href="#ad-hoc"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-lightbulb"/></svg>Ad hoc</a>
+      <a href="#tap-talks"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-message"/></svg>TAP Talks</a>
+      <a href="#board"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-landmark"/></svg>Board</a>
+    </nav>
+  </section>
+
+  <!-- ============ AD HOC ============ -->
+  <section class="block" id="ad-hoc" aria-labelledby="adhoc-heading">
+    <div class="block__head">
+      <h2 id="adhoc-heading">Ad Hoc Meetings</h2>
+      <p>Working sessions outside the regular board cadence. Strategy reviews, consultant debriefs, and one-off planning.</p>
+    </div>
+
+    <div class="meetings">
+      <article class="meeting">
+        <div class="meeting__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-lightbulb"/></svg>
+        </div>
+        <div class="meeting__body">
+          <div class="meeting__head">
+            <h3>Consultant Meeting Debrief</h3>
+            <span class="meeting__status is-ready">Notes ready</span>
+          </div>
+          <div class="meeting__meta">
+            <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-clock"/></svg>
+            September 21, 2026 &middot; Board strategy &middot; Grant readiness
+          </div>
+          <p>A board-friendly summary of what nonprofit consultant Tamar identified about TAP, what needs to be strengthened, and how to move forward with her as an ongoing resource.</p>
+          <div class="meeting__actions">
+            <a class="is-primary" href="meeting-consultant-debrief.html">Open debrief</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ TAP TALKS ============ -->
+  <section class="block" id="tap-talks" aria-labelledby="talks-heading">
+    <div class="block__head">
+      <h2 id="talks-heading">TAP Talks</h2>
+      <p>Live virtual and hybrid financial education sessions. Registration is not required.</p>
+    </div>
+
+    <div class="next" aria-labelledby="next-talk-heading">
+      <div class="next__tag">
+        <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-clock"/></svg>
+        Up next
+      </div>
+      <h3 id="next-talk-heading">Season 2, Episode 6</h3>
+      <div class="next__when">Date to be announced &middot; 7:00 PM EST &middot; Virtual</div>
+      <p>Use the permanent Zoom link when the session goes live. Full lineup and episode notes live on the TAP Talks page.</p>
+      <div class="next__actions">
+        <a class="is-primary" href="https://us06web.zoom.us/j/83132299916" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-sparkle"/></svg>
+          Join the session
+        </a>
+        <a class="is-secondary" href="tap-talks.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><use href="#tap-i-message"/></svg>
+          See the lineup
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOARD ============ -->
+  <section class="block" id="board" aria-labelledby="board-heading">
+    <div class="block__head">
+      <h2 id="board-heading">Board Meetings</h2>
+      <p>Regular Wednesday board sessions. Agendas, materials, and follow-ups will appear here as they are posted.</p>
+    </div>
+
+    <div class="empty">
+      <strong>No board meeting notes posted yet</strong>
+      <p>When the next board packet is ready, it will show up in this section with the date, agenda, and any prep materials.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <a href="index.html"><span aria-hidden="true">&larr;</span> Back to TAP Hub</a>
+  <div class="footer-brand">The Affluence Project</div>
+  <p class="footer-tag">Creating generational wealth through mentorship, networking &amp; advocacy.</p>
+  <p class="footer-legal">
+    Meeting details are for TAP board and working-group use. Session topics and dates may change; always confirm details that matter to you.
+  </p>
+  <p class="copy">&copy; <span id="year">2026</span> The Affluence Project. All rights reserved.</p>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
