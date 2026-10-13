@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Your climb starts here · TAP Wealth Journey</title>
+<link rel="icon" href="tap-mark.png">
+<style>
+  @font-face { font-family: 'Playfair Display'; font-weight: 700; src: url('fonts/PlayfairDisplay_700Bold.ttf'); }
+  @font-face { font-family: 'Playfair Display'; font-weight: 700; font-style: italic; src: url('fonts/PlayfairDisplay_700Bold_Italic.ttf'); }
+  @font-face { font-family: 'DM Sans'; font-weight: 400; src: url('fonts/DMSans_400Regular.ttf'); }
+  @font-face { font-family: 'DM Sans'; font-weight: 600; src: url('fonts/DMSans_600SemiBold.ttf'); }
+  @font-face { font-family: 'DM Sans'; font-weight: 700; src: url('fonts/DMSans_700Bold.ttf'); }
+
+  :root {
+    --bg: #FDFCFA; --cream: #F7F3EA; --ink: #1A1A1A; --body: #4A4A4A; --muted: #888888; --line: #E8E4DE;
+    --gold: #8B7234; --gold-light: #D4BA6A; --sage: #5A7C65;
+    --emerging: #C0392B; --rooted: #27AE60; --progressing: #2980B9; --aligned: #8B7234; --affluent: #6B5B8A;
+    --s: 0.5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: #ECE6DA; font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; overflow: hidden; }
+
+  /* ---------- Viewer ---------- */
+  .track { display: flex; height: calc(100% - 96px); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
+  .track::-webkit-scrollbar { display: none; }
+  .frame { flex: 0 0 100%; display: flex; align-items: center; justify-content: center; scroll-snap-align: center; padding: 24px 16px 8px; }
+  .scaler { width: calc(1080px * var(--s)); height: calc(1350px * var(--s)); flex: none; }
+  .slide { transform: scale(var(--s)); transform-origin: top left; box-shadow: 0 30px 80px rgba(26, 26, 26, 0.18); border-radius: 28px; }
+  .controls { height: 96px; display: flex; align-items: center; justify-content: center; gap: 22px; }
+  .controls button { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px rgba(26, 26, 26, 0.08); }
+  .controls button:disabled { opacity: 0.35; cursor: default; }
+  .dots { display: flex; gap: 8px; }
+  .dots button { width: 9px; height: 9px; padding: 0; border: none; box-shadow: none; border-radius: 5px; background: #CFC6B4; transition: width 0.2s, background 0.2s; }
+  .dots button[aria-current="true"] { width: 26px; background: var(--gold); }
+
+  /* ---------- Slide ---------- */
+  .slide { position: relative; width: 1080px; height: 1350px; overflow: hidden; background: var(--bg); --tone: var(--rooted); }
+  .slide.c-day { --tone: var(--progressing); }
+  .slide.c-month { --tone: var(--aligned); }
+  .slide.c-always { --tone: var(--affluent); }
+  .slide.c-brand { --tone: var(--gold); }
+
+  .blob { position: absolute; border-radius: 50%; background: var(--tone); opacity: 0.1; pointer-events: none; }
+  .blob.b1 { width: 760px; height: 760px; right: -170px; top: 300px; }
+  .blob.b2 { width: 180px; height: 180px; left: -60px; bottom: 120px; background: var(--gold-light); opacity: 0.22; }
+  .blob.b3 { width: 90px; height: 90px; right: 90px; top: 150px; background: var(--gold-light); opacity: 0.35; }
+
+  .top { position: absolute; left: 80px; right: 80px; top: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 26px; letter-spacing: -0.01em; }
+  .brand img { height: 44px; }
+  .brand em { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); font-size: 28px; }
+  .count { font-size: 24px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .count b { color: var(--ink); }
+  .bar { position: absolute; left: 80px; right: 80px; top: 132px; display: flex; gap: 6px; }
+  .bar i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+  .bar i.on { background: var(--gold); }
+
+  .eyebrow { font-size: 24px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tone); }
+  .slide.c-month .eyebrow, .slide.c-brand .eyebrow { color: var(--gold); }
+  h1, h2 { font-family: 'Playfair Display', serif; font-weight: 700; letter-spacing: -0.015em; color: var(--ink); }
+  h2 { font-size: 80px; line-height: 1.03; }
+  h2 em, h1 em { font-style: italic; color: var(--gold); }
+  .lede { font-size: 34px; line-height: 1.36; color: var(--body); }
+  b { font-weight: 700; color: var(--ink); }
+
+  /* Text column beside the phone */
+  .copy { position: absolute; left: 80px; top: 196px; width: 490px; display: flex; flex-direction: column; gap: 24px; }
+  .steps { list-style: none; display: flex; flex-direction: column; gap: 30px; margin-top: 20px; counter-reset: step; }
+  .steps li { position: relative; padding-left: 74px; font-size: 33px; line-height: 1.3; color: var(--body); counter-increment: step; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: -3px; width: 52px; height: 52px; border-radius: 50%; background: var(--ink); color: var(--bg); font-weight: 700; font-size: 26px; display: flex; align-items: center; justify-content: center; }
+  .note { margin-top: 10px; padding: 22px 26px; border-radius: 22px; background: var(--cream); font-size: 28px; line-height: 1.36; color: var(--body); }
+  .fine { position: absolute; left: 80px; bottom: 56px; font-size: 19px; color: var(--muted); }
+
+  /* Phone */
+  .phone { position: absolute; right: 50px; top: 210px; width: 440px; padding: 14px; border-radius: 66px; background: #121212; box-shadow: 0 50px 90px rgba(26, 26, 26, 0.22), 0 12px 28px rgba(26, 26, 26, 0.14), inset 0 0 0 2px #2c2c2c; }
+  .screen { position: relative; border-radius: 53px; overflow: hidden; background: var(--bg); }
+  .status { height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 6px 36px 0 44px; font-weight: 700; font-size: 18px; color: var(--ink); }
+  .island { position: absolute; left: 50%; top: 11px; width: 118px; height: 34px; margin-left: -59px; border-radius: 20px; background: #121212; }
+  .batt { display: flex; align-items: center; gap: 6px; }
+  .batt i { display: block; width: 27px; height: 13px; border-radius: 4px; border: 2px solid var(--ink); position: relative; }
+  .batt i::after { content: ''; position: absolute; inset: 2px 5px 2px 2px; border-radius: 1px; background: var(--ink); }
+  .bars { display: flex; align-items: flex-end; gap: 2px; }
+  .bars s { display: block; width: 4px; border-radius: 1px; background: var(--ink); }
+  .screen img { display: block; width: 100%; }
+
+  /* Stage ladder */
+  .ladder { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+  .ladder div { display: flex; align-items: center; gap: 18px; font-size: 27px; color: var(--body); }
+  .ladder div b { min-width: 170px; }
+  .ladder div::before { content: ''; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--dot); }
+
+  /* Cover */
+  .cover .copy { top: 280px; width: 480px; gap: 32px; }
+  .cover h1 { font-size: 96px; line-height: 1; }
+  .cover .lede { font-size: 36px; }
+  .swipe { display: inline-flex; align-self: flex-start; align-items: center; gap: 14px; margin-top: 18px; padding: 20px 32px; border-radius: 999px; background: linear-gradient(110deg, var(--sage), var(--gold)); color: #fff; font-weight: 700; font-size: 28px; }
+  .cover .phone { top: 190px; }
+
+  /* Close */
+  .close { text-align: center; }
+  .close .inner { position: absolute; left: 80px; right: 80px; top: 96px; display: flex; flex-direction: column; align-items: center; gap: 26px; }
+  .close .mark { height: 200px; }
+  .close h2 { font-size: 92px; }
+  .rhythm { width: 100%; margin-top: 10px; display: flex; flex-direction: column; gap: 18px; text-align: left; }
+  .rhythm div { display: flex; gap: 24px; align-items: baseline; padding: 28px 34px; border-radius: 28px; background: var(--cream); font-size: 33px; line-height: 1.3; color: var(--body); }
+  .rhythm span { flex: none; width: 230px; font-size: 23px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+  .cta { margin-top: 16px; font-size: 34px; line-height: 1.4; color: var(--body); }
+  .tagline { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 46px; color: var(--gold); }
+  .close .fine { left: 120px; right: 120px; bottom: 48px; text-align: center; line-height: 1.4; }
+
+  /* ---------- Export one slide: ?slide=N ---------- */
+  body.export { background: var(--bg); overflow: hidden; }
+  body.export .controls { display: none; }
+  body.export .track { height: auto; overflow: visible; display: block; }
+  body.export .frame { display: none; padding: 0; }
+  body.export .frame.only { display: block; }
+  body.export .scaler { width: 1080px; height: 1350px; }
+  body.export .slide { transform: none; box-shadow: none; border-radius: 0; }
+
+  @media print {
+    @page { size: 1080px 1350px; margin: 0; }
+    body { background: var(--bg); overflow: visible; height: auto; }
+    .controls { display: none; }
+    .track { display: block; height: auto; overflow: visible; }
+    .frame { display: block; padding: 0; break-after: page; }
+    .scaler { width: 1080px; height: 1350px; }
+    .slide { transform: none; box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<main class="track" id="track">
+
+  <!-- 1. Cover -->
+  <div class="frame"><div class="scaler"><section class="slide cover c-brand" aria-label="Your climb starts here">
+    <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+    <div class="top"><div class="brand"><img src="tap-mark.png" alt="">TAP <em>Wealth Journey</em></div></div>
+    <div class="copy">
+      <p class="eyebrow">For TAP members</p>
+      <h1>Your climb <em>starts here.</em></h1>
+      <p class="lede">How to get the most from TAP Wealth Journey, in 12 quick swipes.</p>
+      <span class="swipe">Swipe to start <span aria-hidden="true">→</span></span>
+    </div>
+    <div class="phone" data-screen="home"></div>
+    <p class="fine">Figures shown are from an example member.</p>
+  </section></div></div>
+
+  <!-- 2. Sign up -->
+  <div class="frame"><div class="scaler"><section class="slide c-setup" data-chapter="Set up" aria-label="Sign up in a minute">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Set up</p>
+      <h2>Sign up in a minute</h2>
+      <p class="lede">No password to remember. Just your email and a 6-digit code.</p>
+      <ol class="steps">
+        <li>Open the app and tap <b>Get started</b>.</li>
+        <li>Enter your email and tap <b>Email me a code</b>.</li>
+        <li>Type the code from your inbox, then agree to how TAP keeps your information.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="signup-email"></div>
+  </section></div></div>
+
+  <!-- 3. Questions -->
+  <div class="frame"><div class="scaler"><section class="slide c-setup" data-chapter="Set up" aria-label="A few quick questions">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Set up</p>
+      <h2>A few quick questions</h2>
+      <p class="lede">Your answers shape the guides and next steps we suggest.</p>
+      <ol class="steps">
+        <li>Tap the answer that fits. It moves on by itself.</li>
+        <li>Pick anything big coming up, like a move or a new car.</li>
+        <li>Skip what you’d rather not say. Change answers any time in <b>Me</b>.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="intake-goal"></div>
+  </section></div></div>
+
+  <!-- 4. Balances -->
+  <div class="frame"><div class="scaler"><section class="slide c-setup" data-chapter="Set up" aria-label="Add what you own and owe">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Set up</p>
+      <h2>Add what you own and owe</h2>
+      <p class="lede">Today’s balances set your starting net worth. Round numbers are fine.</p>
+      <ol class="steps">
+        <li>Enter each account’s <b>Balance today</b>.</li>
+        <li>Add what you owe: cards, loans, anything else.</li>
+        <li>Tap <b>See my stage</b>.</li>
+      </ol>
+      <p class="note">Had a Clarity Session? The number your host recorded is ready to use.</p>
+    </div>
+    <div class="phone" data-screen="networth-fields"></div>
+  </section></div></div>
+
+  <!-- 5. Stage -->
+  <div class="frame"><div class="scaler"><section class="slide c-setup" data-chapter="Set up" aria-label="Meet your Wealth Stage">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Set up</p>
+      <h2>Meet your Wealth Stage</h2>
+      <p class="lede">Five stages, one climb. You’ll see exactly how far it is to the next one.</p>
+      <div class="ladder">
+        <div style="--dot: var(--emerging)"><b>Emerging</b>$0 or below</div>
+        <div style="--dot: var(--rooted)"><b>Rooted</b>Up to $49,999</div>
+        <div style="--dot: var(--progressing)"><b>Progressing</b>Up to $199,999</div>
+        <div style="--dot: var(--aligned)"><b>Aligned</b>Up to $499,999</div>
+        <div style="--dot: var(--affluent)"><b>Affluent</b>$500,000 and up</div>
+      </div>
+      <p class="note">Emerging is the start of the climb, not a failure. Every member starts somewhere.</p>
+    </div>
+    <div class="phone" data-screen="reveal"></div>
+  </section></div></div>
+
+  <!-- 6. Milestones -->
+  <div class="frame"><div class="scaler"><section class="slide c-setup" data-chapter="Set up" aria-label="Check your stage milestones">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Set up</p>
+      <h2>Check your stage milestones</h2>
+      <p class="lede">Six per stage. They get you ready to hold the next one.</p>
+      <ol class="steps">
+        <li>Answer <b>Yes, done</b> or <b>Not yet</b> for each one.</li>
+        <li>Find them any time under <b>Journey</b>.</li>
+        <li>Tap a milestone to see why it matters.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="stage-rooted"></div>
+  </section></div></div>
+
+  <!-- 7. Home -->
+  <div class="frame"><div class="scaler"><section class="slide c-day" data-chapter="Day to day" aria-label="Home shows your next step">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Day to day</p>
+      <h2>Home shows your next step</h2>
+      <p class="lede">Open the app and know where you stand and what to do next.</p>
+      <ol class="steps">
+        <li>See your stage and how far to the next.</li>
+        <li>Do the action from your session, or tap <b>Not now</b>.</li>
+        <li>See when your next Clarity Session is.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="home"></div>
+  </section></div></div>
+
+  <!-- 8. Forecast -->
+  <div class="frame"><div class="scaler"><section class="slide c-day" data-chapter="Day to day" aria-label="See where it's all heading">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Day to day</p>
+      <h2>See where it’s all heading</h2>
+      <p class="lede">Your Wealth Map turns today’s numbers into a forecast, down to the month you’d reach each stage.</p>
+      <ol class="steps">
+        <li>Open <b>Map</b>.</li>
+        <li>Switch a plan on or off, like a trip or a raise, and watch the difference.</li>
+        <li>Tap or drag across a chart to move through time.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="map-forecast"></div>
+  </section></div></div>
+
+  <!-- 9. Recap -->
+  <div class="frame"><div class="scaler"><section class="slide c-day" data-chapter="Day to day" aria-label="Leave every session with a plan">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Day to day</p>
+      <h2>Leave every session with a plan</h2>
+      <p class="lede">After a free Clarity Session with a TAP host, your recap is waiting in the app.</p>
+      <ol class="steps">
+        <li>Open <b>Sessions</b>, then your recap.</li>
+        <li>See your Wealth Anchor and the one Most Important Thing.</li>
+        <li>Work through your actions before each due date.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="recap"></div>
+  </section></div></div>
+
+  <!-- 10. Check-in -->
+  <div class="frame"><div class="scaler"><section class="slide c-day" data-chapter="Day to day" aria-label="Check in before the call">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Day to day</p>
+      <h2>Check in before the call</h2>
+      <p class="lede">Tell your host how it went, so your time together goes to what’s next.</p>
+      <ol class="steps">
+        <li>On Home, tap <b>Answer your check-in early</b>.</li>
+        <li>Share what got done and what got in the way.</li>
+        <li>Tap <b>Send</b>. Your host sees it before you meet.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="checkin"></div>
+  </section></div></div>
+
+  <!-- 11. Life Paths -->
+  <div class="frame"><div class="scaler"><section class="slide c-day" data-chapter="Day to day" aria-label="Big decisions, step by step">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Day to day</p>
+      <h2>Big decisions, step by step</h2>
+      <p class="lede">Buying a car or a home, renting, having a child: guided steps with calculators that use your numbers.</p>
+      <ol class="steps">
+        <li>Open <b>Paths</b> and pick one.</li>
+        <li>Go one step at a time. Your progress is saved.</li>
+        <li>Talk it through with your host before you sign.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="path"></div>
+  </section></div></div>
+
+  <!-- 12. Monthly -->
+  <div class="frame"><div class="scaler"><section class="slide c-month" data-chapter="Once a month" aria-label="A few minutes a month">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Once a month</p>
+      <h2>A few minutes a month</h2>
+      <p class="lede">Update your balances, and your net worth, stage and forecast update with them.</p>
+      <ol class="steps">
+        <li>Open <b>Map</b> and tap <b>Edit my map</b>.</li>
+        <li>Update each <b>Balance today</b>.</li>
+        <li>Tap <b>Done</b>. That’s it.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="update"></div>
+  </section></div></div>
+
+  <!-- 13. Privacy -->
+  <div class="frame"><div class="scaler"><section class="slide c-always" data-chapter="Always" aria-label="Your data, your call">
+    <div class="blob b1"></div><div class="blob b2"></div>
+    <div class="copy">
+      <p class="eyebrow">Always</p>
+      <h2>Your data, your call</h2>
+      <p class="lede">You choose who sees your Wealth Map, and you can take your data with you.</p>
+      <ol class="steps">
+        <li>On <b>Map</b>, tap <b>Change</b> under the title.</li>
+        <li>Share with your host, or make it fully private.</li>
+        <li>In <b>Me</b>, download your data or delete your account.</li>
+      </ol>
+    </div>
+    <div class="phone" data-screen="map-privacy"></div>
+  </section></div></div>
+
+  <!-- 14. Close -->
+  <div class="frame"><div class="scaler"><section class="slide close c-brand" aria-label="Your climb starts today">
+    <div class="blob b2"></div><div class="blob b3"></div>
+    <div class="inner">
+      <img class="mark" src="tap-mark.png" alt="TAP">
+      <h2>Your climb <em>starts today.</em></h2>
+      <div class="rhythm">
+        <div><span>Every week</span>Check Home and take your next step.</div>
+        <div><span>Every month</span>Update your Wealth Map balances.</div>
+        <div><span>Every session</span>Work your actions, then check in before the call.</div>
+      </div>
+      <p class="cta">Open TAP Wealth Journey and tap <b>Get started</b>.<br>Free for TAP members.</p>
+      <p class="tagline">Leave a net positive.</p>
+    </div>
+    <p class="fine">Figures shown are from an example member. TAP Wealth Journey is for education and planning. It is not financial, legal, or tax advice.</p>
+  </section></div></div>
+
+</main>
+
+<nav class="controls" aria-label="Slides">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Next slide">→</button>
+</nav>
+
+<script>
+  const frames = [...document.querySelectorAll('.frame')];
+  const slides = frames.map((f) => f.querySelector('.slide'));
+  const total = slides.length;
+  const steps = slides.filter((s) => s.dataset.chapter);
+
+  for (const phone of document.querySelectorAll('.phone')) {
+    phone.innerHTML = `<div class="screen"><div class="island"></div><div class="status"><span>9:41</span><span class="batt"><span class="bars"><s style="height:6px"></s><s style="height:9px"></s><s style="height:12px"></s><s style="height:15px"></s></span><i></i></span></div><img src="screens/${phone.dataset.screen}.jpg" alt=""></div>`;
+  }
+
+  steps.forEach((slide, i) => {
+    const chapter = slide.dataset.chapter;
+    const inChapter = steps.filter((s) => s.dataset.chapter === chapter);
+    const eyebrow = slide.querySelector('.eyebrow');
+    if (inChapter.length > 1) eyebrow.textContent = `${chapter} · ${inChapter.indexOf(slide) + 1} of ${inChapter.length}`;
+    slide.insertAdjacentHTML(
+      'afterbegin',
+      `<div class="top"><div class="brand"><img src="tap-mark.png" alt="">TAP <em>Wealth Journey</em></div><div class="count"><b>${i + 1}</b> / ${steps.length}</div></div>` +
+        `<div class="bar">${steps.map((_, j) => `<i class="${j <= i ? 'on' : ''}"></i>`).join('')}</div>`,
+    );
+  });
+
+  const only = new URLSearchParams(location.search).get('slide');
+  if (only) {
+    document.body.classList.add('export');
+    frames[Number(only) - 1]?.classList.add('only');
+  } else {
+    const track = document.getElementById('track');
+    const dots = document.getElementById('dots');
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    frames.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.setAttribute('aria-label', `Slide ${i + 1}`);
+      b.addEventListener('click', () => go(i));
+      dots.append(b);
+    });
+    const current = () => Math.round(track.scrollLeft / track.clientWidth);
+    const go = (i) => track.scrollTo({ left: Math.max(0, Math.min(total - 1, i)) * track.clientWidth });
+    const sync = () => {
+      const i = current();
+      [...dots.children].forEach((d, j) => d.setAttribute('aria-current', String(j === i)));
+      prev.disabled = i === 0;
+      next.disabled = i === total - 1;
+    };
+    const fit = () => {
+      const s = Math.min((track.clientWidth - 32) / 1080, (track.clientHeight - 32) / 1350);
+      document.documentElement.style.setProperty('--s', String(s));
+    };
+    prev.addEventListener('click', () => go(current() - 1));
+    next.addEventListener('click', () => go(current() + 1));
+    track.addEventListener('scroll', sync, { passive: true });
+    addEventListener('resize', () => { const i = current(); fit(); track.scrollLeft = i * track.clientWidth; });
+    addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(current() + 1); }
+      if (e.key === 'ArrowLeft') go(current() - 1);
+      if (e.key === 'Home') go(0);
+      if (e.key === 'End') go(total - 1);
+    });
+    addEventListener('beforeprint', () => document.documentElement.style.setProperty('--s', '1'));
+    addEventListener('afterprint', fit);
+    fit();
+    sync();
+  }
+</script>
+</body>
+</html>
